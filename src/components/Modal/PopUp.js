@@ -9,14 +9,16 @@ const PopUp = ({toggled, toggleModal}) => {
   headers.append('Access-Control-Allow-Origin', 'http://localhost:3000');
 
 const createNewMenu = async () => {
-  return fetch('https://dutch-pay-test.herokuapp.com/menus/', {
+  return fetch('/menus/', {
     method: 'POST',
-    mode: 'no-cors',
-    headers: headers,
-    body: {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
       name: newMenu,
       restaurant: 28,
-  },
+  }),
   })
   .then(
     response => response.json()
