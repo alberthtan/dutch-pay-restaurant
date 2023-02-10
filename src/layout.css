@@ -1,0 +1,73 @@
+label, input, textarea {
+    display:block;
+  }
+
+label{
+    margin: 20px;
+}
+
+
+textarea{
+    height: 200px;
+    width: 400px;
+}
+
+input[type=text] {
+    width: 400px;
+}
+
+input[type=submit]{
+    margin: 20px;
+}
+
+#side{
+    display: inline-block;
+    width: 50%;
+    height:100%;
+}
+
+#under{
+   display: block;
+}
+#parent{
+    display: flex;
+    flex-direction: row;
+    height:100%;
+}
+
+#listItem{
+   max-height: 15em;
+   overflow:hidden;
+   white-space: pre-wrap;
+   text-overflow: ellipsis;
+}
+
+.menuCard{
+    background-color: #E8E8E8;
+    border-radius: 15px;
+    margin-left: 50px;
+    user-select: none;
+    /* display: inline-block */
+}
+
+.menuCard:hover{
+    background-color:#D6D6D6;}
+
+.ContextMenuRow:hover {
+    background-color:#D6D6D6;
+    cursor: pointer;
+}
+
+.categoryButton{
+    background-color: #E8E8E8;
+    border-radius: 5px;
+    user-select: none;
+}
+
+.categoryButton:hover{
+    background-color:#D6D6D6;}
+
+.HeaderBarItem:hover {
+    background-color:#dedede;
+    cursor: pointer;
+}
