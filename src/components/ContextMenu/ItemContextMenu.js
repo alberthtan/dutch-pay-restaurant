@@ -1,16 +1,13 @@
 import React from "react";
 import { Layout } from "antd";
-import '../layout.css'
+import '../../layout.css'
 
-// import { UserOutlined, DownOutlined } from "@ant-design/icons";
-// import jwt_decode from "jwt-decode";
-// import "antd/dist/antd.css";
 
-import removeIcon from '../assets/icons/trash.png'
-import duplicateIcon from '../assets/icons/duplicate.png'
-import viewIcon from '../assets/icons/view.png'
+import removeIcon from '../../assets/icons/trash.png'
+import duplicateIcon from '../../assets/icons/duplicate.png'
+import viewIcon from '../../assets/icons/view.png'
 
-function ContextMenu({x, y, handleView, handleDelete,}) {
+function ItemContextMenu({x, y, handleView, handleDelete,}) {
 
     return (
         <div style={{
@@ -24,11 +21,12 @@ function ContextMenu({x, y, handleView, handleDelete,}) {
             backgroundColor: 'white',
             top: y,
             left: x,
+            borderRadius: '5px',
         }}
         >
 
             <div 
-                className='ContextMenuRow' 
+                className='contextMenuRow' 
                 style={styles.subContainer} 
                 onClick={handleView}
             >
@@ -36,13 +34,13 @@ function ContextMenu({x, y, handleView, handleDelete,}) {
                 <div style={styles.text}>View Details</div>
             </div>
         
-            {/* <div className='ContextMenuRow' style={styles.subContainer} >
+            {/* <div className='contextMenuRow' style={styles.subContainer} >
                 <img  src={duplicateIcon} style={styles.icon} alt="duplicate"/>
                 <div style={styles.text}>Duplicate</div>
             </div> */}
 
             <div 
-                className='ContextMenuRow' 
+                className='contextMenuRow' 
                 style={styles.subContainer}
                 onClick={handleDelete}
             >
@@ -89,4 +87,4 @@ let styles = {
     },
 }
 
-export default ContextMenu;
+export default ItemContextMenu;

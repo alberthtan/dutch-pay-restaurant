@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react'
-import './Modal.css'
+import '../Modal.css'
+// import ImageUploading
 
-const PopUp = ({toggled, toggleModal}) => {
+const PopUp = ({toggled, toggleModal, getMenus}) => {
 
   const [newMenu, setNewMenu] = useState('')
 
-  let headers = new Headers();
-  headers.append('Access-Control-Allow-Origin', 'http://localhost:3000');
+  // let headers = new Headers();
+  // headers.append('Access-Control-Allow-Origin', 'http://localhost:3000');
 
 const createNewMenu = async () => {
   return fetch('/menus/', {
@@ -25,6 +26,7 @@ const createNewMenu = async () => {
   )
   .then(json => {
     console.log(json)
+    getMenus()
   })
 }
 
@@ -35,31 +37,47 @@ const createNewMenu = async () => {
 
   return (
     <div>
-    {toggled && 
       (<div className="modal" style={{display: 'flex'}}>
-      <div className="overlay"></div>
+      <div className="overlay toggleModal"></div>
         <div className="modal-content">
           <h4>
             New Menu
           </h4>
-          <form style={{display: 'flex', width: '100%', justifyContent: 'center', marginTop: 10}}>
-            <input style={{width: '100%', borderRadius: 5, borderWidth: 1, padding: 10}} type="text" placeholder="Enter menu name" autoFocus value={newMenu} onChange={handle}/>
+          <form style={{display: 'flex', width: '100%', justifyContent: 'center', marginTop: 10}}
+          onSubmit={(e) => {
+            e.preventDefault()
+            createNewMenu()
+            toggleModal()
+          }}>
+            <input style={{width: '100%', 
+            borderRadius: 5, 
+            borderWidth: 1, 
+            padding: 10}} 
+            type="text" 
+            placeholder="Enter menu name" 
+            autoFocus 
+            value={newMenu} 
+            onChange={handle}/>
           </form>
           <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 20}}>
-            <div style={{marginRight: 20, cursor: 'pointer'}} onClick={() => {toggleModal()}}>
+            <div style={{marginRight: 20, cursor: 'pointer'}}
+            onClick={() => {
+              toggleModal()
+              setNewMenu('')}}>
               Cancel
             </div>
             <div style={{cursor: 'pointer', color: '#0A60C9'}} onClick={() => {
               if (newMenu) {
                 createNewMenu()
                 toggleModal()
+                setNewMenu('')
               }
               }}>
               Create
             </div>
           </div>
         </div>
-    </div>)}
+    </div>)
     
     </div>
     )

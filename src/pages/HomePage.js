@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { useNavigate } from "react-router-dom";
 import { Form, List, Avatar, Layout, Menu, Typography, Button } from "antd";
 import Navbar from '../components/Navbar';
-import ContextMenu from '../components/ContextMenu';
+import ContextMenu from '../components/ContextMenu/ContextMenu';
 
 import {
   IdcardOutlined,

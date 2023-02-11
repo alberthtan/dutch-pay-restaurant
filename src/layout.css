@@ -45,15 +45,13 @@ input[type=submit]{
 .menuCard{
     background-color: #E8E8E8;
     border-radius: 15px;
-    margin-left: 50px;
     user-select: none;
-    /* display: inline-block */
 }
 
 .menuCard:hover{
     background-color:#D6D6D6;}
 
-.ContextMenuRow:hover {
+.contextMenuRow:hover {
     background-color:#D6D6D6;
     cursor: pointer;
 }
@@ -65,6 +63,15 @@ input[type=submit]{
 }
 
 .categoryButton:hover{
+    background-color:#D6D6D6;}
+
+.itemButton{
+    background-color: #E8E8E8;
+    border-radius: 5px;
+    user-select: none;
+}
+
+.itemButton:hover{
     background-color:#D6D6D6;}
 
 .HeaderBarItem:hover {

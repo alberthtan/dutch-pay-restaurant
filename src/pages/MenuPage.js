@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import { useNavigate } from "react-router-dom";
 import { Form, List, Avatar, Layout, Menu, Typography, Button } from "antd";
 import Navbar from '../components/Navbar';
@@ -6,10 +6,8 @@ import * as ReactBootstrap from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../layout.css'
 import MenuButton from '../components/MenuButton';
-import ContextMenu from '../components/ContextMenu';
+import ContextMenu from '../components/ContextMenu/ContextMenu';
 import PopUp from '../components/Modal/PopUp';
-
-
 
 import {
   IdcardOutlined,
@@ -18,9 +16,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 
-
-const { Content, Sider } = Layout;
-const { Title } = Typography;
+const { Sider } = Layout;
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -63,33 +59,30 @@ const items = [
   getItem("Payment", "5", <PartitionOutlined />),
 ];
 
-// const { innerWidth: width, innerHeight: height } = window;
-// const menuList = [
-//   "breakfast",
-//   "lunch",
-//   "dinner",
-// ]
-
-
 
 const MenuPage = () => {
   let navigate = useNavigate();
   const { height, width } = useWindowDimensions();
 
+  const [allMenus, setAllMenus] = useState([])
   const [collapsed, setCollapsed] = useState(false);
-  const [clicked, setClicked] = useState(false);
-  const [selectedMenu, setSelectedMenu] = useState("")
+  const [rightClicked, setRightClicked] = useState(false);
+  const [selectedMenuID, setSelectedMenuID] = useState("")
   const [points, setPoints] = useState({
     x: 0,
     y: 0,
   });
-  const [menuList, setMenuList] = useState([
-    "Breakfast Menu",
-    "Lunch Menu",
-    "Dinner Menu",
-  ])
 
-  const [modal, setModal] = useState(false)
+  const [modal, _setModal] = useState(false)
+  const modalRef = useRef(modal);
+  const setModal = data => {
+    modalRef.current = data;
+    _setModal(data);
+  };
+
+  const toggleModal = () => {
+    setModal(!modalRef.current)
+  }
 
   const onClick = (e) => {
     console.log("click ", e);
@@ -106,34 +99,58 @@ const MenuPage = () => {
     }
   };
 
-  const handleView = () => {
-    console.log("handle view")
+  const handleRename = () => {
+    console.log("handle rename")
+    
   }
 
-  const handleDelete = () => {
-    menuList.splice(0, 1);
-    setMenuList(menuList)
+  const handleDelete = async () => {
+    let index = allMenus.map(function(menu) { return menu.id }).indexOf(selectedMenuID)
+    allMenus.splice(index, 1)
+    setAllMenus(allMenus)
+
+    return fetch('/menus/' + selectedMenuID + '/', 
+    {
+      method: 'DELETE',
+    })
   }
 
   useEffect(() => {
-    const handleClick = () => setClicked(false);
+    const handleClick = (e) => {
+      setRightClicked(false);
+      if(!e.target.className.includes('outline')) {
+        setSelectedMenuID('')
+      }
+      if(e.target.className.includes('toggleModal')) {
+        toggleModal()
+      }
+    }
     window.addEventListener("click", handleClick);
     return () => {
       window.removeEventListener("click", handleClick);
     };
   }, []);
 
-  
-  const toggleModal = () => {
-    setModal(!modal)
+  useEffect(() => {
+    getMenus()
+  }, [])
+
+  const getMenus = async () => {
+    return fetch('/menus/', 
+    {
+      method: 'GET',
+    }).then((response) => response.json()).then(json => {
+    let result = json.filter(menu => menu['restaurant'] == 28)
+    setAllMenus(result)})
   }
-  
   
   return (
     <div>
-      <PopUp toggled={modal} toggleModal={toggleModal}> hello</PopUp>
       
-      {/* <Navbar /> */}
+      {modalRef.current && 
+        <PopUp toggled={modalRef.current} toggleModal={toggleModal} getMenus={getMenus}/>
+      }
+      
       <Layout style={{ minHeight: "100vh" }}>
       <Sider
           collapsible
@@ -174,41 +191,41 @@ const MenuPage = () => {
                 </Button>
             </Form.Item>
 
-           
+            <div style={{display:'flex', flexWrap: 'wrap'}}>
 
-            <div style={{display:'flex'}}>
-
-                {menuList.map((name, index) => {
+                {allMenus.map((menu, index) => {
                     return (
                         <div
                             key={index}
+                            style={{marginLeft: '50px'}}
                             onContextMenu={(e) => {
                             e.preventDefault(); // prevent the default behaviour when right clicked
-                            setClicked(true);
-                            setSelectedMenu(name);
+                            setRightClicked(true);
+                            setSelectedMenuID(menu.id);
                             setPoints({
                                 x: e.pageX,
                                 y: e.pageY,
                             });
                         }}> 
-                            <MenuButton menuName={name} width={width} navigate={navigate}/>
+                            <MenuButton 
+                              selectedMenuID={selectedMenuID} 
+                              setSelectedMenuID={setSelectedMenuID} 
+                              menu={menu} 
+                              width={width} 
+                              navigate={navigate}
+                            />
                         </div>
                     );
                 })}
            
               
-                {clicked && (
+                {rightClicked && (
                     <ContextMenu x={points.x} y={points.y}
-                      handleView={handleView} 
+                      handleRename={handleRename} 
                       handleDelete={handleDelete}
                     />
                 )}
             </div>
-
-            {/* <ReactBootstrap.Button variant="outline-primary">Primary</ReactBootstrap.Button> */}
-            {/* <ReactBootstrap.Button bsStyle="success" bsSize="small">
-  Something
-</ReactBootstrap.Button> */}
 
         </div>
 
@@ -233,6 +250,7 @@ const styles = {
   headerBarGreenItem: {
     fontSize: 20,
     fontWeight: 'bold',
+    padding: '5px',
     color: 'green',
   },
 }

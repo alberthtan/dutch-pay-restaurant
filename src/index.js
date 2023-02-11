@@ -29,13 +29,11 @@ ReactDOM.render(
       <Route path="/" element={<LoginPage/>} />
       <Route path="/home" element={<HomePage/>} />
       <Route path="/menu" element={<MenuPage/>} />
-      <Route path="/items/:menuName/:categoryName" element={<ItemsPage/>} />
-      <Route path="/categories/:menuName" element={<CategoryPage/>} />
+      <Route path="/items/:menuId/:categoryId" element={<ItemsPage/>} />
+      <Route path="/categories/:menuId" element={<CategoryPage/>} />
       <Route path="/table" element={<TablePage />} />
       <Route path="/order-history" element={<OrderHistoryPage />} />
       <Route path="/payment" element={<PaymentPage />} />
-      {/* <Route path="/users" element={<UserManagementPage />} /> */}
-      {/* <Route path="/register" element={<RegisterPage />} />  */}
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")

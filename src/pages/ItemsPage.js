@@ -1,12 +1,14 @@
-import React, {useState, useEffect} from 'react'
-import { useNavigate, useParams } from "react-router-dom";
+import React, {useState, useEffect, useRef} from 'react'
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { Form, List, Avatar, Layout, Menu, Typography, Button } from "antd";
 import Navbar from '../components/Navbar';
 import * as ReactBootstrap from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../layout.css'
-import ItemsButton from '../components/ItemsButton';
+import ItemButton from '../components/ItemButton';
 import frontArrowIcon from '../assets/icons/frontarrow.png';
+import ContextMenu from '../components/ContextMenu/ItemContextMenu';
+import ItemPopUp from '../components/Modal/ItemPopUp';
 
 import {
     IdcardOutlined,
@@ -59,12 +61,81 @@ function getWindowDimensions() {
     getItem("Payment", "5", <PartitionOutlined />),
   ];
 
-const ItemsPage = () => {
-    const { menuName, categoryName } = useParams()
-    const [collapsed, setCollapsed] = useState(false);
-    let navigate = useNavigate();
 
+const ItemsPage = () => {
+  let navigate = useNavigate();
+    const { menuId, categoryId } = useParams();
+    const { state } = useLocation();
     const { height, width } = useWindowDimensions();
+
+    const [collapsed, setCollapsed] = useState(false);
+    const [allItems, setAllItems] = useState([])
+    const [rightClicked, setRightClicked] = useState(false);
+    const [selectedItemID, setSelectedItemID] = useState("")
+    const [points, setPoints] = useState({
+      x: 0,
+      y: 0,
+    });
+
+    const [modal, _setModal] = useState(false)
+    const modalRef = useRef(modal);
+    const setModal = data => {
+      modalRef.current = data;
+      _setModal(data);
+    };
+
+    const toggleModal = () => {
+      setModal(!modalRef.current)
+    }
+
+    const getMenuItems = async () => {
+      return fetch('/menu-items/', 
+      {
+        method: 'GET',
+      })
+      .then((response) => response.json())
+      .then(json => {
+        let result = json.filter(item => item['category'] == categoryId)
+        setAllItems(result)})
+    }
+
+    useEffect(() => {
+      // console.log(allCategories)
+      getMenuItems()
+    }, [])
+    
+
+    const handleView = () => {
+      console.log("handle view")
+    }
+  
+    const handleDelete = async () => {
+      console.log("handle delete")
+      let index = allItems.map(function(item) { return item.id }).indexOf(selectedItemID)
+      allItems.splice(index, 1)
+      setAllItems(allItems)
+  
+      return fetch('/menu-items/' + selectedItemID + '/', 
+      {
+        method: 'DELETE',
+      })
+    }
+
+    useEffect(() => {
+      const handleClick = (e) => {
+        setRightClicked(false);
+        if(!e.target.className.includes('outline')) {
+          setSelectedItemID('')
+        }
+        if(e.target.className.includes('toggleModal')) {
+          toggleModal()
+        }
+      }
+      window.addEventListener("click", handleClick);
+      return () => {
+        window.removeEventListener("click", handleClick);
+      };
+    }, []);
 
     const onClick = (e) => {
         console.log("click ", e);
@@ -83,7 +154,10 @@ const ItemsPage = () => {
 
   return (
     <div>
-      {/* <Navbar /> */}
+      {modalRef.current && 
+        <ItemPopUp toggled={modalRef.current} toggleModal={toggleModal} categoryId={categoryId} getMenuItems={getMenuItems}/>
+      }
+      
       <Layout style={{ minHeight: "100vh" }}>
       <Sider
           collapsible
@@ -104,20 +178,27 @@ const ItemsPage = () => {
 
         <div style={{width: width}}>
 
-            <div style={{marginLeft: '30px', display: 'flex', width: '100%', height: 100, alignItems: 'center'}}>
+            <div style={{marginLeft: '30px', display: 'flex', height: 100}}>
+
                 <div style={styles.headerBarContainer}>
+
                     <div className='HeaderBarItem' style={styles.headerBarItem} onClick={() => {navigate('/menu')}}>
-                        {menuName}
+                        Menus
                     </div>
+
                     <img src={frontArrowIcon} style={styles.frontArrowIcon} alt=">"/>
-                    <div className='HeaderBarItem' style={styles.headerBarItem} onClick={() => {navigate('/categories/' + menuName)}}>
-                        {categoryName}
+
+                    <div className='HeaderBarItem' style={styles.headerBarItem} onClick={() => {navigate('/categories/' + menuId, { state: { menu: state.menu } })}}>
+                        {state.menu.name}
                     </div>
+
                     <img src={frontArrowIcon} style={styles.frontArrowIcon} alt=">"/>
+
                     <div 
                       style={styles.headerBarGreenItem}>
-                      Items
+                      {state.category.name}
                     </div>
+
                 </div>
             </div>
 
@@ -125,37 +206,60 @@ const ItemsPage = () => {
             name="addMenu"
             style={{display: 'flex', justifyContent: 'flex-end', marginRight: 10}}
             >
-                <Button type="default" style={{fontWeight: 'bold'}} onClick={{}}>
+                <Button type="default" style={{fontWeight: 'bold'}} onClick={toggleModal}>
                 + New Item
                 </Button>
             </Form.Item>
 
-            <div style={{display: 'flex', borderTop: '1px solid #D6D6D6', paddingTop: 10, paddingBottom: 10}}>
-                <div style={{marginLeft: width * 0.1}}>
+            <div style={styles.itemBarContainer}>
+                <div style={{display: 'flex', flex: 1, justifyContent: 'start'}}>
+                  <div style={{marginLeft: '15%'}}>
                     Image
+                  </div>
                 </div>
-                <div style={{marginLeft: width * 0.12}}>
+                
+                <div style={{display: 'flex', flex: 1, justifyContent: 'start', paddingLeft: '20px'}}>
+          
                     Name
                 </div>
-                <div style={{marginLeft: width * 0.18}}>
+                <div style={{display: 'flex', flex: 2, justifyContent: 'start', paddingLeft: '20px', paddingRight: '20px'}}>
                     Description
                 </div>
-                <div style={{marginLeft: width * 0.2}}>
+                <div style={{display: 'flex', flex: 1, justifyContent: 'start'}}>
                     Price
                 </div>
             </div>
 
-            <div style={{}}>
+             {allItems.map((item, index) => {
+                return (
+                    <div
+                        key={index}
+                        style={{borderWidth: '3px', borderColor: 'black'}}
+                        onContextMenu={(e) => {
+                            e.preventDefault(); // prevent right click popup
+                            setRightClicked(true);
+                            setSelectedItemID(item.id);
+                            setPoints({
+                                x: e.pageX,
+                                y: e.pageY,
+                            });
+                         }}> 
+                        <ItemButton 
+                          item={item} 
+                          selectedItemID={selectedItemID} 
+                          setSelectedItemID={setSelectedItemID} 
+                          handleView={handleView}
+                        />
+                    </div>
+                );
+            })}
 
-              <ItemsButton name="Chicken Karaage" description="Fried chicken wings glazed with IPPUDO’s special black pepper sauce and sprinkled with sesame seeds." price="$5.80" width={width}/>
-
-            </div>
-
-
-            {/* <ReactBootstrap.Button variant="outline-primary">Primary</ReactBootstrap.Button> */}
-            {/* <ReactBootstrap.Button bsStyle="success" bsSize="small">
-  Something
-</ReactBootstrap.Button> */}
+            {rightClicked && (
+                <ContextMenu x={points.x} y={points.y}
+                  handleView={handleView} 
+                  handleDelete={handleDelete}
+                />
+            )}
 
         </div>
 
@@ -177,8 +281,17 @@ const styles = {
   headerBarItem: {
     fontSize: 20,
     fontWeight: 'bold',
-    padding: '3px',
+    padding: '5px',
     borderRadius: '10px',
+  },
+
+  itemBarContainer: {
+    display: 'flex', 
+    width: '100%',
+    alignItems: 'center',
+    borderTop: '1px solid #D6D6D6', 
+    paddingTop: 10, 
+    paddingBottom: 10
   },
 
   frontArrowIcon: {
@@ -192,6 +305,7 @@ const styles = {
   headerBarGreenItem: {
     fontSize: 20,
     fontWeight: 'bold',
+    padding: '5px',
     color: 'green',
   },
 }

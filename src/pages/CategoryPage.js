@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react'
-import { useNavigate, useParams } from "react-router-dom";
+import React, {useState, useEffect, useRef} from 'react'
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { Form, List, Avatar, Layout, Menu, Typography, Button } from "antd";
 import Navbar from '../components/Navbar';
 import * as ReactBootstrap from 'react-bootstrap';
@@ -7,6 +7,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../layout.css'
 import CategoryButton from '../components/CategoryButton';
 import frontArrowIcon from '../assets/icons/frontarrow.png';
+import CategoryPopUp from '../components/Modal/CategoryPopUp';
+import ContextMenu from '../components/ContextMenu/ContextMenu';
 
 import {
     IdcardOutlined,
@@ -61,17 +63,81 @@ function getWindowDimensions() {
   ];
 
 
-
+  
 
 
 const CategoryPage = () => {
     let navigate = useNavigate();
-    const { menuName } = useParams()
+    const { menuId } = useParams();
+    const { state } = useLocation();
     const { height, width } = useWindowDimensions();
 
     const [collapsed, setCollapsed] = useState(false);
+    const [allCategories, setAllCategories] = useState([])
+    const [rightClicked, setRightClicked] = useState(false);
+    const [selectedCategoryID, setSelectedCategoryID] = useState("")
+    const [points, setPoints] = useState({
+      x: 0,
+      y: 0,
+    });
+    const [modal, _setModal] = useState(false)
+    const modalRef = useRef(modal);
+    const setModal = data => {
+      modalRef.current = data;
+      _setModal(data);
+    };
 
-    
+    const toggleModal = () => {
+      setModal(!modalRef.current)
+    }
+
+    const getCategories = async () => {
+      return fetch('/categories/', 
+      {
+        method: 'GET',
+      })
+      .then((response) => response.json())
+      .then(json => {
+        let result = json.filter(category => category['menu'] == menuId)
+        setAllCategories(result)})
+    }
+
+    const handleRename = () => {
+      console.log("handle rename")
+    }
+  
+    const handleDelete = async () => {
+      console.log("handle delete")
+      let index = allCategories.map(function(category) { return category.id }).indexOf(selectedCategoryID)
+      allCategories.splice(index, 1)
+      setAllCategories(allCategories)
+  
+      return fetch('/categories/' + selectedCategoryID + '/', 
+      {
+        method: 'DELETE',
+      })
+    }
+
+    useEffect(() => {
+      const handleClick = (e) => {
+        setRightClicked(false);
+        if(!e.target.className.includes('outline')) {
+          setSelectedCategoryID('')
+        }
+        if(e.target.className.includes('toggleModal')) {
+          toggleModal()
+        }
+      }
+      window.addEventListener("click", handleClick);
+      return () => {
+        window.removeEventListener("click", handleClick);
+      };
+    }, []);
+
+    useEffect(() => {
+      console.log(allCategories)
+      getCategories()
+    }, [])
 
     const onClick = (e) => {
         console.log("click ", e);
@@ -91,6 +157,11 @@ const CategoryPage = () => {
   return (
     <div>
       {/* <Navbar /> */}
+
+      {modalRef.current && 
+        <CategoryPopUp toggled={modalRef.current} toggleModal={toggleModal} menuId={menuId} getCategories={getCategories}/>
+      }
+      
       <Layout style={{ minHeight: "100vh" }}>
       <Sider
           collapsible
@@ -114,12 +185,12 @@ const CategoryPage = () => {
             <div style={{marginLeft: '30px', display: 'flex', width: '100%', height: 100, alignItems: 'center'}}>
                 <div style={styles.headerBarContainer}>
                     <div className='HeaderBarItem' style={styles.headerBarItem} onClick={() => {navigate('/menu')}}>
-                        {menuName}
-                    </div>
+                       Menus
+                    </div> 
                     <img src={frontArrowIcon} style={styles.frontArrowIcon} alt=">"/>
                     <div 
                       style={styles.headerBarGreenItem}>
-                      Categories
+                       {state.menu.name}
                     </div>
                 </div>
             </div>
@@ -128,22 +199,47 @@ const CategoryPage = () => {
             name="addMenu"
             style={{display: 'flex', justifyContent: 'flex-end', marginRight: 10}}
             >
-                <Button type="default" style={{fontWeight: 'bold'}} onClick={{}}>
+                <Button type="default" style={{fontWeight: 'bold'}} onClick={toggleModal}>
                 + New Category
                 </Button>
             </Form.Item>
 
-            <div style={{}}>
-              <CategoryButton menuName={menuName} categoryName='Appetizer' navigate={navigate} width={width}/>
-              <CategoryButton menuName={menuName} categoryName='Entree' navigate={navigate} width={width}/>
-              <CategoryButton menuName={menuName} categoryName='Dessert' navigate={navigate} width={width}/>
-            </div>
+
+            {allCategories.map((category, index) => {
+                return (
+                    <div
+                        key={index}
+                        style={{borderWidth: '3px', borderColor: 'black'}}
+                        onContextMenu={(e) => {
+                            e.preventDefault(); // prevent the default behaviour when right clicked
+                            setRightClicked(true);
+                            setSelectedCategoryID(category.id);
+                            setPoints({
+                                x: e.pageX,
+                                y: e.pageY,
+                            });
+                         }}> 
+                        <CategoryButton 
+                          menu={state.menu} 
+                          category={category} 
+                          selectedCategoryID={selectedCategoryID} 
+                          setSelectedCategoryID={setSelectedCategoryID} 
+                          navigate={navigate} 
+                          width={width}
+                        />
+                    </div>
+                );
+            })}
+
+            {rightClicked && (
+                <ContextMenu x={points.x} y={points.y}
+                  handleRename={handleRename} 
+                  handleDelete={handleDelete}
+                />
+            )}
 
 
-            {/* <ReactBootstrap.Button variant="outline-primary">Primary</ReactBootstrap.Button> */}
-            {/* <ReactBootstrap.Button bsStyle="success" bsSize="small">
-  Something
-</ReactBootstrap.Button> */}
+
 
         </div>
 
@@ -168,7 +264,7 @@ const styles = {
   headerBarItem: {
     fontSize: 20,
     fontWeight: 'bold',
-    padding: '3px',
+    padding: '5px',
     borderRadius: '10px',
   },
 
@@ -183,6 +279,7 @@ const styles = {
   headerBarGreenItem: {
     fontSize: 20,
     fontWeight: 'bold',
+    padding: '5px',
     color: 'green',
   },
 }
