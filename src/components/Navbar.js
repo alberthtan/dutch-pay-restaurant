@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Layout, Menu, Button, Avatar, Dropdown } from "antd";
 import { UserOutlined, DownOutlined } from "@ant-design/icons";
 // import jwt_decode from "jwt-decode";
-// import "antd/dist/antd.css";
+import "antd/dist/antd.css";
 
 import { useNavigate } from "react-router-dom";
 
@@ -21,7 +21,7 @@ function Navbar(props) {
   }, []);
 
   function handleLogout() {
-    localStorage.removeItem("authToken");
+    // localStorage.removeItem("authToken");
     navigate("/");
   }
 
@@ -52,17 +52,17 @@ function Navbar(props) {
           display: "flex",
         }}
       >
-        <h2 style={{ color: "white" }}>Project Matching</h2>
+        <h2 style={{ color: "black" }}>Project Matching</h2>
       </div>
       <div>
         {/* <h3 style={{ color: "white" }}>{username}</h3> */}
         <Dropdown overlay={logoutMenu}>
           <a
             className="ant-dropdown-link"
-            style={{ margin: "16px", color: "white" }}
+            style={{ margin: "16px", color: "black" }}
             onClick={(e) => e.preventDefault()}
           >
-            {username} <DownOutlined />
+            username <DownOutlined />
           </a>
         </Dropdown>
       </div>

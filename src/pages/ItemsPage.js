@@ -155,6 +155,7 @@ const ItemsPage = () => {
 
   return (
     <div>
+      <Navbar />
       {modalRef.current && 
         <ItemPopUp toggled={modalRef.current} toggleModal={toggleModal} categoryId={categoryId} getMenuItems={getMenuItems}/>
       }

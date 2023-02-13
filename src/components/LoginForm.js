@@ -50,8 +50,8 @@ const LoginForm = () => {
 
   // //TODO: send to the register page
   const onSubmitRegister = React.useCallback(async () => {
-    // navigate("/register");
-    console.log("register")
+    navigate("/register");
+    // console.log("register")
   }, [form, handleSubmission]);
 
   return (

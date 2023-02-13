@@ -13,6 +13,7 @@ import PaymentPage from "./pages/PaymentPage";
 import HomePage from "./pages/HomePage";
 import CategoryPage from "./pages/CategoryPage";
 import ItemsPage from "./pages/ItemsPage";
+import RegisterPage from "./pages/RegisterPage";
 
 // import CategoryPage from "./pages/CategoryPage";
 // import ItemsPage from "./pages/ItemsPage";
@@ -34,6 +35,7 @@ ReactDOM.render(
       <Route path="/table" element={<TablePage />} />
       <Route path="/order-history" element={<OrderHistoryPage />} />
       <Route path="/payment" element={<PaymentPage />} />
+      <Route path="/register" element={<RegisterPage />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")

@@ -53,7 +53,7 @@ const OrderHistoryPage = () => {
   };
   return (
     <div>
-      {/* <Navbar /> */}
+      <Navbar />
       <Layout style={{ minHeight: "100vh" }}>
       <Sider
           collapsible

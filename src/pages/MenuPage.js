@@ -160,7 +160,7 @@ const MenuPage = () => {
   
   return (
     <div>
-      
+      <Navbar />
       {modalRef.current && 
         <MenuPopUp toggleModal={toggleModal} getMenus={getMenus}/>
       }
