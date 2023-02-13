@@ -8,6 +8,7 @@ import '../layout.css'
 import CategoryButton from '../components/CategoryButton';
 import frontArrowIcon from '../assets/icons/frontarrow.png';
 import CategoryPopUp from '../components/Modal/CategoryPopUp';
+import RenameCategoryPopUp from '../components/Modal/RenameCategoryPopUp';
 import ContextMenu from '../components/ContextMenu/ContextMenu';
 
 import {
@@ -86,9 +87,19 @@ const CategoryPage = () => {
       modalRef.current = data;
       _setModal(data);
     };
+    const [renameModal, _setRenameModal] = useState(false)
+    const renameModalRef = useRef(renameModal);
+    const setRenameModal = data => {
+      renameModalRef.current = data;
+      _setRenameModal(data)
+    }
 
     const toggleModal = () => {
       setModal(!modalRef.current)
+    }
+
+    const toggleRenameModal = () => {
+      setRenameModal(!renameModalRef.current)
     }
 
     const getCategories = async () => {
@@ -103,7 +114,7 @@ const CategoryPage = () => {
     }
 
     const handleRename = () => {
-      console.log("handle rename")
+      toggleRenameModal()
     }
   
     const handleDelete = async () => {
@@ -121,11 +132,14 @@ const CategoryPage = () => {
     useEffect(() => {
       const handleClick = (e) => {
         setRightClicked(false);
-        if(!e.target.className.includes('outline')) {
+        if(!e.target.className.includes('outline') && !renameModalRef.current) {
           setSelectedCategoryID('')
         }
         if(e.target.className.includes('toggleModal')) {
           toggleModal()
+        }
+        if(e.target.className.includes('toggleRenameModal')) {
+          toggleRenameModal()
         }
       }
       window.addEventListener("click", handleClick);
@@ -160,6 +174,11 @@ const CategoryPage = () => {
 
       {modalRef.current && 
         <CategoryPopUp toggled={modalRef.current} toggleModal={toggleModal} menuId={menuId} getCategories={getCategories}/>
+      }
+
+      {renameModalRef.current && 
+        <RenameCategoryPopUp toggleModal={toggleRenameModal} getCategories={getCategories}
+       category={allCategories.find(obj => obj.id === selectedCategoryID)}/>
       }
       
       <Layout style={{ minHeight: "100vh" }}>
@@ -215,8 +234,8 @@ const CategoryPage = () => {
                             setRightClicked(true);
                             setSelectedCategoryID(category.id);
                             setPoints({
-                                x: e.pageX,
-                                y: e.pageY,
+                                x: e.clientX,
+                                y: e.clientY,
                             });
                          }}> 
                         <CategoryButton 
@@ -232,7 +251,7 @@ const CategoryPage = () => {
             })}
 
             {rightClicked && (
-                <ContextMenu x={points.x} y={points.y}
+                <ContextMenu x={points.x} y={points.y} yOffset={window.pageYOffset}
                   handleRename={handleRename} 
                   handleDelete={handleDelete}
                 />

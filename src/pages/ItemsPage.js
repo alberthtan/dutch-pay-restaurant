@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../layout.css'
 import ItemButton from '../components/ItemButton';
 import frontArrowIcon from '../assets/icons/frontarrow.png';
-import ContextMenu from '../components/ContextMenu/ItemContextMenu';
+import ItemContextMenu from '../components/ContextMenu/ItemContextMenu';
 import ItemPopUp from '../components/Modal/ItemPopUp';
 
 import {
@@ -107,6 +107,7 @@ const ItemsPage = () => {
 
     const handleView = () => {
       console.log("handle view")
+      // toggleModal()
     }
   
     const handleDelete = async () => {
@@ -167,7 +168,7 @@ const ItemsPage = () => {
           <div className="logo" />
           <Menu
             theme="dark"
-            selectedKeys={["1"]}
+            selectedKeys={["2"]}
             mode="inline"
             items={items}
             onClick={onClick}
@@ -240,8 +241,8 @@ const ItemsPage = () => {
                             setRightClicked(true);
                             setSelectedItemID(item.id);
                             setPoints({
-                                x: e.pageX,
-                                y: e.pageY,
+                                x: e.clientX,
+                                y: e.clientY,
                             });
                          }}> 
                         <ItemButton 
@@ -255,7 +256,7 @@ const ItemsPage = () => {
             })}
 
             {rightClicked && (
-                <ContextMenu x={points.x} y={points.y}
+                <ItemContextMenu x={points.x} y={points.y} yOffset={window.pageYOffset}
                   handleView={handleView} 
                   handleDelete={handleDelete}
                 />

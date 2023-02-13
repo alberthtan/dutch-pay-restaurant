@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Layout } from "antd";
 import '../../layout.css'
 
@@ -9,10 +9,34 @@ import '../../layout.css'
 import removeIcon from '../../assets/icons/trash.png'
 import editIcon from '../../assets/icons/edit.png'
 
-function ContextMenu({x, y, handleRename, handleDelete,}) {
+function ContextMenu({x, y, yOffset, handleRename, handleDelete,}) {
+    const ref = useRef(null)
+    const [yDiff, setYDiff] = useState(0);
+    const [xDiff, setXDiff] = useState(0);
+    const [clientWidth, setClientWidth] = useState(0)
+
+    function getWindowDimensions() {
+        const { innerWidth: width, innerHeight: height } = window;
+        return {
+          width,
+          height
+        };
+    }
+    console.log("height " + getWindowDimensions().height)
+    console.log("y " + y)
+    // console.log("ref height " + ref.current.clientHeight())
+    // useEffect()
+
+    useEffect(() => {
+        setYDiff(getWindowDimensions().height - y - ref.current.clientHeight)
+        setXDiff(getWindowDimensions().width - x - ref.current.clientWidth)
+        setClientWidth(ref.current.clientWidth)
+    })
 
     return (
-        <div style={{
+        <div 
+        ref={ref}
+        style={{
             width: 171, 
             height: 110,
             display: 'flex',
@@ -21,19 +45,19 @@ function ContextMenu({x, y, handleRename, handleDelete,}) {
             alignItems: 'start',
             position: 'absolute',
             backgroundColor: 'white',
-            top: y,
-            left: x,
+            top: (yDiff <= 0) ? y+yDiff+yOffset : y+yOffset,
+            left: (xDiff <= 0) ? x-clientWidth : x,
             borderRadius: '5px',
         }}
         >
 
             <div 
-                className='contextMenuRow' 
+                className='contextMenuRow outline' 
                 style={styles.subContainer} 
                 onClick={handleRename}
             >
-                <img src={editIcon} style={styles.icon} alt="rename"/>
-                <div style={styles.text}>Rename</div>
+                <img className='outline' src={editIcon} style={styles.icon} alt="rename"/>
+                <div className='outline' style={styles.text}>Rename</div>
             </div>
         
             {/* <div className='contextMenuRow' style={styles.subContainer} >

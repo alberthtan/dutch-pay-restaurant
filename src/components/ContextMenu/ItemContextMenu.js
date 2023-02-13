@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Layout } from "antd";
 import '../../layout.css'
 
@@ -7,10 +7,33 @@ import removeIcon from '../../assets/icons/trash.png'
 import duplicateIcon from '../../assets/icons/duplicate.png'
 import viewIcon from '../../assets/icons/view.png'
 
-function ItemContextMenu({x, y, handleView, handleDelete,}) {
+function ItemContextMenu({x, y, yOffset, handleView, handleDelete,}) {
+    const ref = useRef(null)
+    const [yDiff, setYDiff] = useState(0);
+    const [xDiff, setXDiff] = useState(0);
+    const [clientWidth, setClientWidth] = useState(0)
+
+    function getWindowDimensions() {
+        const { innerWidth: width, innerHeight: height } = window;
+        return {
+          width,
+          height
+        };
+    }
+    console.log("height " + getWindowDimensions().height)
+    console.log("y " + y)
+
+    useEffect(() => {
+        setYDiff(getWindowDimensions().height - y - ref.current.clientHeight)
+        setXDiff(getWindowDimensions().width - x - ref.current.clientWidth)
+        setClientWidth(ref.current.clientWidth)
+        console.log(ref.current.clientHeight)
+    })
 
     return (
-        <div style={{
+        <div 
+        ref={ref}
+        style={{
             width: 171, 
             height: 110,
             display: 'flex',
@@ -19,8 +42,8 @@ function ItemContextMenu({x, y, handleView, handleDelete,}) {
             alignItems: 'start',
             position: 'absolute',
             backgroundColor: 'white',
-            top: y,
-            left: x,
+            top: (yDiff <= 0) ? y+yDiff+yOffset : y+yOffset,
+            left: (xDiff <= 0) ? x-clientWidth : x,
             borderRadius: '5px',
         }}
         >

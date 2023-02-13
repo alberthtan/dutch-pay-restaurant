@@ -7,7 +7,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../layout.css'
 import MenuButton from '../components/MenuButton';
 import ContextMenu from '../components/ContextMenu/ContextMenu';
-import PopUp from '../components/Modal/PopUp';
+import MenuPopUp from '../components/Modal/MenuPopUp';
+import RenameMenuPopUp from '../components/Modal/RenameMenuPopUp';
 
 import {
   IdcardOutlined,
@@ -79,9 +80,19 @@ const MenuPage = () => {
     modalRef.current = data;
     _setModal(data);
   };
+  const [renameModal, _setRenameModal] = useState(false)
+  const renameModalRef = useRef(renameModal);
+  const setRenameModal = data => {
+    renameModalRef.current = data;
+    _setRenameModal(data)
+  }
 
   const toggleModal = () => {
     setModal(!modalRef.current)
+  }
+
+  const toggleRenameModal = () => {
+    setRenameModal(!renameModalRef.current)
   }
 
   const onClick = (e) => {
@@ -100,8 +111,7 @@ const MenuPage = () => {
   };
 
   const handleRename = () => {
-    console.log("handle rename")
-    
+    toggleRenameModal()
   }
 
   const handleDelete = async () => {
@@ -118,11 +128,15 @@ const MenuPage = () => {
   useEffect(() => {
     const handleClick = (e) => {
       setRightClicked(false);
-      if(!e.target.className.includes('outline')) {
+
+      if(!e.target.className.includes('outline') && !renameModalRef.current) {
         setSelectedMenuID('')
       }
       if(e.target.className.includes('toggleModal')) {
         toggleModal()
+      }
+      if(e.target.className.includes('toggleRenameModal')) {
+        toggleRenameModal()
       }
     }
     window.addEventListener("click", handleClick);
@@ -148,7 +162,12 @@ const MenuPage = () => {
     <div>
       
       {modalRef.current && 
-        <PopUp toggled={modalRef.current} toggleModal={toggleModal} getMenus={getMenus}/>
+        <MenuPopUp toggleModal={toggleModal} getMenus={getMenus}/>
+      }
+
+      {renameModalRef.current && 
+        <RenameMenuPopUp toggleModal={toggleRenameModal} getMenus={getMenus}
+       menu={allMenus.find(obj => obj.id === selectedMenuID)}/>
       }
       
       <Layout style={{ minHeight: "100vh" }}>
@@ -157,10 +176,9 @@ const MenuPage = () => {
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
         >
-          <div className="logo" />
           <Menu
             theme="dark"
-            selectedKeys={["1"]}
+            selectedKeys={["2"]}
             mode="inline"
             items={items}
             onClick={onClick}
@@ -203,9 +221,11 @@ const MenuPage = () => {
                             setRightClicked(true);
                             setSelectedMenuID(menu.id);
                             setPoints({
-                                x: e.pageX,
-                                y: e.pageY,
+                                x: e.clientX,
+                                y: e.clientY,
                             });
+                            console.log("OFFSET")
+                            console.log(window.pageYOffset)
                         }}> 
                             <MenuButton 
                               selectedMenuID={selectedMenuID} 
@@ -220,7 +240,7 @@ const MenuPage = () => {
            
               
                 {rightClicked && (
-                    <ContextMenu x={points.x} y={points.y}
+                    <ContextMenu x={points.x} y={points.y} yOffset={window.pageYOffset}
                       handleRename={handleRename} 
                       handleDelete={handleDelete}
                     />

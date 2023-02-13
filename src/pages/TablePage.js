@@ -63,7 +63,7 @@ const TablePage = () => {
           <div className="logo" />
           <Menu
             theme="dark"
-            selectedKeys={["1"]}
+            selectedKeys={["3"]}
             mode="inline"
             items={items}
             onClick={onClick}

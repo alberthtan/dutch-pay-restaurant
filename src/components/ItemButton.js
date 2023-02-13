@@ -11,13 +11,14 @@ function getWindowDimensions() {
 
 const ItemButton = ({item, selectedItemID, setSelectedItemID, handleView}) => {
   return (
-    <div style={(selectedItemID == item.id) ? styles.selected : styles.unselected} 
+    <div style={(selectedItemID === item.id) ? styles.selected : styles.unselected} 
           className="itemButton outline"
           onClick={() => {setSelectedItemID(item.id)}}
           onDoubleClick={handleView}>
         
         <div style={styles.imageContainer}>
-          <div style={styles.imageBackground} className="outline"/>
+          {/* <div style={styles.imageBackground} className="outline"/> */}
+          <img src={item.itemImage} style={styles.imageBackground} className="outline"/>
         </div>
 
         <div style={styles.itemName} className="outline">
@@ -64,13 +65,13 @@ const styles = {
   imageContainer: {
     display: 'flex', 
     flex: 1, 
-    height: '90%', 
+    height: '100%', 
     justifyContent: 'center', 
     alignItems: 'center'
   },
 
   imageBackground: {
-    width: '70%', 
+    // width: '70%', 
     height: '70%', 
     backgroundColor: 'gray', 
     borderRadius: 15,
@@ -95,7 +96,6 @@ const styles = {
     width: '30%', 
     overflowWrap: "break-word",
     borderRadius: 15,
-    backgroundColor: 'green',
     paddingLeft: '20px',
     paddingRight: '20px',
 
@@ -107,7 +107,6 @@ const styles = {
     // marginLeft: getWindowDimensions().width * 0.1, 
     fontWeight: 'bold', 
     borderRadius: 15,
-    backgroundColor: 'red',
     justifyContent: 'start'
   },
 

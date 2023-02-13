@@ -63,7 +63,7 @@ const PaymentPage = () => {
           <div className="logo" />
           <Menu
             theme="dark"
-            selectedKeys={["1"]}
+            selectedKeys={["5"]}
             mode="inline"
             items={items}
             onClick={onClick}

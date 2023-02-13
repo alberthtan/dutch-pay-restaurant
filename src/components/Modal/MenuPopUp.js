@@ -2,9 +2,10 @@ import React, {useState, useEffect} from 'react'
 import '../Modal.css'
 // import ImageUploading
 
-const PopUp = ({toggled, toggleModal, getMenus}) => {
+const MenuPopUp = ({toggleModal, getMenus}) => {
 
   const [newMenu, setNewMenu] = useState('')
+  console.log("here")
 
   // let headers = new Headers();
   // headers.append('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -37,7 +38,7 @@ const createNewMenu = async () => {
 
   return (
     <div>
-      (<div className="modal" style={{display: 'flex'}}>
+      <div className="modal" style={{display: 'flex'}}>
       <div className="overlay toggleModal"></div>
         <div className="modal-content">
           <h4>
@@ -77,7 +78,7 @@ const createNewMenu = async () => {
             </div>
           </div>
         </div>
-    </div>)
+    </div>
     
     </div>
     )
@@ -86,4 +87,4 @@ const createNewMenu = async () => {
   
 
 
-export default PopUp
+export default MenuPopUp
