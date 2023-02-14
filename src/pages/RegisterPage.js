@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Breadcrumb, Layout, Menu, Typography } from "antd";
 import { useNavigate } from "react-router-dom";
+import VerifyRegisterForm from "../components/VerifyRegisterForm"
 
 import RegisterForm from "../components/RegisterForm";
 
@@ -9,6 +10,12 @@ const { Title } = Typography;
 
 const RegisterPage = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
+  const [email, setEmail] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
+  
   let navigate = useNavigate();
 
   return (
@@ -21,7 +28,9 @@ const RegisterPage = () => {
           height: "100vh",
         }}
       >
-        <RegisterForm></RegisterForm>
+        {isVerified ? <VerifyRegisterForm email={email} firstName={firstName} lastName={lastName} phoneNumber={phoneNumber}/>  : 
+        <RegisterForm setEmail={setEmail} setFirstName={setFirstName} setLastName={setLastName} setPhoneNumber={setPhoneNumber} setIsVerified={setIsVerified}/>}
+        
       </div>
     </Layout>
   );

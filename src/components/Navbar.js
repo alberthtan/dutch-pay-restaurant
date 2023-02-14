@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Layout, Menu, Button, Avatar, Dropdown } from "antd";
 import { UserOutlined, DownOutlined } from "@ant-design/icons";
 // import jwt_decode from "jwt-decode";
-import "antd/dist/antd.css";
+// import "antd/dist/antd.css";
 
 import { useNavigate } from "react-router-dom";
 
@@ -52,7 +52,7 @@ function Navbar(props) {
           display: "flex",
         }}
       >
-        <h2 style={{ color: "black" }}>Project Matching</h2>
+        <h2 style={{ color: "black" }}>Navbar</h2>
       </div>
       <div>
         {/* <h3 style={{ color: "white" }}>{username}</h3> */}
