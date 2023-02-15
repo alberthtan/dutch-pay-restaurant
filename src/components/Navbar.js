@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Layout, Menu, Button, Avatar, Dropdown } from "antd";
 import { UserOutlined, DownOutlined } from "@ant-design/icons";
-// import jwt_decode from "jwt-decode";
-// import "antd/dist/antd.css";
+import { Context } from "../globalContext/globalContext";
 
 import { useNavigate } from "react-router-dom";
 
@@ -10,6 +9,9 @@ const { Header } = Layout;
 
 function Navbar(props) {
   const [username, setUsername] = useState("");
+
+  const globalContext = useContext(Context);
+  const { isLoggedIn, setIsLoggedIn } = globalContext;
 
   const navigate = useNavigate();
 
@@ -20,8 +22,10 @@ function Navbar(props) {
     // setUsername(email);
   }, []);
 
-  function handleLogout() {
-    // localStorage.removeItem("authToken");
+  const handleLogout = async () => {
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
+    setIsLoggedIn(false)
     navigate("/");
   }
 

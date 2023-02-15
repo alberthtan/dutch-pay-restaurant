@@ -62,33 +62,6 @@ const RegisterForm = ({setEmail, setFirstName, setLastName, setPhoneNumber, setI
       return;
     }
   });
-    // const result = await ProjectUtil(values); // Submit the form data to the backend
-    // handleSubmission(result); // Handle the submission after the API Call
-
-  //   const user = {
-  //     first_name: values.first_name,
-  //     last_name: values.last_name,
-  //     email: values.email,
-  //     accountType: values.user_type,
-  //     password: values.password,
-  //   };
-  //   console.log(values.user_type);
-
-  //   if (user.type == "student") {
-  //     user.project_preferences = [];
-  //   }
-
-  //   axios
-  //     .post("http://localhost:5001/register/", user)
-  //     .then((response) => {
-  //       console.log(response);
-  //       console.log(user);
-  //       navigate("/");
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  // }, [form, handleSubmission]);
 
   return (
     <div>

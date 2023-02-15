@@ -6,13 +6,12 @@ import { Context } from "../globalContext/globalContext.js"
 
 // const axios = require("axios").default;
 
-const VerifyRegisterForm = ({email, firstName, lastName, phoneNumber}) => {
+const VerifyLoginForm = ({email}) => {
   const [form] = Form.useForm();
   const { Title, Text } = Typography;
   const globalContext = useContext(Context);
 
   const { setToken, setIsLoggedIn, setUserObj } = globalContext
-
   
 
   const navigate = useNavigate();
@@ -22,10 +21,7 @@ const VerifyRegisterForm = ({email, firstName, lastName, phoneNumber}) => {
   const onSubmitRegister = React.useCallback(async () => {
     // console.log(values.code)
     let values;
-    console.log(firstName)
-    console.log(lastName)
     console.log(email)
-    console.log(phoneNumber)
     try {
       values = await form.validateFields(); // Validate the form fields
       return fetch('/manager-verify-email-code/', {
@@ -37,10 +33,10 @@ const VerifyRegisterForm = ({email, firstName, lastName, phoneNumber}) => {
         body: JSON.stringify({
           email: email,
           code: values.code,
-          is_register: true,
-          first_name: firstName,
-          last_name: lastName,
-          phone_number: phoneNumber
+          is_register: false,
+          first_name: 'test',
+          last_name: 'test',
+          phone_number: 'test'
         }),
       })
         .then(res => res.json())
@@ -120,4 +116,4 @@ const VerifyRegisterForm = ({email, firstName, lastName, phoneNumber}) => {
   );
 };
 
-export default VerifyRegisterForm;
+export default VerifyLoginForm;

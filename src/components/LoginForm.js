@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Form, Typography, Input, Button, InputNumber } from "antd";
 import "../layout.css";
 // import ProjectUtil from "../utils/ProjectUtil";
 import { useNavigate } from "react-router-dom";
-// const axios = require("axios").default;
 
-const LoginForm = () => {
+const LoginForm = ({setEmail, setIsVerified}) => {
   const [form] = Form.useForm();
   const { Title, Text } = Typography;
   const navigate = useNavigate();
@@ -24,28 +23,36 @@ const LoginForm = () => {
 
   const onSubmitLogin = React.useCallback(async () => {
     console.log("loggin in");
-
-    navigate("/home")
-
-    // navigate("/projects");
-    // let values;
-    // try {
-    //   values = await form.validateFields(); // Validate the form fields
-    //   // navigate("/users");
-    // } catch (errorInfo) {
-    //   return;
-    // }
-
-    // axios
-    //   .post("http://localhost:5001/login", values)
-    //   .then((reponse) => {
-    //     console.log("login result is ", reponse);
-    //     localStorage.setItem("authToken", reponse.data.token);
-    //     navigate("/projects");
-    //   })
-    //   .catch((err) => {
-    //     console.log("error submitting login ", err);
-    //   });
+    let values
+    try {
+      values = await form.validateFields(); // Validate the form fields
+      console.log(values.email);
+      return fetch('/manager-send-email-code/', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            email: values.email,
+            is_register: false,
+        })
+      })
+      .then(
+        response => response.json()
+      )
+      .then(json => {
+        setIsVerified(true)
+        setEmail(values.email)
+        console.log(json)
+      })
+      // navigate("/users");
+    } catch (errorInfo) {
+      console.log(errorInfo)
+      return;
+    }
+    // setIsLoggedIn(true)
+    // navigate("/home")
   }, [form, handleSubmission]);
 
   // //TODO: send to the register page
@@ -96,21 +103,6 @@ const LoginForm = () => {
           ]}
         >
           <Input placeholder="email" />
-        </Form.Item>
-
-        <Form.Item // Form Item (Project Name)
-          label="Password"
-          name="password"
-          required
-          tooltip="This is a required field"
-          rules={[
-            {
-              required: true,
-              message: "Please enter your password!",
-            },
-          ]}
-        >
-          <Input.Password style={{ width: "400px" }} />
         </Form.Item>
 
         <Form.Item // Form Item (Login Button)
