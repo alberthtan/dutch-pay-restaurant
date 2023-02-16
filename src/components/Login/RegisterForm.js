@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Typography, Input, Button, Select, InputNumber } from "antd";
-import "../layout.css";
+import "../../layout.css";
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 // import ProjectUtil from "../utils/ProjectUtil";
@@ -51,6 +51,7 @@ const RegisterForm = ({setEmail, setFirstName, setLastName, setPhoneNumber, setI
         response => response.json()
       )
       .then(json => {
+        console.log(json)
         setIsVerified(true)
         setEmail(values.email)
         setFirstName(values.first_name)

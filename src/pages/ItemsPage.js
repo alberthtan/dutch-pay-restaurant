@@ -1,11 +1,11 @@
 import React, {useState, useEffect, useRef} from 'react'
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { Form, List, Avatar, Layout, Menu, Typography, Button } from "antd";
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar/Navbar';
 import * as ReactBootstrap from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../layout.css'
-import ItemButton from '../components/ItemButton';
+import ItemButton from '../components/Buttons/ItemButton';
 import frontArrowIcon from '../assets/icons/frontarrow.png';
 import ItemContextMenu from '../components/ContextMenu/ItemContextMenu';
 import ItemPopUp from '../components/Modal/ItemPopUp';

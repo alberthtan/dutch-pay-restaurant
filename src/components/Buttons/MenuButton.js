@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
-import '../layout.css'
-import ContextMenu from './ContextMenu/ContextMenu';
+import '../../layout.css'
+import ContextMenu from '../ContextMenu/ContextMenu';
 
 function getWindowDimensions() {
     const { innerWidth: width, innerHeight: height } = window;

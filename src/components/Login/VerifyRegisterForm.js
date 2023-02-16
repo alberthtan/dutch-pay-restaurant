@@ -1,64 +1,78 @@
 import React, { useState, useContext } from "react";
 import { Form, Typography, Input, Button, Select, InputNumber } from "antd";
-import "../layout.css";
+import "../../layout.css";
 import { useNavigate } from "react-router-dom";
-import { Context } from "../globalContext/globalContext.js"
-
-// const axios = require("axios").default;
+import { Context } from "../../globalContext/globalContext";
 
 const VerifyRegisterForm = ({email, firstName, lastName, phoneNumber}) => {
+  const globalContext = useContext(Context);
+  const { setIsLoggedIn } = globalContext;
   const [form] = Form.useForm();
   const { Title, Text } = Typography;
-  const globalContext = useContext(Context);
-
-  const { setToken, setIsLoggedIn, setUserObj } = globalContext
-
-  
 
   const navigate = useNavigate();
 
-
   //TODO: send to the register page
   const onSubmitRegister = React.useCallback(async () => {
+    let restaurantId
     // console.log(values.code)
-    let values;
-    console.log(firstName)
-    console.log(lastName)
-    console.log(email)
-    console.log(phoneNumber)
-    try {
-      values = await form.validateFields(); // Validate the form fields
-      return fetch('/manager-verify-email-code/', {
-        method: 'PATCH',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          code: values.code,
-          is_register: true,
-          first_name: firstName,
-          last_name: lastName,
-          phone_number: phoneNumber
-        }),
-      })
-        .then(res => res.json())
-        .then(json => {
-          console.log(json)
-            if(json['email'] === email) {
-                setToken(json.token.refresh, json.token.access)
-                setUserObj(json)
-                setIsLoggedIn(true)
-                navigate('/home')
-            } else {
-                console.log("you entered the wrong code " + values.code)
-            }
+    return fetch('/restaurants/', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+
+    }),
         })
+        .then(response => response.json())
+        .then(json => {
+          restaurantId=json.id
+        })
+        .then(async () =>{
+          let values;
+    if(restaurantId){
+      try {
+        values = await form.validateFields(); // Validate the form fields
+        return fetch('/manager-verify-email-code/', {
+          method: 'PATCH',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: email,
+            code: values.code,
+            is_register: true,
+            first_name: firstName,
+            last_name: lastName,
+            phone_number: phoneNumber,
+            restaurant: restaurantId
+          }),
+        })
+          .then(res => res.json())
+          .then(json => {
+            console.log(json)
+              if(json['email'] === email) {
+                  localStorage.setItem("access", json.token.access)
+                  localStorage.setItem("refresh", json.token.refresh)
+                  localStorage.setItem("userObj", JSON.stringify(json))
+                  setIsLoggedIn(true)
+                  navigate('/home')
+              } else {
+                  console.log("you entered the wrong code " + values.code)
+              }
+          })
+      }
+      catch (errorInfo) {
+          return;
+      }
+
     }
-    catch (errorInfo) {
-        return;
-    }
+        }
+          
+        )
 })
   
 

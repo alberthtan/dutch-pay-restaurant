@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Form, Typography, Input, Button, InputNumber } from "antd";
-import "../layout.css";
+import "../../layout.css";
 // import ProjectUtil from "../utils/ProjectUtil";
 import { useNavigate } from "react-router-dom";
 

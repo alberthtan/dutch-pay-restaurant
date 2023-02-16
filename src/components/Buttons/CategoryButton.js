@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import '../layout.css'
+import '../../layout.css'
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;

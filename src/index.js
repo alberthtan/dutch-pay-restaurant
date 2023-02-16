@@ -1,10 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
+import { Provider } from "./globalContext/globalContext";
 
 import Navigator from "./navigator/navigator";
-
-import {Provider} from './globalContext/globalContext.js'
 
 
 

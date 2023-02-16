@@ -1,11 +1,11 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect, useRef, useContext} from 'react'
 import { useNavigate } from "react-router-dom";
 import { Form, List, Avatar, Layout, Menu, Typography, Button } from "antd";
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar/Navbar';
 import * as ReactBootstrap from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../layout.css'
-import MenuButton from '../components/MenuButton';
+import MenuButton from '../components/Buttons/MenuButton';
 import ContextMenu from '../components/ContextMenu/ContextMenu';
 import MenuPopUp from '../components/Modal/MenuPopUp';
 import RenameMenuPopUp from '../components/Modal/RenameMenuPopUp';
@@ -149,13 +149,22 @@ const MenuPage = () => {
     getMenus()
   }, [])
 
+  useEffect(() => {
+    console.log(allMenus)
+  }, [allMenus])
+
   const getMenus = async () => {
+    let userObj = JSON.parse(localStorage.getItem('userObj'))
     return fetch('/menus/', 
     {
       method: 'GET',
-    }).then((response) => response.json()).then(json => {
-    let result = json.filter(menu => menu['restaurant'] == 28)
-    setAllMenus(result)})
+    }).then((response) => response.json())
+    .then(json => {
+      console.log(userObj)
+      let result = json.filter(menu => menu['restaurant'] == userObj['restaurant'])
+      setAllMenus(result)
+      console.log(allMenus)
+    })
   }
   
   return (

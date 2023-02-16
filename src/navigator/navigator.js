@@ -14,13 +14,12 @@ import RegisterPage from "../pages/RegisterPage";
 import { Context } from "../globalContext/globalContext";
 
 const Navigator = () => {
-
-    const globalContext = useContext(Context)
-    const { isLoggedIn, setIsLoggedIn, setUserObj } = globalContext
+  const globalContext = useContext(Context);
+  const { isLoggedIn, setIsLoggedIn } = globalContext;
+  console.log(localStorage.getItem("access"))
 
     const getUser = async () => {
         let token = localStorage.getItem('access')
-        console.log(token)
         let authorization = "Bearer".concat(" ", token)
         return fetch('/get-manager', {
           method: 'GET',
@@ -34,7 +33,8 @@ const Navigator = () => {
         })
         .then(response => response.json())
         .then(json => {
-          setUserObj(json)
+            localStorage.setItem("userObj", JSON.stringify(json))
+            
         })
         .catch(error => {
             console.error(error);
@@ -42,12 +42,15 @@ const Navigator = () => {
       }
 
   useEffect(() => {
+    // localStorage.removeItem("access");
+    //     localStorage.removeItem("refresh");
+    //     localStorage.removeItem("userObj")
+    //     setIsLoggedIn(false)
     const check = async () => {
       if (localStorage.getItem('access')) {
-        setIsLoggedIn(true)
-        console.log(isLoggedIn)
         getUser()
         console.log("USER IS LOGGED IN")
+        setIsLoggedIn(true)
       } else {
         console.log("USER IS NOT LOGGED IN")
       }
@@ -66,6 +69,8 @@ const Navigator = () => {
                 </>
                     :
                 <>
+                    <Route path="/" element={<LoginPage/>} />
+                    <Route path="/register" element={<RegisterPage />} />
                     <Route path="/home" element={<HomePage/>} />
                     <Route path="/menu" element={<MenuPage/>} />
                     <Route path="/items/:menuId/:categoryId" element={<ItemsPage/>} />

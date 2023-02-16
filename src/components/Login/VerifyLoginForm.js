@@ -1,17 +1,17 @@
 import React, { useState, useContext } from "react";
 import { Form, Typography, Input, Button, Select, InputNumber } from "antd";
-import "../layout.css";
+import "../../layout.css";
 import { useNavigate } from "react-router-dom";
-import { Context } from "../globalContext/globalContext.js"
+import { Context } from "../../globalContext/globalContext";
 
 // const axios = require("axios").default;
 
 const VerifyLoginForm = ({email}) => {
+  const globalContext = useContext(Context);
+  const { setIsLoggedIn } = globalContext;
   const [form] = Form.useForm();
   const { Title, Text } = Typography;
-  const globalContext = useContext(Context);
 
-  const { setToken, setIsLoggedIn, setUserObj } = globalContext
   
 
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ const VerifyLoginForm = ({email}) => {
     console.log(email)
     try {
       values = await form.validateFields(); // Validate the form fields
-      return fetch('/manager-verify-email-code/', {
+      return fetch('/manager-login-verify-email-code/', {
         method: 'PATCH',
         headers: {
           Accept: 'application/json',
@@ -33,18 +33,15 @@ const VerifyLoginForm = ({email}) => {
         body: JSON.stringify({
           email: email,
           code: values.code,
-          is_register: false,
-          first_name: 'test',
-          last_name: 'test',
-          phone_number: 'test'
         }),
       })
         .then(res => res.json())
         .then(json => {
           console.log(json)
             if(json['email'] === email) {
-                setToken(json.token.refresh, json.token.access)
-                setUserObj(json)
+                localStorage.setItem("access", json.token.access)
+                localStorage.setItem("refresh", json.token.refresh)
+                localStorage.setItem("userObj", JSON.stringify(json))
                 setIsLoggedIn(true)
                 navigate('/home')
             } else {

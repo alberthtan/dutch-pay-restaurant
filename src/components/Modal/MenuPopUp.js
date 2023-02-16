@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import '../Modal.css'
 // import ImageUploading
 
@@ -19,7 +19,7 @@ const createNewMenu = async () => {
     },
     body: JSON.stringify({
       name: newMenu,
-      restaurant: 28,
+      restaurant: JSON.parse(localStorage.getItem("userObj"))["restaurant"],
   }),
   })
   .then(
