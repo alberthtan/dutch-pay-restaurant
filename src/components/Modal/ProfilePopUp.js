@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import { v4 } from 'uuid'
 import '../Modal.css'
+import PhoneInput from 'react-phone-number-input'
+import ReactAvatarEditor from 'react-avatar-editor'
 
 const ProfilePopUp = ({toggled, toggleModal, restaurant, getRestaurant}) => {
     const [name, setName] = useState(restaurant.name)
@@ -8,17 +10,37 @@ const ProfilePopUp = ({toggled, toggleModal, restaurant, getRestaurant}) => {
     const [email, setEmail] = useState(restaurant.email)
     const [phone, setPhone] = useState(restaurant.phone_number)
     const [description, setDescription] = useState(restaurant.description)
+    const [hours, setHours] = useState(restaurant.open_hours)
     const [imageFile, setImageFile] = useState(null)
 
+  
     const onImageChange = (event) => {
       if (event.target.files && event.target.files[0]) {
-        setImageFile(event.target.files[0])
+        var file = event.target.files[0]
+        setImageFile(file)
+        console.log("file")
+        console.log(file)
+
+        var reader  = new FileReader();
+        // it's onload event and you forgot (parameters)
+        reader.onload = function(e)  {
+          console.log("reader")
+          // console.log(e.target.result)
+          
+            document.getElementById("setRestaurantImage").src = e.target.result;
+            // the result image data
+            // image.src = e.target.result;
+            // document.body.appendChild(image);
+        }
+        // you have to declare the file loading
+        reader.readAsDataURL(file);
       }
     }
 
-    useEffect(() => {
-      console.log(imageFile)
-    }, [imageFile])
+    const validateEmailFormat = (email) => {
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+        return (reg.test(email))
+    }
 
   
     const editRestaurant = async () => {
@@ -33,7 +55,8 @@ const ProfilePopUp = ({toggled, toggleModal, restaurant, getRestaurant}) => {
             formdata.append("restaurant_image", imageFile, "restaurant-" + v4())
         }
 
-        console.log(imageFile)
+        console.log("edit restaurant")
+        console.log(email)
         
         return fetch('/restaurants/' + restaurant.id + '/', {
           method: 'PATCH',
@@ -66,19 +89,19 @@ const ProfilePopUp = ({toggled, toggleModal, restaurant, getRestaurant}) => {
 
     const handleEmail = ({target:{value}}) => {
       setEmail(value)
+      console.log("handleEmail")
       console.log(email)
     }
-
-    const handlePhone = ({target:{value}}) => {
-        setPhone(value)
-        console.log(phone)
-      }
-  
 
     const handleAddress = ({target:{value}}) => {
         setAddress(value)
         console.log(address)
       }
+
+    const handleHours = ({target:{value}}) => {
+      setHours(value)
+      console.log(hours)
+    }
 
     const noOutline = {
       control: (base) => ({
@@ -112,17 +135,6 @@ const ProfilePopUp = ({toggled, toggleModal, restaurant, getRestaurant}) => {
                 maxLength={38}
               />
 
-
-                <div style={{marginTop: 30, marginBottom: 5}}>
-                  Description
-                </div>
-                <textarea style={{width: '100%', borderRadius: 5, borderWidth: 1, padding: 10, height: 100}} placeholder="Enter description" value={description} onChange={handleDescription} />
-
-                <div style={{marginTop: 30, marginBottom: 5}}>
-                  Address
-                </div>
-                <textarea style={{width: '100%', borderRadius: 5, borderWidth: 1, padding: 10, height: 100}} placeholder="Enter address" value={address} onChange={handleAddress} />
-
                 <div style={{marginTop: 30, marginBottom: 5}}>
                     Email
                 </div>
@@ -136,25 +148,73 @@ const ProfilePopUp = ({toggled, toggleModal, restaurant, getRestaurant}) => {
                   placeholder="Enter email" 
                   value={email} 
                   onChange={handleEmail}
-                  maxLength={30}
+                  maxLength={50}
                 />
 
                 <div style={{marginTop: 30, marginBottom: 5}}>
                     Phone
                 </div>
-                <input style={{
+                <PhoneInput placeholder="Enter phone number" style={{
+                    width: '100%', 
+                    borderRadius: 5, 
+                    borderWidth: 1,
+                    height: 40, 
+                  }}
+                  value={phone}
+                  onChange={phone => {setPhone(phone)}}
+                  maxLength={18}
+                />
+
+
+                <div style={{marginTop: 30, marginBottom: 5}}>
+                  Description
+                </div>
+                <textarea style={{
                     width: '100%', 
                     borderRadius: 5, 
                     borderWidth: 1, 
-                    padding: 10
+                    padding: 10, 
+                    height: 100
                   }} 
-                  type="text" 
-                  placeholder="Enter email" 
-                  value={phone} 
-                  onChange={handlePhone}
-                  maxLength={12}
-                  />
+                  placeholder="Enter description" 
+                  value={description} 
+                  onChange={handleDescription} 
+                  maxLength={150}
+                />
 
+                <div style={{marginTop: 30, marginBottom: 5}}>
+                  Address
+                </div>
+                <textarea style={{
+                    width: '100%', 
+                    borderRadius: 5, 
+                    borderWidth: 1, 
+                    padding: 10, 
+                    height: 100
+                  }} 
+                  placeholder="Enter address" 
+                  value={address} 
+                  onChange={handleAddress}
+                  maxLength={75} 
+                />
+
+                <div style={{marginTop: 30, marginBottom: 5}}>
+                  Open Hours
+                </div>
+                <textarea style={{
+                    width: '100%', 
+                    borderRadius: 5, 
+                    borderWidth: 1, 
+                    padding: 10, 
+                    height: 100
+                  }} 
+                  placeholder="Monday - Friday: 10am - 8pm&#10;Saturday - Sunday: 10am - 10pm" 
+                  value={hours} 
+                  onChange={handleHours}
+                  maxLength={75} 
+                />
+
+                
 
                 <div style={{display: 'flex', flexDirection: 'row'}}>
 
@@ -168,12 +228,14 @@ const ProfilePopUp = ({toggled, toggleModal, restaurant, getRestaurant}) => {
                   Photo
                 </div>
 
-                <div style={{display: 'flex'}}>
-                  <label style={{ backgroundColor: '#CACACA'}} class="custom-file-upload">
-                    <input type="file" accept="image/png, image/gif, image/jpeg, image/jpg" onChange={onImageChange}/>
-                      Custom Upload
+
+                  <label style={styles.customFileUpload}>
+                      <img id="setRestaurantImage" src={restaurant.restaurant_image} style={{width: '100%', borderRadius: 15}}/>
+                      <input type="file" accept="image/png, image/gif, image/jpeg, image/jpg" onChange={onImageChange}/>
+                      Custom File Input
                   </label>
-                </div>
+                 
+                {/* </div> */}
                 {/* <input type="file" accept="image/png, image/gif, image/jpeg"/> */}
                 
 
@@ -186,8 +248,12 @@ const ProfilePopUp = ({toggled, toggleModal, restaurant, getRestaurant}) => {
                 Cancel
               </div>
               <div style={{cursor: 'pointer', color: '#0A60C9'}} onClick={() => {
-                  editRestaurant()
-                  toggleModal()
+                  if(validateEmailFormat(email)) {
+                      editRestaurant()
+                      toggleModal()
+                  } else {
+                    alert("Invalid email format")
+                  }
                 }}>
                 Save
               </div>
@@ -197,6 +263,22 @@ const ProfilePopUp = ({toggled, toggleModal, restaurant, getRestaurant}) => {
       
       </div>
       )
+}
+
+const styles = {
+  customFileUpload: {
+    // border: '1px solid #ccc',
+    // padding:'6px 12px',
+    // backgroundColor: 'blue',
+    cursor: 'pointer',
+    overflow: 'hidden',
+    width: '180px',
+    height: '120px',
+    textAlign: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    backgroundColor: '#CACACA'
+  }
 }
 
 export default ProfilePopUp

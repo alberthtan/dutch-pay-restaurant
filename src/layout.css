@@ -74,6 +74,19 @@ input[type=submit]{
 .itemButton:hover{
     background-color:#D6D6D6;}
 
+.tableButton{
+    background-color: #E8E8E8;
+    border-radius: 5px;
+    user-select: none;
+}
+
+.tableButton:hover{
+    background-color:#D6D6D6;}
+
+.tableButtonFooter{
+    background-color: #D6D6D6;
+}
+
 .HeaderBarItem:hover {
     background-color:#dedede;
     cursor: pointer;

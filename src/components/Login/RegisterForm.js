@@ -18,19 +18,6 @@ const RegisterForm = ({setEmail, setFirstName, setLastName, setPhoneNumber, setI
   };
   const navigate = useNavigate();
 
-  // const handleSubmission = React.useCallback(
-  //   (result) => {
-  //     if (result.error) {
-  //       // Handle Error here
-  //     } else {
-  //       // Handle Success here
-  //       form.resetFields();
-  //     }
-  //   },
-  //   [form]
-  // );
-
-  //TODO: send to the register page
   const onSubmitRegister = React.useCallback(async () => {
     let values;
     try {
@@ -150,7 +137,6 @@ const RegisterForm = ({setEmail, setFirstName, setLastName, setPhoneNumber, setI
         >
           <PhoneInput
                 placeholder="phone number" style={{width: 300}}/>
-          {/* <Input type="number" placeholder="phone number"/> */}
         </Form.Item>
 
         <Form.Item // Form Item (Register Button)

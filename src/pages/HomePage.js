@@ -186,8 +186,24 @@ const HomePage = () => {
             </Form.Item>
                 <div style={styles.restaurantBodyContainer}>
                   <div style={styles.restaurantTop}>
-                        <div style={styles.restaurantImageContainer}>
-                          <img src={restaurant.restaurant_image} style={styles.restaurantImage}/>
+                        <div style={{
+                          display: 'flex', 
+                          flex: 1, 
+                          // backgroundColor: 'green',
+                          height: '100%', 
+                          alignItems: 'center', 
+                          justifyContent: 'center'}}>
+                            <div style={{
+                                overflow: 'hidden',
+                                width: '180px',
+                                height: '120px',
+                                alignItems: 'center',
+                                display: 'flex',
+                                backgroundColor: '#CACACA'
+                            }}>
+                              <img src={restaurant.restaurant_image} style={{width: '100%'}}/>
+                            </div>
+                          
                         </div>
 
                         <div style={styles.restaurantTopRight}>
@@ -198,56 +214,102 @@ const HomePage = () => {
 
                             <div style={styles.restaurantTopDescription}>
   
-                                <div style={{display: 'flex', flex: 1, alignItems: 'center'}}>
-                                    <div style={styles.grayText}>
-                                        Phone: 
+                                <div style={{flex: 1,}}>
+                                    <div style={{
+                                        width: '100%',
+                                        paddingRight: '5%',
+                                        display: 'flex', 
+                                        alignItems: 'center'
+                                      }}>
+                                          <div style={styles.grayText}>
+                                              Phone: 
+                                          </div>
+                                          <div style={styles.blackText}>
+                                              {restaurant.phone_number}
+                                          </div>
                                     </div>
-                                    <div style={styles.blackText}>
-                                        {restaurant.phone_number}
-                                    </div>
+                                    
                                 </div>
 
-                                <div style={{display: 'flex', flex: 1, alignItems: 'center'}}>
-                                    <div style={styles.grayText}>
-                                        Email
+                                <div style={{flex: 2}}>
+                                    <div style={{
+                                      width: '100%',
+                                      paddingRight: '5%',
+                                      display: 'flex', 
+                                      alignItems: 'center'
+                                    }}>
+                                        <div style={styles.grayText}>
+                                            Email: 
+                                        </div>
+                                        <div style={styles.blackText}>
+                                            {restaurant.email}
+                                        </div>
                                     </div>
-                                    <div style={styles.blackText}>
-                                        {restaurant.email}
-                                    </div>
+                                   
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div style={{display: 'flex', flexDirection: 'row', height: '50%',}}>
-                      <div style={{display: 'flex', flex: 3, flexDirection: 'column', alignItems: 'center'}}>
-                        <div style={{display: 'flex', width: '80%', flexDirection: 'column'}}>
-                          <div>
-                              Description
+                    <div style={{display: 'flex', flexDirection: 'row', height: '50%'}}>
+                      <div style={{flex: 2}}>
+                          <div style={{
+                            width: '100%', 
+                            height: '100%',
+                            paddingLeft: '12%',
+                            paddingRight: '8%',
+                            paddingTop: '5%',
+                            // minWidth: 0,
+                            // overflow: 'hidden',
+                            // paddingBottom: '5%',
+                            // backgroundColor: 'green',
+                          }}>
+                              <div style={styles.grayText}>
+                                  Description
+                              </div>
+                              <div style={styles.blackText}>
+                                {restaurant.description}
+                              </div>
                           </div>
-                        <div>
-                          {restaurant.description}
-                        </div>
-                        </div>
+                      </div>
 
-
-                        </div>
-
-                        <div style={{display: 'flex', width: '30%', flexDirection: 'column'}}>
-                          <div>
-                              Address
+                      <div style={{flex: 1}}>
+                          <div style={{
+                            width: '100%',
+                            height: '100%',
+                            paddingLeft: '8%',
+                            paddingRight: '8%',
+                            paddingTop: '10%',
+                            paddingBottom: '10%',
+                            // backgroundColor: 'blue',
+                          }}>
+                            <div style={styles.grayText}>
+                                Address
+                            </div>
+                            <div style={styles.blackText}>
+                              {restaurant.address}
+                            </div>
                           </div>
-                        <div>
-                          {restaurant.address}
-                        </div>
+                            
                         </div>
                         
-                        <div style={{display: 'flex', flex: 1, flexDirection: 'column'}}>
-                        <div>
-                          Hours Today
+                        <div style={{flex: 1}}>
+                            <div style={{
+                              width: '100%',
+                              height: '100%',
+                              paddingLeft: '8%',
+                              paddingRight: '8%',
+                              paddingTop: '10%',
+                              paddingBottom: '10%',
+                              // backgroundColor: 'pink',
+                            }}>
+                                <div style={styles.grayText}>
+                                    Hours Today
+                                </div>
+                                <div style={styles.blackText}>
+                                    8:00 AM - 12:00 AM
+                                </div>
                             </div>
-                            <div>
-                                8:00 AM - 12:00 AM
-                            </div>
+                           
                         </div>
                     </div>
                   </div>
@@ -279,6 +341,8 @@ const HomePage = () => {
                 Deactivate All Menus
                 </Button>
               </Form.Item>
+
+              {activeMenu &&
                 <div style={{
                     display: 'flex',
                     width: '100%',
@@ -294,14 +358,13 @@ const HomePage = () => {
                     // backgroundColor: 'blue'
                     }}>
 
-                     {activeMenu &&
-                      allMenus.map((menu, index) => {
+                      {allMenus.map((menu, index) => {
                         return(
                           <ViewMenus menuId={menu.id} menuName={menu.name} activeMenu={activeMenu} setActiveMenu={setActiveMenu} restaurant={restaurant}/>
                         )
-                      })
-                     }
+                      })}
                 </div>
+              }
             </div>
             
            
@@ -339,7 +402,7 @@ const styles = {
       width: '100%', 
       marginBottom: '10px',
       borderRadius: 15,
-      border: '0.5px solid #D6D6D6',
+      border: '0.5px solid #000000',
       height: 300
     },
 
@@ -360,16 +423,13 @@ const styles = {
       justifyContent: 'center'
     },
 
-    restaurantImage: {
-      width:'40%', 
-      borderRadius: 15
-    },
 
     restaurantTopRight: {
       display: 'flex', 
       flex:3, 
       flexDirection: 'column', 
       height: '80%',
+      // backgroundColor: 'green',
     },
 
     restaurantName: {
@@ -393,11 +453,13 @@ const styles = {
       fontSize: 12,
       color: '#8d8d8d',
       paddingRight: 5,
+      // backgroundColor: 'pink'
     },
     
     blackText: {
       fontSize: 14,
       color: 'black',
+      wordBreak: 'break-word'
     }
 }
 
