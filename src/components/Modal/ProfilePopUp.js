@@ -22,15 +22,9 @@ const ProfilePopUp = ({toggled, toggleModal, restaurant, getRestaurant}) => {
         console.log(file)
 
         var reader  = new FileReader();
-        // it's onload event and you forgot (parameters)
         reader.onload = function(e)  {
           console.log("reader")
-          // console.log(e.target.result)
-          
             document.getElementById("setRestaurantImage").src = e.target.result;
-            // the result image data
-            // image.src = e.target.result;
-            // document.body.appendChild(image);
         }
         // you have to declare the file loading
         reader.readAsDataURL(file);
@@ -230,9 +224,11 @@ const ProfilePopUp = ({toggled, toggleModal, restaurant, getRestaurant}) => {
 
 
                   <label style={styles.customFileUpload}>
-                      <img id="setRestaurantImage" src={restaurant.restaurant_image} style={{width: '100%', borderRadius: 15}}/>
                       <input type="file" accept="image/png, image/gif, image/jpeg, image/jpg" onChange={onImageChange}/>
-                      Custom File Input
+
+                      {imageFile || restaurant.restaurant_image ? <img id="setRestaurantImage" src={restaurant.restaurant_image} style={{width: '100%', borderRadius: 15}}/>:
+                        <div style={{display: 'flex', height: '100%', justifyContent: 'center', alignItems: 'center', width: '100%'}}>Add Profile Photo</div>
+                      }
                   </label>
                  
                 {/* </div> */}
@@ -267,9 +263,6 @@ const ProfilePopUp = ({toggled, toggleModal, restaurant, getRestaurant}) => {
 
 const styles = {
   customFileUpload: {
-    // border: '1px solid #ccc',
-    // padding:'6px 12px',
-    // backgroundColor: 'blue',
     cursor: 'pointer',
     overflow: 'hidden',
     width: '180px',

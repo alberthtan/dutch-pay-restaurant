@@ -1,23 +1,15 @@
-import React, {useState, useEffect, useRef, useContext} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import { useNavigate } from "react-router-dom";
-import { Form, List, Avatar, Layout, Menu, Typography, Button } from "antd";
+import { Form, Layout, Button } from "antd";
 import Navbar from '../components/Navbar/Navbar';
-import * as ReactBootstrap from 'react-bootstrap';
+import SideNavbar from '../components/Navbar/SideNavbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../layout.css'
 import TableButton from '../components/Buttons/TableButton';
 import ContextMenu from '../components/ContextMenu/ContextMenu';
-import MenuPopUp from '../components/Modal/MenuPopUp';
-import RenameMenuPopUp from '../components/Modal/RenameMenuPopUp';
 
-import {
-  IdcardOutlined,
-  PartitionOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-
-const { Sider } = Layout;
+import TablePopUp from '../components/Modal/TablePopUp';
+import RenameTablePopUp from '../components/Modal/RenameTablePopUp';
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -43,31 +35,11 @@ function useWindowDimensions() {
 }
 
 
-function getItem(label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  };
-}
-
-const items = [
-  getItem("Home", "1", <TeamOutlined />),
-  getItem("Menu", "2", <UserOutlined />),
-  getItem("Table", "3", <TeamOutlined />),
-  getItem("Order History", "4", <IdcardOutlined />),
-  getItem("Payment", "5", <PartitionOutlined />),
-];
-
-
-
 const TablePage = () => {
   let navigate = useNavigate();
   const { height, width } = useWindowDimensions();
 
   const [allTables, setAllTables] = useState([])
-  const [collapsed, setCollapsed] = useState(false);
   const [rightClicked, setRightClicked] = useState(false);
   const [selectedTableId, setSelectedTableId] = useState("")
   const [points, setPoints] = useState({
@@ -96,21 +68,6 @@ const TablePage = () => {
     setRenameModal(!renameModalRef.current)
   }
 
-  const onClick = (e) => {
-    console.log("click ", e);
-    if (e.key === "1") {
-      navigate("/home");
-    } else if (e.key === "2") {
-      navigate("/menu");
-    } else if (e.key === "3") {
-      navigate("/table");
-    } else if (e.key === "4") {
-      navigate("/order-history");
-    } else if (e.key === "5") {
-      navigate("/payment");
-    }
-  };
-
   const handleRename = () => {
     toggleRenameModal()
   }
@@ -130,6 +87,15 @@ const TablePage = () => {
     const handleClick = (e) => {
       setRightClicked(false);
 
+      if(!e.target.className.includes('outline') && !renameModalRef.current) {
+        setSelectedTableId('')
+      }
+      if(e.target.className.includes('toggleModal')) {
+        toggleModal()
+      }
+      if(e.target.className.includes('toggleRenameModal')) {
+        toggleRenameModal()
+      }
     }
     window.addEventListener("click", handleClick);
     return () => {
@@ -158,48 +124,20 @@ const TablePage = () => {
       console.log(allTables)
     })
   }
-
-  const addTable = async () => {
-    let userObj = JSON.parse(localStorage.getItem('userObj'))
-    return fetch('/tables/',
-    {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-          capacity: 4,
-          restaurant: userObj["restaurant"],
-      })
-    })
-    .then((response) => response.json())
-    .then(json => {
-      console.log(json)
-      getTables()
-    })
-  }
   
   return (
     <div>
       <Navbar />
+      {modalRef.current && 
+        <TablePopUp toggleModal={toggleModal} getTables={getTables}/>
+      }
+      {renameModalRef.current && 
+        <RenameTablePopUp toggleModal={toggleRenameModal} getTables={getTables}
+       table={allTables.find(obj => obj.id === selectedTableId)}/>
+      }
       
       <Layout style={{ minHeight: "100vh" }}>
-      <Sider
-          collapsible
-          collapsed={collapsed}
-          onCollapse={(value) => setCollapsed(value)}
-        >
-          <Menu
-            theme="dark"
-            selectedKeys={["3"]}
-            mode="inline"
-            items={items}
-            onClick={onClick}
-          />
-
-
-      </Sider>
+        <SideNavbar selectedKey={'3'}/>
 
 
         <div style={{width: width}}>
@@ -218,7 +156,7 @@ const TablePage = () => {
             name="addTable"
             style={{display: 'flex', justifyContent: 'flex-end', marginRight: 10}}
             >
-                <Button type="default" style={{fontWeight: 'bold'}} onClick={addTable}>
+                <Button type="default" style={{fontWeight: 'bold'}} onClick={toggleModal}>
                 + Add table
                 </Button>
             </Form.Item>

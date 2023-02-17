@@ -11,7 +11,18 @@ const ItemPopUp = ({toggled, toggleModal, categoryId, getMenuItems}) => {
 
     const onImageChange = (event) => {
       if (event.target.files && event.target.files[0]) {
-        setImageFile(event.target.files[0])
+        var file = event.target.files[0]
+        setImageFile(file)
+        console.log("file")
+        console.log(file)
+
+        var reader  = new FileReader();
+        reader.onload = function(e)  {
+          console.log("reader")
+            document.getElementById("setItemImage").src = e.target.result;
+        }
+        // you have to declare the file loading
+        reader.readAsDataURL(file);
       }
     }
 
@@ -21,30 +32,30 @@ const ItemPopUp = ({toggled, toggleModal, categoryId, getMenuItems}) => {
   
     const createNewItem = async () => {
       let formdata = new FormData();
-    formdata.append("name", name)
-    formdata.append("description", description)
-    formdata.append("price", price)
-    formdata.append("itemImage", imageFile, "item-" + v4())
-    formdata.append("category", categoryId)
-    console.log(imageFile)
-      return fetch('/menu-items/', {
-        method: 'POST',
-        headers: {
-          Accept: '*/*',
-          'Accept-Encoding': 'gzip,deflate,br',
-          Connection: 'keep-alive',
-          // Authorization: authorization
-        },
-        body: formdata
-      })
-      .then(
-        response => response.json()
-      )
-      .then(json => {
-        console.log(json)
-        getMenuItems()
-      })
-    }
+      formdata.append("name", name)
+      formdata.append("description", description)
+      formdata.append("price", price)
+      formdata.append("itemImage", imageFile, "item-" + v4())
+      formdata.append("category", categoryId)
+      console.log(imageFile)
+        return fetch('/menu-items/', {
+          method: 'POST',
+          headers: {
+            Accept: '*/*',
+            'Accept-Encoding': 'gzip,deflate,br',
+            Connection: 'keep-alive',
+            // Authorization: authorization
+          },
+          body: formdata
+        })
+        .then(
+          response => response.json()
+        )
+        .then(json => {
+          console.log(json)
+          getMenuItems()
+        })
+      }
   
     const handleName = ({target:{value}}) => {
       setName(value)
@@ -121,14 +132,13 @@ const ItemPopUp = ({toggled, toggleModal, categoryId, getMenuItems}) => {
                   Photo
                 </div>
 
-                <div style={{display: 'flex'}}>
-                  <label style={{ backgroundColor: '#CACACA'}} class="custom-file-upload">
-                    <input type="file" accept="image/png, image/gif, image/jpeg, image/jpg" onChange={onImageChange}/>
-                      Custom Upload
-                  </label>
-                </div>
-                {/* <input type="file" accept="image/png, image/gif, image/jpeg"/> */}
-                
+                <label style={styles.customFileUpload}>
+                      <input type="file" accept="image/png, image/gif, image/jpeg, image/jpg" onChange={onImageChange}/>
+
+                      {imageFile ? <img id="setItemImage" style={{width: '100%', borderRadius: 15}}/>:
+                        <div style={{display: 'flex', height: '100%', justifyContent: 'center', alignItems: 'center', width: '100%'}}>Add Profile Photo</div>
+                      }
+                </label>                
 
             </form>
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
@@ -157,6 +167,19 @@ const ItemPopUp = ({toggled, toggleModal, categoryId, getMenuItems}) => {
       
       </div>
       )
+}
+
+const styles = {
+  customFileUpload: {
+    cursor: 'pointer',
+    overflow: 'hidden',
+    width: '180px',
+    height: '120px',
+    textAlign: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    backgroundColor: '#CACACA'
+  }
 }
 
 export default ItemPopUp

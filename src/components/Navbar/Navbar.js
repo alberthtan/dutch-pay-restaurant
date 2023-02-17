@@ -54,8 +54,9 @@ function Navbar(props) {
     return (
       <Header
         style={{
-          display: "flex",
-          justifyContent: "space-between",
+          // display: "flex",
+          // justifyContent: "space-between",
+          // position: 'fixed', top: 0, left: 0, width: '100%'
         }}
       >
         <div style={{backgroundColor: '#112545', width: '100%', display: 'flex', justifyContent: 'flex-end'}}>

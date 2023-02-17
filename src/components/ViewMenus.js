@@ -56,8 +56,8 @@ const ViewMenus = ({menuId, menuName, activeMenu, setActiveMenu, restaurant}) =>
             {(menuId == activeMenu) ? 
                 (<div style={styles.activeButton}
                     onClick={() => {
-                        setActiveMenu("none")
-                        updateActiveMenu("none")
+                        setActiveMenu("")
+                        updateActiveMenu("")
                     }}
                     >
                         ACTIVE
@@ -68,7 +68,7 @@ const ViewMenus = ({menuId, menuName, activeMenu, setActiveMenu, restaurant}) =>
                         updateActiveMenu(menuId)
                     }}
                     >
-                        SET
+                        ACTIVATE
                 </div>
             }
             

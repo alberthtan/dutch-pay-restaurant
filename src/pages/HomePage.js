@@ -1,45 +1,13 @@
 import React, {useState, useEffect, useRef} from 'react'
 import { useNavigate } from "react-router-dom";
-import { Form, List, Avatar, Layout, Menu, Typography, Button } from "antd";
+import { Form, Layout, Button } from "antd";
 import Navbar from '../components/Navbar/Navbar';
-import ContextMenu from '../components/ContextMenu/ContextMenu';
+import SideNavbar from '../components/Navbar/SideNavbar';
 import ViewMenus from '../components/ViewMenus';
 import ProfilePopUp from '../components/Modal/ProfilePopUp';
 
-import {
-  IdcardOutlined,
-  PartitionOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-
-
-const { Content, Sider } = Layout;
-const { Title } = Typography;
-
-function getItem(label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  };
-}
-
-const items = [
-  getItem("Home", "1", <TeamOutlined />),
-  getItem("Menu", "2", <UserOutlined />),
-  getItem("Table", "3", <TeamOutlined />),
-  getItem("Order History", "4", <IdcardOutlined />),
-  getItem("Payment", "5", <PartitionOutlined />),
-];
-
-const { innerWidth: width, innerHeight: height } = window;
-
-
 
 const HomePage = () => {
-  const [collapsed, setCollapsed] = useState(false);
   const [allMenus, setAllMenus] = useState([])
   const [restaurant, setRestaurant] = useState('')
   const [restaurantDescription, setRestaurantDescription] = useState('')
@@ -67,6 +35,8 @@ const HomePage = () => {
     .then(json => {
       let result = json.filter(menu => menu['restaurant'] == userObj['restaurant'])
       setAllMenus(result)
+      console.log('here')
+      console.log(allMenus)
     })
   }
 
@@ -88,8 +58,8 @@ const HomePage = () => {
 
   const deactivateAllMenus = async () => {
     let formdata = new FormData();
-    formdata.append("active_menu", "none")
-    setActiveMenu("none")
+    formdata.append("active_menu", "")
+    setActiveMenu("")
     return fetch('/restaurants/' + restaurant.id + '/', {
         method: 'PATCH',
         headers: {
@@ -125,20 +95,6 @@ const HomePage = () => {
     };
   }, []);
 
-  const onClick = (e) => {
-    console.log("click ", e);
-    if (e.key === "1") {
-      navigate("/home");
-    } else if (e.key === "2") {
-      navigate("/menu");
-    } else if (e.key === "3") {
-      navigate("/table");
-    } else if (e.key === "4") {
-      navigate("/order-history");
-    } else if (e.key === "5") {
-      navigate("/payment");
-    }
-  };
   return (
     <div>
       <Navbar />
@@ -148,22 +104,7 @@ const HomePage = () => {
       }
 
       <Layout style={{ minHeight: "100vh" }}>
-        <Sider
-          collapsible
-          collapsed={collapsed}
-          onCollapse={(value) => setCollapsed(value)}
-        >
-          <div className="logo" />
-          <Menu
-            theme="dark"
-            selectedKeys={["1"]}
-            mode="inline"
-            items={items}
-            onClick={onClick}
-          />
-
-
-        </Sider>
+        <SideNavbar selectedKey={'1'}/>
 
         <div style={styles.container}>
 
@@ -337,12 +278,12 @@ const HomePage = () => {
                   name="addMenu"
                   style={{display: 'flex', justifyContent: 'flex-end', marginRight: 10}}
                 >
-                <Button type="default" style={{fontWeight: 'bold'}} onClick={deactivateAllMenus} disabled={(activeMenu == "none")}>
+                <Button type="default" style={{fontWeight: 'bold'}} onClick={deactivateAllMenus} disabled={(activeMenu == "")}>
                 Deactivate All Menus
                 </Button>
               </Form.Item>
 
-              {activeMenu &&
+              {(allMenus.length != 0) &&
                 <div style={{
                     display: 'flex',
                     width: '100%',
@@ -450,7 +391,7 @@ const styles = {
     },
 
     grayText: {
-      fontSize: 12,
+      fontSize: 14 ,
       color: '#8d8d8d',
       paddingRight: 5,
       // backgroundColor: 'pink'

@@ -17,8 +17,11 @@ const ItemButton = ({item, selectedItemID, setSelectedItemID, handleView}) => {
           onDoubleClick={handleView}>
         
         <div style={styles.imageContainer}>
-          {/* <div style={styles.imageBackground} className="outline"/> */}
-          <img src={item.itemImage} style={styles.imageBackground} className="outline"/>
+          <div style={styles.imageBackground}>
+
+            <img src={item.itemImage} style={{width: '100%'}} className="outline"/>
+          </div>
+          
         </div>
 
         <div style={styles.itemName} className="outline">
@@ -67,32 +70,29 @@ const styles = {
     flex: 1, 
     height: '100%', 
     justifyContent: 'center', 
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
   imageBackground: {
-    // width: '70%', 
-    height: '70%', 
-    backgroundColor: 'gray', 
+    overflow: 'hidden',
+    width: '120px',
+    height: '80px',
+    textAlign: 'center',
+    alignItems: 'center',
+    display: 'flex',
     borderRadius: 15,
   },
 
   itemName: {
-    // display: 'flex',
     flex: 1,
-    // marginLeft: getWindowDimensions().width * 0.05, 
-    // width: getWindowDimensions().width * 0.1, 
     fontWeight: 'bold', 
     borderRadius: 15,
-    // backgroundColor: 'blue',
     paddingLeft: '20px',
     justifyContent: 'start'
   },
 
   itemDescription: {
-    // display: 'flex',
     flex: 2,
-    // marginLeft: getWindowDimensions().width * 0.05, 
     width: '30%', 
     overflowWrap: "break-word",
     borderRadius: 15,
@@ -102,9 +102,7 @@ const styles = {
   },
 
   itemPrice: {
-    // display: 'flex', 
     flex: 1,
-    // marginLeft: getWindowDimensions().width * 0.1, 
     fontWeight: 'bold', 
     borderRadius: 15,
     justifyContent: 'start'

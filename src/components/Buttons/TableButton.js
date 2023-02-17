@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react'
 import '../../layout.css'
-import {QRCodeCanvas} from 'qrcode.react'
+// import {QRCodeCanvas} from 'qrcode.react'
 import QRCode from 'react-qr-code'
 import html2canvas from 'html2canvas';
 
@@ -98,7 +98,7 @@ const TableButton = ({selectedTableId, setSelectedTableId, table, navigate}) => 
             </div>
 
             <div className="tableButtonFooter" style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 15, borderBottomRightRadius: 15, width: '100%', justifySelf: 'center'}}>
-                Table {table.id}
+                Table {table.name}
             </div>
             
         </div>

@@ -72,10 +72,10 @@ const Navigator = () => {
                     <Route path="/" element={<LoginPage/>} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/home" element={<HomePage/>} />
-                    <Route path="/menu" element={<MenuPage/>} />
+                    <Route path="/menus" element={<MenuPage/>} />
                     <Route path="/items/:menuId/:categoryId" element={<ItemsPage/>} />
                     <Route path="/categories/:menuId" element={<CategoryPage/>} />
-                    <Route path="/table" element={<TablePage />} />
+                    <Route path="/tables" element={<TablePage />} />
                     <Route path="/order-history" element={<OrderHistoryPage />} />
                     <Route path="/payment" element={<PaymentPage />} />
                 </>

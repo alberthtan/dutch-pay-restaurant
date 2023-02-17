@@ -2,22 +2,13 @@ import React, {useState, useEffect, useRef, useContext} from 'react'
 import { useNavigate } from "react-router-dom";
 import { Form, List, Avatar, Layout, Menu, Typography, Button } from "antd";
 import Navbar from '../components/Navbar/Navbar';
-import * as ReactBootstrap from 'react-bootstrap';
+import SideNavbar from '../components/Navbar/SideNavbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../layout.css'
 import MenuButton from '../components/Buttons/MenuButton';
 import ContextMenu from '../components/ContextMenu/ContextMenu';
 import MenuPopUp from '../components/Modal/MenuPopUp';
 import RenameMenuPopUp from '../components/Modal/RenameMenuPopUp';
-
-import {
-  IdcardOutlined,
-  PartitionOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-
-const { Sider } = Layout;
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -42,31 +33,11 @@ function useWindowDimensions() {
   return windowDimensions;
 }
 
-
-function getItem(label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  };
-}
-
-const items = [
-  getItem("Home", "1", <TeamOutlined />),
-  getItem("Menu", "2", <UserOutlined />),
-  getItem("Table", "3", <TeamOutlined />),
-  getItem("Order History", "4", <IdcardOutlined />),
-  getItem("Payment", "5", <PartitionOutlined />),
-];
-
-
 const MenuPage = () => {
   let navigate = useNavigate();
   const { height, width } = useWindowDimensions();
 
   const [allMenus, setAllMenus] = useState([])
-  const [collapsed, setCollapsed] = useState(false);
   const [rightClicked, setRightClicked] = useState(false);
   const [selectedMenuID, setSelectedMenuID] = useState("")
   const [points, setPoints] = useState({
@@ -94,21 +65,6 @@ const MenuPage = () => {
   const toggleRenameModal = () => {
     setRenameModal(!renameModalRef.current)
   }
-
-  const onClick = (e) => {
-    console.log("click ", e);
-    if (e.key === "1") {
-      navigate("/home");
-    } else if (e.key === "2") {
-      navigate("/menu");
-    } else if (e.key === "3") {
-      navigate("/table");
-    } else if (e.key === "4") {
-      navigate("/order-history");
-    } else if (e.key === "5") {
-      navigate("/payment");
-    }
-  };
 
   const handleRename = () => {
     toggleRenameModal()
@@ -180,21 +136,7 @@ const MenuPage = () => {
       }
       
       <Layout style={{ minHeight: "100vh" }}>
-      <Sider
-          collapsible
-          collapsed={collapsed}
-          onCollapse={(value) => setCollapsed(value)}
-        >
-          <Menu
-            theme="dark"
-            selectedKeys={["2"]}
-            mode="inline"
-            items={items}
-            onClick={onClick}
-          />
-
-
-        </Sider>
+        <SideNavbar selectedKey={'2'}/>
 
 
         <div style={{width: width}}>

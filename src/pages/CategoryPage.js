@@ -1,8 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react'
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { Form, List, Avatar, Layout, Menu, Typography, Button } from "antd";
+import { Form, Layout, Button } from "antd";
 import Navbar from '../components/Navbar/Navbar';
-import * as ReactBootstrap from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../layout.css'
 import CategoryButton from '../components/Buttons/CategoryButton';
@@ -10,16 +9,7 @@ import frontArrowIcon from '../assets/icons/frontarrow.png';
 import CategoryPopUp from '../components/Modal/CategoryPopUp';
 import RenameCategoryPopUp from '../components/Modal/RenameCategoryPopUp';
 import ContextMenu from '../components/ContextMenu/ContextMenu';
-
-import {
-    IdcardOutlined,
-    PartitionOutlined,
-    TeamOutlined,
-    UserOutlined,
-  } from "@ant-design/icons";
-
-const { Content, Sider } = Layout;
-const { Title } = Typography;
+import SideNavbar from '../components/Navbar/SideNavbar';
 
 function getWindowDimensions() {
     const { innerWidth: width, innerHeight: height } = window;
@@ -44,27 +34,6 @@ function getWindowDimensions() {
   
     return windowDimensions;
   }
-  
-  
-  function getItem(label, key, icon, children) {
-    return {
-      key,
-      icon,
-      children,
-      label,
-    };
-  }
-  
-  const items = [
-    getItem("Home", "1", <TeamOutlined />),
-    getItem("Menu", "2", <UserOutlined />),
-    getItem("Table", "3", <TeamOutlined />),
-    getItem("Order History", "4", <IdcardOutlined />),
-    getItem("Payment", "5", <PartitionOutlined />),
-  ];
-
-
-  
 
 
 const CategoryPage = () => {
@@ -72,8 +41,6 @@ const CategoryPage = () => {
     const { menuId } = useParams();
     const { state } = useLocation();
     const { height, width } = useWindowDimensions();
-
-    const [collapsed, setCollapsed] = useState(false);
     const [allCategories, setAllCategories] = useState([])
     const [rightClicked, setRightClicked] = useState(false);
     const [selectedCategoryID, setSelectedCategoryID] = useState("")
@@ -153,24 +120,10 @@ const CategoryPage = () => {
       getCategories()
     }, [])
 
-    const onClick = (e) => {
-        console.log("click ", e);
-        if (e.key === "1") {
-        navigate("/home");
-        } else if (e.key === "2") {
-        navigate("/menu");
-        } else if (e.key === "3") {
-        navigate("/table");
-        } else if (e.key === "4") {
-        navigate("/order-history");
-        } else if (e.key === "5") {
-        navigate("/payment");
-        }
-    };
 
   return (
     <div>
-      {/* <Navbar /> */}
+      <Navbar />
 
       {modalRef.current && 
         <CategoryPopUp toggled={modalRef.current} toggleModal={toggleModal} menuId={menuId} getCategories={getCategories}/>
@@ -182,28 +135,13 @@ const CategoryPage = () => {
       }
       
       <Layout style={{ minHeight: "100vh" }}>
-      <Sider
-          collapsible
-          collapsed={collapsed}
-          onCollapse={(value) => setCollapsed(value)}
-        >
-          <div className="logo" />
-          <Menu
-            theme="dark"
-            selectedKeys={["1"]}
-            mode="inline"
-            items={items}
-            onClick={onClick}
-          />
-
-
-        </Sider>
+        <SideNavbar selectedKey={'2'}/>
 
         <div style={{width: width}}>
 
             <div style={{marginLeft: '30px', display: 'flex', width: '100%', height: 100, alignItems: 'center'}}>
                 <div style={styles.headerBarContainer}>
-                    <div className='HeaderBarItem' style={styles.headerBarItem} onClick={() => {navigate('/menu')}}>
+                    <div className='HeaderBarItem' style={styles.headerBarItem} onClick={() => {navigate('/menus')}}>
                        Menus
                     </div> 
                     <img src={frontArrowIcon} style={styles.frontArrowIcon} alt=">"/>
