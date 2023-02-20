@@ -35,7 +35,10 @@ const ItemPopUp = ({toggled, toggleModal, categoryId, getMenuItems}) => {
       formdata.append("name", name)
       formdata.append("description", description)
       formdata.append("price", price)
-      formdata.append("itemImage", imageFile, "item-" + v4())
+      // formdata.append("itemImage", imageFile, "item-" + v4())
+      if (imageFile) {
+        formdata.append("itemImage", imageFile, "item-" + v4())
+      }
       formdata.append("category", categoryId)
       console.log(imageFile)
         return fetch('/menu-items/', {
