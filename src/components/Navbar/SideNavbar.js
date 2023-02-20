@@ -25,8 +25,10 @@ const SideNavbar = ({selectedKey}) => {
         } else if (e.key === "3") {
           navigate("/tables");
         } else if (e.key === "4") {
-          navigate("/order-history");
+            navigate("/live-orders");
         } else if (e.key === "5") {
+          navigate("/order-history");
+        } else if (e.key === "6") {
           navigate("/payment");
         }
     };
@@ -44,8 +46,9 @@ const SideNavbar = ({selectedKey}) => {
         getItem("Home", "1", <TeamOutlined />),
         getItem("Menus", "2", <UserOutlined />),
         getItem("Tables", "3", <TeamOutlined />),
-        getItem("Order History", "4", <IdcardOutlined />),
-        getItem("Payment", "5", <PartitionOutlined />),
+        getItem("Live Orders", "4", <IdcardOutlined />),
+        getItem("Order History", "5", <IdcardOutlined />),
+        getItem("Payment", "6", <PartitionOutlined />),
     ]
 
     return (
@@ -62,8 +65,6 @@ const SideNavbar = ({selectedKey}) => {
             items={items}
             onClick={onClick}
             />
-
-
         </Sider>
     );
 }

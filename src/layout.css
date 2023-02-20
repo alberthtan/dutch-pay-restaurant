@@ -44,11 +44,26 @@ input[type=submit]{
 
 .menuCard{
     background-color: #E8E8E8;
-    border-radius: 15px;
     user-select: none;
 }
 
 .menuCard:hover{
+    background-color:#D6D6D6;}
+
+.tableCard{
+    background-color: #E8E8E8;
+    user-select: none;
+}
+
+.tableCard:hover{
+    background-color:#D6D6D6;}
+
+.liveTableCard{
+    background-color: #E8E8E8;
+    user-select: none;
+}
+
+.liveTableCard:hover{
     background-color:#D6D6D6;}
 
 .contextMenuRow:hover {

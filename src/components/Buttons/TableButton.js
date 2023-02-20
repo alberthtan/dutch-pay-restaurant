@@ -45,7 +45,8 @@ const TableButton = ({selectedTableId, setSelectedTableId, table, navigate}) => 
         marginBottom: 30,
         border: '1px solid #000be0',
         backgroundColor: '#e0ecff',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        borderRadius: 15,
     }
 
     let unselectedStyle = {
@@ -57,7 +58,8 @@ const TableButton = ({selectedTableId, setSelectedTableId, table, navigate}) => 
         alignItems: 'center',
         marginBottom: 30,
         border: '1px solid #D6D6D6',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        borderRadius: 15,
     }
 
     const qrRef = useRef();
@@ -81,7 +83,7 @@ const TableButton = ({selectedTableId, setSelectedTableId, table, navigate}) => 
     return (
         <div 
             style={(selectedTableId == table.id) ? (selectedStyle): (unselectedStyle)}
-            className="menuCard outline"
+            className="tableCard outline"
             onClick={() => {
                 setSelectedTableId(table.id)
             }}

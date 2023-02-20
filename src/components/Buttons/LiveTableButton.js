@@ -25,7 +25,7 @@ function useWindowDimensions() {
     return windowDimensions;
   }
 
-const MenuButton = ({selectedMenuID, setSelectedMenuID, menu, navigate}) => {
+const LiveTableButton = ({selectedTableID, setSelectedTableID, table, navigate}) => {
     const { height, width } = useWindowDimensions();
     const [clicked, setClicked] = useState(false);
     const [points, setPoints] = useState({
@@ -43,7 +43,7 @@ const MenuButton = ({selectedMenuID, setSelectedMenuID, menu, navigate}) => {
         marginBottom: 30,
         border: '1px solid #000be0',
         backgroundColor: '#e0ecff',
-        borderRadius: 15,
+        borderRadius: 15
     }
 
     let unselectedStyle = {
@@ -55,23 +55,23 @@ const MenuButton = ({selectedMenuID, setSelectedMenuID, menu, navigate}) => {
         alignItems: 'center',
         marginBottom: 30,
         border: '1px solid #D6D6D6',
-        borderRadius: 15,
+        borderRadius: 15
     }
 
     return (
         <div 
-            style={(selectedMenuID == menu.id) ? (selectedStyle): (unselectedStyle)}
-            className="menuCard outline"
+            style={(selectedTableID == table.id) ? (selectedStyle): (unselectedStyle)}
+            className="liveTableCard outline"
             onClick={() => {
-                setSelectedMenuID(menu.id)
+                setSelectedTableID(table.id)
             }}
             onDoubleClick={() => {
-                navigate('/categories/' + menu.id, { state: { menu: menu } })
+                navigate('/categories/' + table.id, { state: { table: table } })
             }}
         >
             <div style={{display: 'flex', justifyContent: 'center', width: '100%', fontWeight: 'bold'}}
                 className="outline">
-            {menu.name}
+            {"Table " + table.name}
             </div>
             
             
@@ -96,4 +96,4 @@ const MenuButton = ({selectedMenuID, setSelectedMenuID, menu, navigate}) => {
 //     },
 // }
 
-export default MenuButton
+export default LiveTableButton
