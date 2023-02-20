@@ -9,6 +9,7 @@ import ItemButton from '../components/Buttons/ItemButton';
 import frontArrowIcon from '../assets/icons/frontarrow.png';
 import ItemContextMenu from '../components/ContextMenu/ItemContextMenu';
 import ItemPopUp from '../components/Modal/ItemPopUp';
+import EditItemPopUp from '../components/Modal/EditItemPopUp';
 
 function getWindowDimensions() {
     const { innerWidth: width, innerHeight: height } = window;
@@ -59,6 +60,17 @@ const ItemsPage = () => {
       setModal(!modalRef.current)
     }
 
+    const [editModal, _setEditModal] = useState(false)
+    const editModalRef = useRef(modal);
+    const setEditModal = data => {
+      editModalRef.current = data;
+      _setEditModal(data);
+    };
+
+    const toggleEditModal = () => {
+      setEditModal(!editModalRef.current)
+    }
+
     const getMenuItems = async () => {
       return fetch('/menu-items/', 
       {
@@ -76,9 +88,9 @@ const ItemsPage = () => {
     }, [])
     
 
-    const handleView = () => {
+    const handleEdit = () => {
       console.log("handle view")
-      // toggleModal()
+      toggleEditModal()
     }
   
     const handleDelete = async () => {
@@ -96,7 +108,7 @@ const ItemsPage = () => {
     useEffect(() => {
       const handleClick = (e) => {
         setRightClicked(false);
-        if(!e.target.className.includes('outline')) {
+        if(!e.target.className.includes('outline') && !editModalRef.current) {
           setSelectedItemID('')
         }
         if(e.target.className.includes('toggleModal')) {
@@ -114,6 +126,11 @@ const ItemsPage = () => {
       <Navbar />
       {modalRef.current && 
         <ItemPopUp toggled={modalRef.current} toggleModal={toggleModal} categoryId={categoryId} getMenuItems={getMenuItems}/>
+      }
+
+      {editModalRef.current && 
+        <EditItemPopUp toggled={editModalRef.current} toggleModal={toggleEditModal} getMenuItems={getMenuItems}
+        item={allItems.find(obj => obj.id === selectedItemID)}/>
       }
       
       <Layout style={{ minHeight: "100vh" }}>
@@ -191,7 +208,7 @@ const ItemsPage = () => {
                           item={item} 
                           selectedItemID={selectedItemID} 
                           setSelectedItemID={setSelectedItemID} 
-                          handleView={handleView}
+                          handleEdit={handleEdit}
                         />
                     </div>
                 );
@@ -199,7 +216,7 @@ const ItemsPage = () => {
 
             {rightClicked && (
                 <ItemContextMenu x={points.x} y={points.y} yOffset={window.pageYOffset}
-                  handleView={handleView} 
+                  handleEdit={handleEdit} 
                   handleDelete={handleDelete}
                 />
             )}

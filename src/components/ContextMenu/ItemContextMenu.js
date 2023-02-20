@@ -7,7 +7,7 @@ import removeIcon from '../../assets/icons/trash.png'
 import duplicateIcon from '../../assets/icons/duplicate.png'
 import viewIcon from '../../assets/icons/view.png'
 
-function ItemContextMenu({x, y, yOffset, handleView, handleDelete,}) {
+function ItemContextMenu({x, y, yOffset, handleEdit, handleDelete,}) {
     const ref = useRef(null)
     const [yDiff, setYDiff] = useState(0);
     const [xDiff, setXDiff] = useState(0);
@@ -51,10 +51,10 @@ function ItemContextMenu({x, y, yOffset, handleView, handleDelete,}) {
             <div 
                 className='contextMenuRow' 
                 style={styles.subContainer} 
-                onClick={handleView}
+                onClick={handleEdit}
             >
                 <img src={viewIcon} style={styles.icon} alt="view details"/>
-                <div style={styles.text}>View Details</div>
+                <div style={styles.text}>Edit</div>
             </div>
         
             {/* <div className='contextMenuRow' style={styles.subContainer} >
