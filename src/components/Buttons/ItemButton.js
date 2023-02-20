@@ -9,12 +9,12 @@ function getWindowDimensions() {
   };
 }
 
-const ItemButton = ({item, selectedItemID, setSelectedItemID, handleView}) => {
+const ItemButton = ({item, selectedItemID, setSelectedItemID, handleEdit}) => {
   return (
     <div style={(selectedItemID === item.id) ? styles.selected : styles.unselected} 
           className="itemButton outline"
           onClick={() => {setSelectedItemID(item.id)}}
-          onDoubleClick={handleView}>
+          onDoubleClick={handleEdit}>
         
         <div style={styles.imageContainer}>
           <div style={styles.imageBackground}>
