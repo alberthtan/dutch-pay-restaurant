@@ -7,6 +7,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../layout.css'
 import ContextMenu from '../components/ContextMenu/ContextMenu';
 import LiveTableButton from '../components/Buttons/LiveTableButton';
+import LiveOrderButton from '../components/Buttons/LiveOrderButton';
+import LiveOrderPopUp from '../components/Modal/LiveOrderPopUp';
+import { Context } from '../globalContext/globalContext';
+// import LiveTablePopUp
 
 const { Title } = Typography;
 
@@ -34,6 +38,10 @@ function useWindowDimensions() {
 }
 
 const LiveOrdersPage = () => {
+
+  const globalContext = useContext(Context)
+  const { ws, setWs } = globalContext
+
   let navigate = useNavigate();
   const { height, width } = useWindowDimensions();
 
@@ -44,40 +52,100 @@ const LiveOrdersPage = () => {
     x: 0,
     y: 0,
   });
+  const [items, setItems] = useState([])
+  const [itemsList, setItemsList] = useState([])
 
-  const [modal, _setModal] = useState(false)
-  const modalRef = useRef(modal);
-  const setModal = data => {
-    modalRef.current = data;
-    _setModal(data);
+
+  useEffect(()=>{
+    let wsTemp  = new WebSocket('wss://dutch-pay-ws.herokuapp.com/');
+    wsTemp.onopen = () => {
+      console.log('opening ws in camera')
+      // setWs(wsTemp)
+      wsTemp.send(JSON.stringify({
+        'restaurant': true,
+        'table_id_list': [1,2,7,8]
+      }))
+      };
+  
+      wsTemp.onclose = (e) => {
+          console.log('Disconnected. Check internet or server.')
+          console.log(e.message)
+      };
+  
+      wsTemp.onerror = (e) => {
+          console.log('error')
+          console.log(e.message);
+      };
+
+      wsTemp.onmessage = ({data}) => {
+        console.log("ACQUIRING MESSAGE IN MENU")
+        console.log(items)
+        
+        data = JSON.parse(data)
+        console.log(data)
+
+        if(data['refresh']) {
+            console.log("REFRESH")
+
+            let msg = JSON.parse(data['json_message'])
+            let new_items = []
+            for(let j=0; j < msg.length; j++) {
+              for(let i=0; i < JSON.parse(msg[j]).length; i++) {
+                new_items.push(JSON.parse(msg[j])[i])
+              }
+            }
+            for(let i=0; i < new_items.length; i++) {
+              if(!(new_items[i].table_id in items)) {
+                items[new_items[i].table_id] = []
+              }
+              items[new_items[i].table_id].push(new_items[i])
+            }
+            setItems(JSON.parse(JSON.stringify(items)))
+            setItemsList(new_items)
+        } else {
+          items[data['table_id']] = JSON.parse(data['json_message'])
+          let temp = Object.values(items).flat(1)
+          setItemsList(temp)
+          setItems(JSON.parse(JSON.stringify(items)))
+        }
+      }
+
+  }, [])
+
+
+  const [tableModal, _setTableModal] = useState(false)
+  const tableModalRef = useRef(tableModal);
+  const setTableModal = data => {
+    tableModalRef.current = data;
+    _setTableModal(data);
   };
-  const [renameModal, _setRenameModal] = useState(false)
-  const renameModalRef = useRef(renameModal);
-  const setRenameModal = data => {
-    renameModalRef.current = data;
-    _setRenameModal(data)
+  const [orderModal, _setOrderModal] = useState(false)
+  const orderModalRef = useRef(orderModal);
+  const setOrderModal = data => {
+    orderModalRef.current = data;
+    _setOrderModal(data)
   }
 
-  const toggleModal = () => {
-    setModal(!modalRef.current)
+  const toggleTableModal = () => {
+    setTableModal(!tableModalRef.current)
   }
 
-  const toggleRenameModal = () => {
-    setRenameModal(!renameModalRef.current)
+  const toggleOrderModal = () => {
+    setOrderModal(!orderModalRef.current)
   }
 
   useEffect(() => {
     const handleClick = (e) => {
       setRightClicked(false);
 
-      if(!e.target.className.includes('outline') && !renameModalRef.current) {
-        setSelectedTableID('')
+      // if(!e.target.className.includes('outline') && !tableModalRef.current) {
+      //   setSelectedTableID('')
+      // }
+      if(e.target.className.includes('toggleTableModal')) {
+        toggleTableModal()
       }
-      if(e.target.className.includes('toggleModal')) {
-        toggleModal()
-      }
-      if(e.target.className.includes('toggleRenameModal')) {
-        toggleRenameModal()
+      if(e.target.className.includes('toggleOrderModal')) {
+        toggleOrderModal()
       }
     }
     window.addEventListener("click", handleClick);
@@ -112,14 +180,18 @@ const LiveOrdersPage = () => {
     <div>
       <Navbar />
       
-      {/* {modalRef.current && 
-        <LiveTablePopUp toggleModal={toggleModal} getTables={getTables}/>
+      {/* {tableModalRef.current && 
+        <LiveTablePopUp toggleModal={toggleTableModal} getTables={getTables}/>
       } */}
+
+      {orderModalRef.current && 
+        <LiveOrderPopUp toggleModal={toggleOrderModal} getOrders={{}}/>
+      }
       
       <Layout style={{ minHeight: "100vh"}}>
-        <SideNavbar selectedKey={'5'}/>
+        <SideNavbar selectedKey={'4'}/>
 
-        <div style={{display: 'flex', height: '100%',
+        <div style={{display: 'flex', height: '100vh',
                 width: '100%'}}>
             {/* <div style={{width: '100%', height: 100}}>
                 <Title>
@@ -129,10 +201,13 @@ const LiveOrdersPage = () => {
 
             <div style={{
                 display: 'flex',
+                flexWrap: 'wrap',
                 // minWidth: 800,
                 width: '100%',
-                height: '100%',
+                // height: '100%',
                 marginRight: 300,
+                overflowY: 'scroll',
+                // backgroundColor: 'blue'
             }}>
                     {allTables.map((table, index) => {
                     return (
@@ -151,11 +226,12 @@ const LiveOrdersPage = () => {
                             console.log(window.pageYOffset)
                         }}> 
                             <LiveTableButton 
-                              selectedTableID={selectedTableID} 
-                              setSelectedTableID={setSelectedTableID} 
+                              // selectedTableID={selectedTableID} 
+                              // setSelectedTableID={setSelectedTableID} 
+                              onClick={toggleTableModal}
                               table={table} 
-                              width={width} 
-                              navigate={navigate}
+                              // width={width} 
+                              // navigate={navigate}
                             />
                         </div>
                     );
@@ -168,7 +244,9 @@ const LiveOrdersPage = () => {
                 right: 0,
                 height: '100%',
                 borderLeft: '2px solid #000000',
-                backgroundColor: '#d4d4d4'
+                backgroundColor: '#d4d4d4',
+                overflowY: 'scroll',
+                // paddingTop: 40,
                 }}>
                     <div style={{
                         width: '100%',
@@ -178,168 +256,31 @@ const LiveOrdersPage = () => {
                         paddingBottom: 10,
                         fontSize: 30,
                         fontWeight: 'bold',
-                        borderBottom: '2px solid #000000'
+                        borderBottom: '2px solid #000000',
                     }}>
                         Live Orders
                     </div>
 
-                    <div style={{
-                            width: '100%',
-                            backgroundColor: 'white',
-                            borderBottom: '1px solid #000000',
-                            paddingLeft: 10, 
-                            paddingBottom: 5}}
-                        onClick={() => {console.log('pressed')}}
-                    >
-                        <div style={{
-                            fontSize: 18,
-                            fontWeight: 'bold',
-                            paddingTop: 5,
-                        }}>
-                            Table 1: ASDFF13 (ALLEN)
-                        </div>
-                        <div style={{marginLeft: 20, paddingTop: 5,}}>
-                            <div style={{fontWeight: 'bold'}}>
-                                Butter Chicken
-                            </div>
-                            <div style={{marginLeft: 10}}>
-                                Notes: mild, no cheese
-                            </div>
-                        </div>
-                        <div style={{marginLeft: 20, paddingTop: 5,}}>
-                            <div style={{fontWeight: 'bold'}}>
-                                Palak Paneer
-                            </div>
-                        </div>
-                        <div style={{marginLeft: 20, paddingTop: 5,}}>
-                            <div style={{fontWeight: 'bold'}}>
-                                Mango Lasee
-                            </div>
-                        </div>
-                        <div style={{marginLeft: 20, paddingTop: 5,}}>
-                            <div style={{fontWeight: 'bold'}}>
-                                Kishan Patel Specialty
-                            </div>
-                        </div>
-                        <div style={{marginLeft: 20, paddingTop: 5,}}>
-                            <div style={{fontWeight: 'bold'}}>
-                            Abhijit Gupta’s Fire Curry
-                            </div>
-                        </div>
-                    </div>
+                    {/* {
+                      Object.keys(items).forEach((key) => {
+                        return (items[key].status == "ordered" ? 
+                        <LiveOrderButton onClick={toggleOrderModal} item={items[key]}/> : 
+                        <></>
+                        )
+                      })
+                    } */}
 
-
-
-
-
-                    <div style={{
-                            width: '100%',
-                            backgroundColor: 'white',
-                            borderBottom: '1px solid #000000',
-                            paddingLeft: 10, 
-                            paddingBottom: 5}}
-                        onClick={() => {console.log('pressed')}}
-                    >
-                        <div style={{
-                            fontSize: 18,
-                            fontWeight: 'bold',
-                            paddingTop: 5,
-                        }}>
-                            Table 10: ASGE15 (Albert)
-                        </div>
-                        <div style={{marginLeft: 20, paddingTop: 5,}}>
-                            <div style={{fontWeight: 'bold'}}>
-                                Butter Chicken
-                            </div>
-                            <div style={{marginLeft: 10}}>
-                                Notes: mild, no cheese
-                            </div>
-                        </div>
-                        <div style={{marginLeft: 20, paddingTop: 5,}}>
-                            <div style={{fontWeight: 'bold'}}>
-                                Palak Paneer
-                            </div>
-                        </div>
-                        <div style={{marginLeft: 20, paddingTop: 5,}}>
-                            <div style={{fontWeight: 'bold'}}>
-                                Mango Lasee
-                            </div>
-                        </div>
-                        <div style={{marginLeft: 20, paddingTop: 5,}}>
-                            <div style={{fontWeight: 'bold'}}>
-                                Kishan Patel Specialty
-                            </div>
-                        </div>
-                        <div style={{marginLeft: 20, paddingTop: 5,}}>
-                            <div style={{fontWeight: 'bold'}}>
-                            Abhijit Gupta’s Fire Curry
-                            </div>
-                        </div>
-                    </div>
+                    {allTables.length != 0 && itemsList.map((item, index) => {
+                      return(
+                        (item.status == "ordered" ? 
+                        <LiveOrderButton key={index} onClick={toggleOrderModal} item={item} table={allTables.find(table => table['id'] === item['table_id'])}/> : 
+                        <></>
+                        )
+                      )
+                    })}
             </div>
         </div>
-        
 
-
-
-
-
-
-
-
-
-
-        {/* <div style={{width: width}}>
-
-            <div style={{marginLeft: '30px', display: 'flex', width: '100%', height: 100, alignItems: 'center'}}>
-              <div style={styles.headerBarContainer}>
-     
-                    <div 
-                      style={styles.headerBarGreenItem}>
-                      Live Orders
-                    </div>
-                </div>
-            </div>
-
-            <div style={{display:'flex', flexWrap: 'wrap'}}>
-
-                {allMenus.map((menu, index) => {
-                    return (
-                        <div
-                            key={index}
-                            style={{marginLeft: '50px'}}
-                            onContextMenu={(e) => {
-                            e.preventDefault(); // prevent the default behaviour when right clicked
-                            setRightClicked(true);
-                            setSelectedMenuID(menu.id);
-                            setPoints({
-                                x: e.clientX,
-                                y: e.clientY,
-                            });
-                            console.log("OFFSET")
-                            console.log(window.pageYOffset)
-                        }}> 
-                            <MenuButton 
-                              selectedMenuID={selectedMenuID} 
-                              setSelectedMenuID={setSelectedMenuID} 
-                              menu={menu} 
-                              width={width} 
-                              navigate={navigate}
-                            />
-                        </div>
-                    );
-                })}
-           
-              
-                {rightClicked && (
-                    <ContextMenu x={points.x} y={points.y} yOffset={window.pageYOffset}
-                      handleRename={handleRename} 
-                      handleDelete={handleDelete}
-                    />
-                )}
-            </div>
-
-        </div> */}
 
       </Layout>
 

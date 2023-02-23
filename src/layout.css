@@ -66,6 +66,14 @@ input[type=submit]{
 .liveTableCard:hover{
     background-color:#D6D6D6;}
 
+.liveOrderButton{
+    background-color:white;
+    user-select: none;
+}
+
+.liveOrderButton:hover{
+    background-color:#D6D6D6;}
+
 .contextMenuRow:hover {
     background-color:#D6D6D6;
     cursor: pointer;

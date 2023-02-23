@@ -25,48 +25,31 @@ function useWindowDimensions() {
     return windowDimensions;
   }
 
-const LiveTableButton = ({selectedTableID, setSelectedTableID, table, navigate}) => {
+const LiveTableButton = ({table, liveTableClick}) => {
     const { height, width } = useWindowDimensions();
-    const [clicked, setClicked] = useState(false);
-    const [points, setPoints] = useState({
-        x: 0,
-        y: 0,
-    });
 
-    let selectedStyle = {
+    let liveTableStyle = {
         width: width * 0.15,
         height: width * 0.15,
         minWidth: 150,
         minHeight: 150,
         display: 'flex',
         alignItems: 'center',
-        marginBottom: 30,
-        border: '1px solid #000be0',
-        backgroundColor: '#e0ecff',
-        borderRadius: 15
-    }
-
-    let unselectedStyle = {
-        width: width * 0.15,
-        height: width * 0.15,
-        minWidth: 150,
-        minHeight: 150,
-        display: 'flex',
-        alignItems: 'center',
-        marginBottom: 30,
+        marginTop: 20,
+        marginBottom: 20,
         border: '1px solid #D6D6D6',
         borderRadius: 15
     }
 
     return (
         <div 
-            style={(selectedTableID == table.id) ? (selectedStyle): (unselectedStyle)}
+            style={liveTableStyle}
             className="liveTableCard outline"
             onClick={() => {
-                setSelectedTableID(table.id)
+                // setSelectedTableID(table.id)
             }}
             onDoubleClick={() => {
-                navigate('/categories/' + table.id, { state: { table: table } })
+                // navigate('/categories/' + table.id, { state: { table: table } })
             }}
         >
             <div style={{display: 'flex', justifyContent: 'center', width: '100%', fontWeight: 'bold'}}
@@ -78,22 +61,5 @@ const LiveTableButton = ({selectedTableID, setSelectedTableID, table, navigate})
         </div>
     )
 }
-
-// const styles = {
-//     selected: {
-//         // width: width * 0.15,
-//         // height: width * 0.15,
-//         border: '1px solid #000be0',
-//         backgroundColor: '#e0ecff',
-//         marginBottom: 30,
-//     },
-
-//     unselected: {
-//         // width: width * 0.15,
-//         // height: width * 0.15,
-//         border: '1px solid #D6D6D6',
-//         marginBottom: 30,
-//     },
-// }
 
 export default LiveTableButton
