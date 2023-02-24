@@ -41,7 +41,7 @@ const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) =
       let user_receipts = {} // dictionary of user receipts - Ex. {user_id: [item, item, ...], user_id: [item], ...}
       for(let i=0; i < items.length; i++) {
         let user = JSON.parse(items[i].orderedBy)["id"]
-        let item = items[i].item
+        let item = items[i]
         if(!(user in user_receipts)) {
           user_receipts[user] = []
         }
