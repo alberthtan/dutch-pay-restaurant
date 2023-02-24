@@ -1,18 +1,15 @@
 import React, {useState, useEffect, useRef, useContext} from 'react'
 import { useNavigate } from "react-router-dom";
-import { Form, List, Avatar, Layout, Menu, Typography, Button } from "antd";
+import { Layout } from "antd";
 import Navbar from '../components/Navbar/Navbar';
 import SideNavbar from '../components/Navbar/SideNavbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../layout.css'
-import ContextMenu from '../components/ContextMenu/ContextMenu';
 import LiveTableButton from '../components/Buttons/LiveTableButton';
 import LiveOrderButton from '../components/Buttons/LiveOrderButton';
 import LiveOrderPopUp from '../components/Modal/LiveOrderPopUp';
 import { Context } from '../globalContext/globalContext';
-// import LiveTablePopUp
-
-const { Title } = Typography;
+import LiveTablePopUp from '../components/Modal/LiveTablePopUp';
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -48,6 +45,7 @@ const LiveOrdersPage = () => {
   const [allTables, setAllTables] = useState([])
   const [rightClicked, setRightClicked] = useState(false);
   const [selectedTableID, setSelectedTableID] = useState("")
+  const [selectedItemID, setSelectedItemID] = useState("")
   const [points, setPoints] = useState({
     x: 0,
     y: 0,
@@ -55,16 +53,30 @@ const LiveOrdersPage = () => {
   const [items, setItems] = useState([])
   const [itemsList, setItemsList] = useState([])
 
-
   useEffect(()=>{
     let wsTemp  = new WebSocket('wss://dutch-pay-ws.herokuapp.com/');
+    setWs(wsTemp)
     wsTemp.onopen = () => {
       console.log('opening ws in camera')
+      let userObj = JSON.parse(localStorage.getItem('userObj'))
+
+      fetch('/tables/',
+          {
+            method: 'GET',
+          }).then((response) => response.json())
+          .then(json => {
+            console.log(userObj)
+            let tables = json.filter(table => table['restaurant'] == userObj['restaurant'])
+            wsTemp.send(JSON.stringify({
+              'restaurant': true,
+              'table_id_list': tables.map(table => table.id)
+            }))
+            setAllTables(tables)
+      })
+
+      
       // setWs(wsTemp)
-      wsTemp.send(JSON.stringify({
-        'restaurant': true,
-        'table_id_list': [1,2,7,8]
-      }))
+      
       };
   
       wsTemp.onclose = (e) => {
@@ -85,8 +97,6 @@ const LiveOrdersPage = () => {
         console.log(data)
 
         if(data['refresh']) {
-            console.log("REFRESH")
-
             let msg = JSON.parse(data['json_message'])
             let new_items = []
             for(let j=0; j < msg.length; j++) {
@@ -94,21 +104,40 @@ const LiveOrdersPage = () => {
                 new_items.push(JSON.parse(msg[j])[i])
               }
             }
-            for(let i=0; i < new_items.length; i++) {
-              if(!(new_items[i].table_id in items)) {
-                items[new_items[i].table_id] = []
+
+            // Clearing Table
+            if(new_items.length == 0) {
+              delete items[data["table_id"]] 
+              setItems(JSON.parse(JSON.stringify(items)))
+              let temp = Object.values(items).flat(1)
+              setItemsList(temp)
+            } 
+            // Refresh
+            else {
+              for(let i=0; i < new_items.length; i++) {
+                if(!(new_items[i].table_id in items)) {
+                  items[new_items[i].table_id] = []
+                }
+                items[new_items[i].table_id].push(new_items[i])
               }
-              items[new_items[i].table_id].push(new_items[i])
-            }
-            setItems(JSON.parse(JSON.stringify(items)))
-            setItemsList(new_items)
-        } else {
+  
+              setItems(JSON.parse(JSON.stringify(items)))
+              setItemsList(new_items)
+            }   
+        } 
+        // Modification to table
+        else {
           items[data['table_id']] = JSON.parse(data['json_message'])
           let temp = Object.values(items).flat(1)
           setItemsList(temp)
           setItems(JSON.parse(JSON.stringify(items)))
         }
       }
+
+      return () => {
+        // Disconnect from websocket when component unmounts
+        wsTemp.close();
+      };
 
   }, [])
 
@@ -127,6 +156,7 @@ const LiveOrdersPage = () => {
   }
 
   const toggleTableModal = () => {
+    console.log("click")
     setTableModal(!tableModalRef.current)
   }
 
@@ -154,38 +184,63 @@ const LiveOrdersPage = () => {
     };
   }, []);
 
-  useEffect(() => {
-    getTables()
-  }, [])
-
-  useEffect(() => {
-    console.log(allTables)
-  }, [allTables])
-
-  const getTables = async () => {
-    let userObj = JSON.parse(localStorage.getItem('userObj'))
-    return fetch('/tables/',
-    {
-      method: 'GET',
-    }).then((response) => response.json())
-    .then(json => {
-      console.log(userObj)
-      let result = json.filter(table => table['restaurant'] == userObj['restaurant'])
-      setAllTables(result)
-      console.log(allTables)
-    })
+  const handleSend = (table_id, item_id) => {
+    console.log("HANDLE SEND")
+    if(ws) {
+      ws.send(JSON.stringify({
+        'restaurant': false,
+        'table_id': table_id,
+        'item_id': item_id,
+        'action': 'send'
+      }))
+    }
   }
-  
+
+  const handleDelete = (table_id, item_id) => {
+    console.log("HANDLE DELETE")
+    if(ws) {
+      ws.send(JSON.stringify({
+        'restaurant': false,
+        'table_id': table_id,
+        'item_id': item_id,
+        'action': 'delete'
+      }))
+    }
+  }
+
+  const clearTable = (table_id) => {
+      // Clear Users
+      if(ws) {
+        ws.send(JSON.stringify({
+          'restaurant': false,
+          'table_id': table_id,
+          'action': 'clear'
+        }))
+      }
+  }
+
   return (
     <div>
       <Navbar />
       
-      {/* {tableModalRef.current && 
-        <LiveTablePopUp toggleModal={toggleTableModal} getTables={getTables}/>
-      } */}
+      {tableModalRef.current && 
+        <LiveTablePopUp 
+        toggleModal={toggleTableModal}
+          table={allTables.find(table => table['id'] === selectedTableID)}
+          items={items[selectedTableID]}
+          handleDelete={handleDelete}
+          clearTable={clearTable}
+        />
+      }
 
       {orderModalRef.current && 
-        <LiveOrderPopUp toggleModal={toggleOrderModal} getOrders={{}}/>
+        <LiveOrderPopUp 
+          toggleModal={toggleOrderModal} 
+          item={itemsList.find(item => item.id === selectedItemID)} 
+          table={allTables.find(table => table['id'] === (itemsList.find(item => item.id === selectedItemID)['table_id']))}
+          handleDelete={handleDelete}
+          handleSend={handleSend}
+        />
       }
       
       <Layout style={{ minHeight: "100vh"}}>
@@ -227,7 +282,7 @@ const LiveOrdersPage = () => {
                         }}> 
                             <LiveTableButton 
                               // selectedTableID={selectedTableID} 
-                              // setSelectedTableID={setSelectedTableID} 
+                              setSelectedTableID={setSelectedTableID} 
                               onClick={toggleTableModal}
                               table={table} 
                               // width={width} 
@@ -261,19 +316,16 @@ const LiveOrdersPage = () => {
                         Live Orders
                     </div>
 
-                    {/* {
-                      Object.keys(items).forEach((key) => {
-                        return (items[key].status == "ordered" ? 
-                        <LiveOrderButton onClick={toggleOrderModal} item={items[key]}/> : 
-                        <></>
-                        )
-                      })
-                    } */}
-
                     {allTables.length != 0 && itemsList.map((item, index) => {
+                      console.log("LIVE ORDER BUTTON")
+                      console.log(item.status)
                       return(
-                        (item.status == "ordered" ? 
-                        <LiveOrderButton key={index} onClick={toggleOrderModal} item={item} table={allTables.find(table => table['id'] === item['table_id'])}/> : 
+                        (item.status === "ordered" ? 
+                        <LiveOrderButton key={index} 
+                          onClick={toggleOrderModal} 
+                          setSelectedItemID={setSelectedItemID}
+                          item={item} 
+                          table={allTables.find(table => table['id'] === item['table_id'])}/> : 
                         <></>
                         )
                       )

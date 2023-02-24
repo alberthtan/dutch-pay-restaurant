@@ -3,87 +3,108 @@ import { v4 } from 'uuid'
 import '../Modal.css'
 // import ReactImagePickerEditor, { ImagePickerConf } from 'react-image-picker-editor';
 
-const LiveTablePopUp= ({toggled, toggleModal, categoryId, getMenuItems}) => {
-    const [name, setName] = useState('')
-    const [description, setDescription] = useState('')
-    const [price, setPrice] = useState(null)
-  
+const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) => {
+    console.log(items)
+
+    const createReceipt = async (user, timestamp, cart, restaurant_id) => {
+      // console.log(typeof cart)
+      console.log(typeof restaurant_id)
+      console.log(cart)
+      return fetch('/receipts/', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          user: user,
+          timestamp: timestamp,
+          cart_string: cart,
+          restaurant: restaurant_id
+      }),
+      })
+      .then(
+        response => response.json()
+      )
+      .then(json => {
+        console.log(json)
+      })
+    }
+
+    const handleClear = (table_id) => {
+      console.log("HANDLE CLEAR for " + table_id)
+
+      // Generate receipts from items list
+      console.log("ITEMS") 
+      console.log(items) // an array of big items
+
+      let user_receipts = {} // dictionary of user receipts - Ex. {user_id: [item, item, ...], user_id: [item], ...}
+      for(let i=0; i < items.length; i++) {
+        let user = JSON.parse(items[i].orderedBy)["id"]
+        let item = items[i].item
+        if(!(user in user_receipts)) {
+          user_receipts[user] = []
+        }
+        user_receipts[user].push(item)
+      }
+
+
+
+      for (const user in user_receipts) {
+
+
+        const date = new Date();
+        const isoDateTime = date.toISOString();
+        createReceipt(user, isoDateTime, JSON.stringify(user_receipts[user]), 
+        JSON.parse(localStorage.getItem("userObj"))["restaurant"])
+      }
+
+      clearTable(table.id)
+    }
+
+
     return (
       <div>
         <div className="modal" style={{display: 'flex'}}>
         <div className="overlay toggleTableModal"></div>
           <div className="item-modal-content">
             <h4>
-              TABLE 
+              TABLE {table.name}: Orders
+
             </h4>
-            
-            <form style={{display: 'flex', width: '100%', justifyContent: 'center', marginTop: 10, flexDirection: 'column'}}
-            onSubmit={(e) => {e.preventDefault()}}>
-              <input className="no-outline" style={{
-                  width: '100%', 
-                  borderWidth: 0, 
-                  borderBottomWidth: 1, 
-                  padding: 10, 
-                  backgroundColor: '#f1f1f1'
-                  }} 
-                  type="text" 
-                  placeholder="Name" 
-                  autoFocus 
-                  value={name} 
-                  onChange={{}} 
-              />
 
-
-                <div style={{marginTop: 30, marginBottom: 5}}>
-                  Description
-                </div>
-                <textarea style={{width: '100%', borderRadius: 5, borderWidth: 1, padding: 10, height: 100}} placeholder="Enter description" value={description} onChange={{}} />
-
-                <div style={{display: 'flex', flexDirection: 'row'}}>
-
-                  <div style={{alignSelf: 'flex-end'}}>
-                    <div style={{ marginTop: 30, marginBottom: 5}}>
-                      Price
+            {items && items.map((item, index) => {
+                if(item.status == "received") {
+                  return(
+                    <div key={index} 
+                      style={{display: 'flex', flexDirection: 'row'}}>
+                        <div style={{display: 'flex', flex: 1}}>
+                        {item.item.name}
+                        </div>
+                        <div style={{cursor: 'pointer'}}
+                            onClick={() => {
+                              handleDelete(table.id, item.id)
+                            }}
+                        >
+                            Delete
+                        </div>
                     </div>
-                    <input style={{width: '100%', borderRadius: 5, borderWidth: 1, padding: 10}} type="number" presicion={2} placeholder="Enter price" value={price} onChange={{}}/>
-                  </div>
+                  )
+                }
+            })}           
 
-                  <div style={{marginLeft: 50}}>
-                    <div style={{marginTop: 30, marginBottom: 5}}>
-                      Tax
-                    </div>
-                    <input style={{width: '100%', borderRadius: 5, borderWidth: 1, padding: 10}} type="number" presicion={2} placeholder="Enter price" value={price} onChange={{}} webkitdirectory/>
-                  </div>
-
-                </div>
-
-                <div style={{marginTop: 30}}>
-                  Photo
-                </div>
-
-                <label style={styles.customFileUpload}>
-                </label>                
-
-            </form>
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
               <div style={{marginRight: 20, cursor: 'pointer'}}
               onClick={() => {
                 toggleModal()
-                setName('')
-                setDescription('')
-                setPrice(null)}}>
+              }}>
                 Cancel
               </div>
               <div style={{cursor: 'pointer', color: '#0A60C9'}} onClick={() => {
-                if (name && price) {
-                //   createNewItem()
-                  toggleModal()
-                  setName('')
-                  setDescription('')
-                  setPrice(null)
-                }
+                  // toggleModal()
+                  handleClear(table.id)
                 }}>
-                Create
+                Clear 
               </div>
             </div>
           </div>

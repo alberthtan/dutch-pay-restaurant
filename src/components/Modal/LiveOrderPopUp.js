@@ -3,10 +3,7 @@ import { v4 } from 'uuid'
 import '../Modal.css'
 // import ReactImagePickerEditor, { ImagePickerConf } from 'react-image-picker-editor';
 
-const LiveOrderPopUp = ({toggled, toggleModal, categoryId, getMenuItems}) => {
-    const [name, setName] = useState('')
-    const [description, setDescription] = useState('')
-    const [price, setPrice] = useState(null)
+const LiveOrderPopUp = ({toggleModal, item, table, handleDelete, handleSend}) => {
   
     return (
       <div>
@@ -14,14 +11,18 @@ const LiveOrderPopUp = ({toggled, toggleModal, categoryId, getMenuItems}) => {
         <div className="overlay toggleOrderModal"></div>
           <div className="item-modal-content">
             <h4>
-              Table 10: INCOMING
+              Table {table.name}: INCOMING
             </h4>
 
             <div style={{display: 'flex', flexDirection: 'row'}}>
                 <div style={{display: 'flex', flex: 1}}>
-                Butter Chicken
+                {item.item.name}
                 </div>
-                <div style={{cursor: 'pointer'}}>
+                <div style={{cursor: 'pointer'}}
+                  onClick={() => {
+                    toggleModal()
+                    handleDelete(table.id, item.id)
+                  }}>
                     Delete
                 </div>
             </div>
@@ -29,22 +30,15 @@ const LiveOrderPopUp = ({toggled, toggleModal, categoryId, getMenuItems}) => {
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
               <div style={{marginRight: 20, cursor: 'pointer'}}
               onClick={() => {
-                toggleModal()
-                setName('')
-                setDescription('')
-                setPrice(null)}}>
+                toggleModal()}}>
                 Cancel
               </div>
-              <div style={{cursor: 'pointer', color: '#0A60C9'}} onClick={() => {
-                if (name && price) {
-                //   createNewItem()
+              <div style={{cursor: 'pointer', color: '#0A60C9'}} 
+              onClick={() => {
                   toggleModal()
-                  setName('')
-                  setDescription('')
-                  setPrice(null)
-                }
-                }}>
-                Create
+                  handleSend(table.id, item.id)
+              }}>
+                Send
               </div>
             </div>
           </div>

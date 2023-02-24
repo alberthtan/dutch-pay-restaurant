@@ -25,7 +25,7 @@ function useWindowDimensions() {
     return windowDimensions;
   }
 
-const LiveTableButton = ({table, liveTableClick}) => {
+const LiveTableButton = ({table, onClick, setSelectedTableID}) => {
     const { height, width } = useWindowDimensions();
 
     let liveTableStyle = {
@@ -46,10 +46,9 @@ const LiveTableButton = ({table, liveTableClick}) => {
             style={liveTableStyle}
             className="liveTableCard outline"
             onClick={() => {
-                // setSelectedTableID(table.id)
-            }}
-            onDoubleClick={() => {
-                // navigate('/categories/' + table.id, { state: { table: table } })
+                setSelectedTableID(table.id)
+                onClick()
+                
             }}
         >
             <div style={{display: 'flex', justifyContent: 'center', width: '100%', fontWeight: 'bold'}}
