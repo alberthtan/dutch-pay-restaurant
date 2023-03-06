@@ -48,11 +48,43 @@ const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) =
         user_receipts[user].push(item)
       }
 
+      console.log("USER RECEIPTS")
+      console.log(user_receipts)
 
-
+      // Process Stripe Payments
       for (const user in user_receipts) {
+        let subtotal = 0
+        for (let i=0; i < user_receipts[user].length; i++) {
+          console.log("LENGTH")
+          console.log(user_receipts[user][i]["item"]["price"])
+          let item_price = user_receipts[user][i]["item"]["price"] / (user_receipts[user][i].sharedBy.length + 1)
+          console.log(parseFloat(item_price))
+          subtotal += parseFloat(item_price)
+        }
+        
+        const accessToken = localStorage.getItem("access")
+        // Process payment
 
+        console.log(" FETCH")
+        console.log(subtotal)
+        console.log(typeof (subtotal * 100))
+        fetch('/create-payment/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({
+            user_id: user,
+            amount: subtotal * 100,
+            currency: 'usd',
+            restaurant_id: JSON.parse(localStorage.getItem("userObj"))["restaurant"]
+          }),
+        })
+      }
 
+      // Generate Receipts
+      for (const user in user_receipts) {
         const date = new Date();
         const isoDateTime = date.toISOString();
         createReceipt(user, isoDateTime, JSON.stringify(user_receipts[user]), 

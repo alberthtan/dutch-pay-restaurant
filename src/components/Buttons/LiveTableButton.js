@@ -35,8 +35,9 @@ const LiveTableButton = ({table, onClick, setSelectedTableID}) => {
         minHeight: 150,
         display: 'flex',
         alignItems: 'center',
-        marginTop: 20,
-        marginBottom: 20,
+        // marginBottom: -100,
+        // marginTop: 20,
+        // marginBottom: 20,
         border: '1px solid #D6D6D6',
         borderRadius: 15
     }

@@ -52,6 +52,7 @@ const LiveOrdersPage = () => {
   });
   const [items, setItems] = useState([])
   const [itemsList, setItemsList] = useState([])
+  const [calledOnce, setCalledOnce] = useState(false)
 
   useEffect(()=>{
     let wsTemp  = new WebSocket('wss://dutch-pay-ws.herokuapp.com/');
@@ -246,7 +247,7 @@ const LiveOrdersPage = () => {
       <Layout style={{ minHeight: "100vh"}}>
         <SideNavbar selectedKey={'4'}/>
 
-        <div style={{display: 'flex', height: '100vh',
+        <div style={{display: 'flex',
                 width: '100%'}}>
             {/* <div style={{width: '100%', height: 100}}>
                 <Title>
@@ -260,15 +261,16 @@ const LiveOrdersPage = () => {
                 // minWidth: 800,
                 width: '100%',
                 // height: '100%',
-                marginRight: 300,
+                // marginRight: 300,
                 overflowY: 'scroll',
+                // gap: 20
                 // backgroundColor: 'blue'
             }}>
                     {allTables.map((table, index) => {
                     return (
                         <div
                             key={index}
-                            style={{marginLeft: '50px'}}
+                            style={{display: 'flex', marginLeft: 50, marginRight: 50, marginBlockEnd: 50}}
                             onContextMenu={(e) => {
                             e.preventDefault(); // prevent the default behaviour when right clicked
                             setRightClicked(true);
@@ -282,9 +284,9 @@ const LiveOrdersPage = () => {
                         }}> 
                             <LiveTableButton 
                               // selectedTableID={selectedTableID} 
-                              setSelectedTableID={setSelectedTableID} 
+                              setSelectedTableID={setSelectedTableID}
                               onClick={toggleTableModal}
-                              table={table} 
+                              table={table}
                               // width={width} 
                               // navigate={navigate}
                             />
