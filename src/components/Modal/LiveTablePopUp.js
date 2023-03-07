@@ -84,7 +84,7 @@ const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) =
             if(response.status === 500) {
               setIsError(true)
               alert("Error in payment for user: " + user)
-            } else if (response.status !== 200) {
+            } else if (response.status !== 201) {
               alert("Another error with status: " + response.status)
             } else {
               const date = new Date();
