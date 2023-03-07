@@ -7,7 +7,8 @@ const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) =
     console.log(items)
 
     const [tableCleared, setTableCleared] = useState(false)
-    const [isError, setIsError] = useState(false)
+    // const [isError, setIsError] = useState(false)
+    const [failedUsers, setFailedUsers] = useState([])
 
     const createReceipt = async (user, timestamp, cart, restaurant_id) => {
       // console.log(typeof cart)
@@ -43,12 +44,21 @@ const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) =
 
       let user_receipts = {} // dictionary of user receipts - Ex. {user_id: [item, item, ...], user_id: [item], ...}
       for(let i=0; i < items.length; i++) {
+
         let user = JSON.parse(items[i].orderedBy)["id"]
         let item = items[i]
         if(!(user in user_receipts)) {
           user_receipts[user] = []
         }
         user_receipts[user].push(item)
+
+        for(let j=0; j < items[i].sharedBy.length; j++) {
+          let shared_user = JSON.parse(items[i].sharedBy[j]["id"])
+          if(!(shared_user in user_receipts)) {
+            user_receipts[shared_user] = []
+          }
+          user_receipts[shared_user].push(item)
+        }
       }
 
       console.log("USER RECEIPTS")
@@ -82,8 +92,11 @@ const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) =
           .then(response => {
             console.log(response.status)
             if(response.status === 500) {
-              setIsError(true)
-              alert("Error in payment for user: " + user)
+              // setIsError(true)
+              let temp = failedUsers
+              temp.push(user)
+              setFailedUsers(temp)
+              alert("Error in payments for some users!")
             } else if (response.status !== 201) {
               alert("Another error with status: " + response.status)
             } else {
@@ -120,6 +133,28 @@ const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) =
               TABLE {table.name}: Orders
 
             </h4>
+            
+            {/* {failedUsers && failedUsers.map((item, index) => {
+                if(item.status == "received") {
+                  return(
+                    <div key={index} 
+                      style={{display: 'flex', flexDirection: 'row'}}>
+                        <div style={{display: 'flex', flex: 1}}>
+                        {item}
+                        </div>
+                        <div style={{cursor: 'pointer'}}
+                            onClick={() => {
+                              // handleDelete(table.id, item.id)
+                              console.log("handling user")
+                            }}
+                        >
+                            Delete
+                        </div>
+                    </div>
+                  )
+                }
+            })}            */}
+
 
             {items && items.map((item, index) => {
                 if(item.status == "received") {
