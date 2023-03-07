@@ -53,7 +53,7 @@ const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) =
         user_receipts[user].push(item)
 
         for(let j=0; j < items[i].sharedBy.length; j++) {
-          let shared_user = JSON.parse(items[i].sharedBy[j]["id"])
+          let shared_user = JSON.parse(items[i].sharedBy[j])["id"]
           if(!(shared_user in user_receipts)) {
             user_receipts[shared_user] = []
           }
