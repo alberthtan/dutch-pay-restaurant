@@ -8,7 +8,6 @@ const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) =
 
     const [tableCleared, setTableCleared] = useState(false)
     // const [isError, setIsError] = useState(false)
-    const [failedUsers, setFailedUsers] = useState([])
 
     const createReceipt = async (user, timestamp, cart, restaurant_id) => {
       // console.log(typeof cart)
@@ -36,91 +35,88 @@ const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) =
     }
 
     const handleClear = (table_id) => {
-      console.log("HANDLE CLEAR for " + table_id)
+      if(items) {
+        console.log("HANDLE CLEAR for " + table_id)
 
-      // Generate receipts from items list
-      console.log("ITEMS") 
-      console.log(items) // an array of big items
-
-      let user_receipts = {} // dictionary of user receipts - Ex. {user_id: [item, item, ...], user_id: [item], ...}
-      for(let i=0; i < items.length; i++) {
-
-        let user = JSON.parse(items[i].orderedBy)["id"]
-        let item = items[i]
-        if(!(user in user_receipts)) {
-          user_receipts[user] = []
-        }
-        user_receipts[user].push(item)
-
-        for(let j=0; j < items[i].sharedBy.length; j++) {
-          let shared_user = JSON.parse(items[i].sharedBy[j])["id"]
-          if(!(shared_user in user_receipts)) {
-            user_receipts[shared_user] = []
+        // Generate receipts from items list
+        console.log("ITEMS") 
+        console.log(items) // an array of big items
+  
+        let user_receipts = {} // dictionary of user receipts - Ex. {user_id: [item, item, ...], user_id: [item], ...}
+        for(let i=0; i < items.length; i++) {
+  
+          let user = JSON.parse(items[i].orderedBy)["id"]
+          let item = items[i]
+          if(!(user in user_receipts)) {
+            user_receipts[user] = []
           }
-          user_receipts[shared_user].push(item)
-        }
-      }
-
-      console.log("USER RECEIPTS")
-      console.log(user_receipts)
-
-      // Process Stripe Payments
-      for (const user in user_receipts) {
-        let subtotal = 0
-        for (let i=0; i < user_receipts[user].length; i++) {
-          let item_price = user_receipts[user][i]["item"]["price"] / (user_receipts[user][i].sharedBy.length + 1)
-          subtotal += parseFloat(item_price)
-        }
-        
-        const accessToken = localStorage.getItem("access")
-        // Process payment
-
-        try {
-          fetch('/create-payment/', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify({
-              user_id: user,
-              amount: subtotal * 100,
-              currency: 'usd',
-              restaurant_id: JSON.parse(localStorage.getItem("userObj"))["restaurant"]
-            }),
-          })
-          .then(response => {
-            console.log(response.status)
-            if(response.status === 500) {
-              // setIsError(true)
-              let temp = failedUsers
-              temp.push(user)
-              setFailedUsers(temp)
-              alert("Error in payments for some users!")
-            } else if (response.status !== 201) {
-              alert("Another error with status: " + response.status)
-            } else {
-              const date = new Date();
-              const isoDateTime = date.toISOString();
-              createReceipt(user, isoDateTime, JSON.stringify(user_receipts[user]), 
-              JSON.parse(localStorage.getItem("userObj"))["restaurant"])
+          user_receipts[user].push(item)
+  
+          for(let j=0; j < items[i].sharedBy.length; j++) {
+            let shared_user = JSON.parse(items[i].sharedBy[j])["id"]
+            if(!(shared_user in user_receipts)) {
+              user_receipts[shared_user] = []
             }
-            return response.json();
-          })
-          .catch(error => {
-            console.error('Error fetching data:', error);
-          });
-        } catch (errorInfo) {
-          console.log(errorInfo)
-          return;
+            user_receipts[shared_user].push(item)
+          }
         }
+  
+        console.log("USER RECEIPTS")
+        console.log(user_receipts)
+  
+        // Process Stripe Payments
+        for (const user in user_receipts) {
+          let subtotal = 0
+          for (let i=0; i < user_receipts[user].length; i++) {
+            let item_price = user_receipts[user][i]["item"]["price"] / (user_receipts[user][i].sharedBy.length + 1)
+            subtotal += parseFloat(item_price)
+          }
+          
+          const accessToken = localStorage.getItem("access")
+          // Process payment
+  
+          try {
+            fetch('/create-payment/', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`,
+              },
+              body: JSON.stringify({
+                user_id: user,
+                amount: subtotal * 100,
+                currency: 'usd',
+                restaurant_id: JSON.parse(localStorage.getItem("userObj"))["restaurant"]
+              }),
+            })
+            .then(response => {
+              console.log(response.status)
+              if(response.status !== 201) {
+                // setIsError(true)
+                alert("Error in payments for user " + user)
+              } else {
+                const date = new Date();
+                const isoDateTime = date.toISOString();
+                createReceipt(user, isoDateTime, JSON.stringify(user_receipts[user]), 
+                JSON.parse(localStorage.getItem("userObj"))["restaurant"])
+              }
+              return response.json();
+            })
+            .catch(error => {
+              console.error('Error fetching data:', error);
+            });
+          } catch (errorInfo) {
+            console.log(errorInfo)
+            return;
+          }
+        }
+  
+        setTableCleared(true)
+  
+        clearTable(table.id)
+      } else {
+        console.log("no items!")
       }
-
-      setTableCleared(true)
-
-      clearTable(table.id)
-
-      
     }
 
 
@@ -132,28 +128,7 @@ const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) =
             <h4>
               TABLE {table.name}: Orders
 
-            </h4>
-            
-            {/* {failedUsers && failedUsers.map((item, index) => {
-                if(item.status == "received") {
-                  return(
-                    <div key={index} 
-                      style={{display: 'flex', flexDirection: 'row'}}>
-                        <div style={{display: 'flex', flex: 1}}>
-                        {item}
-                        </div>
-                        <div style={{cursor: 'pointer'}}
-                            onClick={() => {
-                              // handleDelete(table.id, item.id)
-                              console.log("handling user")
-                            }}
-                        >
-                            Delete
-                        </div>
-                    </div>
-                  )
-                }
-            })}            */}
+            </h4>      
 
 
             {items && items.map((item, index) => {

@@ -52,7 +52,6 @@ const LiveOrdersPage = () => {
   });
   const [items, setItems] = useState([])
   const [itemsList, setItemsList] = useState([])
-  const [calledOnce, setCalledOnce] = useState(false)
 
   useEffect(()=>{
     let wsTemp  = new WebSocket('wss://dutch-pay-ws.herokuapp.com/');
