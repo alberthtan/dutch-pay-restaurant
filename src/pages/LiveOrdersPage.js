@@ -66,7 +66,7 @@ const LiveOrdersPage = () => {
             method: 'GET',
           }).then((response) => response.json())
           .then(json => {
-            console.log(userObj)
+            // console.log(userObj)
             let tables = json.filter(table => table['restaurant'] == userObj['restaurant'])
             wsTemp.send(JSON.stringify({
               'restaurant': true,
@@ -91,11 +91,11 @@ const LiveOrdersPage = () => {
       };
 
       wsTemp.onmessage = ({data}) => {
-        console.log("ACQUIRING MESSAGE IN MENU")
-        console.log(items)
+        // console.log("ACQUIRING MESSAGE IN MENU")
+        // console.log(items)
         
         data = JSON.parse(data)
-        console.log(data)
+        // console.log(data)
 
         if(data['refresh']) {
             let msg = JSON.parse(data['json_message'])
@@ -157,7 +157,7 @@ const LiveOrdersPage = () => {
   }
 
   const toggleTableModal = () => {
-    console.log("click")
+    // console.log("click")
     setTableModal(!tableModalRef.current)
   }
 
@@ -186,7 +186,7 @@ const LiveOrdersPage = () => {
   }, []);
 
   const handleSend = (table_id, item_id) => {
-    console.log("HANDLE SEND")
+    // console.log("HANDLE SEND")
     if(ws) {
       ws.send(JSON.stringify({
         'restaurant': false,
@@ -198,7 +198,7 @@ const LiveOrdersPage = () => {
   }
 
   const handleDelete = (table_id, item_id) => {
-    console.log("HANDLE DELETE")
+    // console.log("HANDLE DELETE")
     if(ws) {
       ws.send(JSON.stringify({
         'restaurant': false,
@@ -279,8 +279,8 @@ const LiveOrdersPage = () => {
                                 x: e.clientX,
                                 y: e.clientY,
                             });
-                            console.log("OFFSET")
-                            console.log(window.pageYOffset)
+                            // console.log("OFFSET")
+                            // console.log(window.pageYOffset)
                         }}> 
                             <LiveTableButton 
                               // selectedTableID={selectedTableID} 
@@ -319,8 +319,8 @@ const LiveOrdersPage = () => {
                     </div>
 
                     {allTables.length != 0 && itemsList.map((item, index) => {
-                      console.log("LIVE ORDER BUTTON")
-                      console.log(item.status)
+                      // console.log("LIVE ORDER BUTTON")
+                      // console.log(item.status)
                       return(
                         (item.status === "ordered" ? 
                         <LiveOrderButton key={index} 

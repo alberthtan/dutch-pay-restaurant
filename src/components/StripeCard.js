@@ -135,7 +135,7 @@ const [routingNumber, setRoutingNumber] = useState('');
       currency: 'usd',
       routing_number: routingNumber,
       account_number: accountNumber,
-      account_holder_name: 'John Wick', // replace with actual account holder name
+      account_holder_name: 'Albert Tan', // replace with actual account holder name
       account_holder_type: 'individual', // or 'company'
     });
 
@@ -149,7 +149,7 @@ const [routingNumber, setRoutingNumber] = useState('');
       // using the Stripe Connect API.
       // Use the `stripe_account` parameter to specify the seller's Stripe account ID.
 
-          fetch('https://dutch-pay-test.herokuapp.com/merchant-add-card/', {
+          fetch('https://dutch-pay-test.herokuapp.com/merchant-add-bank/', {
             method: 'POST',
             headers: {
               Accept: '*/*',

@@ -7,7 +7,7 @@ import StripeCard from '../components/StripeCard';
 import { Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
 
-const stripePromise = loadStripe('pk_test_51MiXZ5Gm1KJ3T3rGwmjYZV0tDN20lAOZJRWaK1YXcMJGykBkuXlcHpP8GLK7EaJCHmJADGr3dwNAPk3jMVxeO8Bv00qeBgh7C8');
+const stripePromise = loadStripe('pk_test_51Mg3eiFsXLeRVzOVO5KIPsOT13pU8MbJss8HLpEeUmyEkqKazhvDwFRoKbq8qIMzgZ8O2ngX793aPY1UqywLPdXa00d0M1qARt');
 
 const { Title } = Typography;
 
