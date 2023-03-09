@@ -28,20 +28,9 @@ const PaymentPage = () => {
                 </Title>
             </div>
 
-            <Form.Item // Form Item (Register Button)
-          name="addMenu"
-        >
-          <Button type="default" onClick={{}}>
-          + Add new menu
-          </Button>
-        </Form.Item>
         <Elements stripe={stripePromise}>
           <StripeCard/>
         </Elements>
-
-
-            <div style={{width: 100, height: 100, backgroundColor: 'gray'}}>
-            </div>
 
         </div>
 

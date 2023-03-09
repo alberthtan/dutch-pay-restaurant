@@ -4,7 +4,7 @@ import "../../layout.css";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../../globalContext/globalContext";
 
-const VerifyRegisterForm = ({email, firstName, lastName, phoneNumber, setIsVerified2, setAccessToken, setRefreshToken}) => {
+const VerifyRegisterForm = ({email, firstName, lastName, phoneNumber, setIsVerified2}) => {
   const globalContext = useContext(Context);
   const { setIsLoggedIn } = globalContext;
   const [form] = Form.useForm();
@@ -55,16 +55,9 @@ const VerifyRegisterForm = ({email, firstName, lastName, phoneNumber, setIsVerif
           .then(json => {
             console.log(json)
               if(json['email'] === email) {
-                  setAccessToken(json.token.access)
-                  setRefreshToken(json.token.refresh)
-                  // setUserObj(JSON.stringify(json))
-                  setAccessToken(json.token.access)
-                  setRefreshToken(json.token.refresh)
-                  // localStorage.setItem("access", json.token.access)
-                  // localStorage.setItem("refresh", json.token.refresh)
+                  localStorage.setItem("access", json.token.access)
+                  localStorage.setItem("refresh", json.token.refresh)
                   localStorage.setItem("userObj", JSON.stringify(json))
-                  setIsLoggedIn(true)
-                  // navigate('/home')
 
                   setIsVerified2(true)
               } else {

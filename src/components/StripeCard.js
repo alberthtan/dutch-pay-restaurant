@@ -177,7 +177,7 @@ const [routingNumber, setRoutingNumber] = useState('');
         Account number:
         <input type="text" value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)} />
       </label>
-      <button type="submit">Add bank account</button>
+      <button style={{marginLeft: '20px'}} type="submit">Add bank account</button>
     </form>
   );
 };

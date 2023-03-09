@@ -14,11 +14,8 @@ const { Title } = Typography;
 
 
 const RegisterPage = () => {
-  const [collapsed, setCollapsed] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [isVerified2, setIsVerified2] = useState(false);
-  const [accessToken, setAccessToken] = useState('');
-  const [refreshToken, setRefreshToken] = useState('')
   // const [userObj, setUserObj] = useState(null)
   const [email, setEmail] = useState('')
   const [firstName, setFirstName] = useState('')
@@ -28,14 +25,14 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   
   const globalContext = useContext(Context);
-  const { setIsLoggedIn } = globalContext;
+  const { isLoggedIn, setIsLoggedIn } = globalContext;
 
   const checkStripeAccountExists = () => {
-    let userObj = localStorage.getItem('userObj')
-    let token = localStorage.getItem('access')
-    let authorization = "Bearer".concat(" ", token)
-    if(userObj) {
-      return fetch('get-stripe-merchant/' + userObj.id + '/', {
+    let accessToken = localStorage.getItem('access')
+    if(accessToken) {
+      console.log("access token exists!")
+      let authorization = "Bearer".concat(" ", accessToken)
+      return fetch('get-stripe-merchant', {
         method: 'GET',
         headers: {
           Accept: '*/*',
@@ -47,22 +44,28 @@ const RegisterPage = () => {
       })
       .then(response => response.json())
       .then(json => {
-        console.log(json)
-        localStorage.setItem("access", accessToken)
-        localStorage.setItem("refresh", refreshToken)
         setIsLoggedIn(true)
         navigate('/home')
+        // console.log("IS LOGGED IN HAH")
+        // setIsLoggedIn(true)
+        // console.log(isLoggedIn)
+        localStorage.removeItem('stripe_connect_in_progress');
       })
     }
+    
   }
 
   useEffect(() => {
-      
+      console.log("use effect called")
+      let isConnecting = localStorage.getItem('stripe_connect_in_progress')
+      console.log(isConnecting)
+      if(isConnecting !== null) { // check if it's done
+          checkStripeAccountExists()
+      }
   })
 
 
-  if(localStorage.getItem('access')) {
-    console.log("home")
+  if(isLoggedIn && localStorage.getItem('stripe_connect_in_progress') == null) {
     return (<Navigate to="/home" />)
   } else {
     return (
@@ -78,8 +81,6 @@ const RegisterPage = () => {
           {
         isVerified2 ? (
             <StripeForm
-              accessToken={accessToken}
-              refreshToken={refreshToken}
             />
           ) :
             isVerified ? 
@@ -89,8 +90,6 @@ const RegisterPage = () => {
                 lastName={lastName}
                 phoneNumber={phoneNumber}
                 setIsVerified2={setIsVerified2}
-                setAccessToken={setAccessToken}
-                setRefreshToken={setRefreshToken}
               />
              : 
               <RegisterForm

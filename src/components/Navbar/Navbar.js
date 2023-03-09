@@ -41,6 +41,10 @@ function Navbar(props) {
         navigate("/");
     }
 
+    // useEffect(() => {
+    //   handleLogout()
+    // })
+
     function logoutMenu() {
         return (
           <Menu

@@ -5,27 +5,40 @@ import "../../layout.css";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../../globalContext/globalContext";
 
-const StripeForm = ({setEmail, setIsVerified, accessToken, refreshToken}) => {
+const StripeForm = () => {
   const [form] = Form.useForm();
-  const { Title, Text } = Typography;
   const navigate = useNavigate();
   
   const globalContext = useContext(Context);
   const { setIsLoggedIn } = globalContext;
+
+  const createStripeManager = () => {
+    let userObj = localStorage.getItem("userObj")
+    fetch('/create-stripe-manager/', {
+      method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            email: JSON.parse(userObj).email,
+            user_id: JSON.parse(userObj).id,
+        })
+    })
+  }
   
 
   const redirect = () => {
     let userObj = localStorage.getItem("userObj")
-    console.log(userObj)
-    console.log(JSON.parse(userObj).id)
+    localStorage.setItem('stripe_connect_in_progress', true);
     fetch('/connect_seller/' + JSON.parse(userObj).id + '/', {
       method: 'GET',
     })
     .then(response => response.text())
     .then(text => {
         console.log(text);
-        // window.location.href = text; // Redirect to the URL
-        window.open(text, '_blank')
+        window.location.href = text; // Redirect to the URL
+        // window.open(text, '_blank')
       });
   }
 
@@ -41,43 +54,8 @@ const StripeForm = ({setEmail, setIsVerified, accessToken, refreshToken}) => {
     [form]
   );
 
-  const onSubmitLogin = React.useCallback(async () => {
-    console.log("loggin in");
-    let values
-    try {
-      values = await form.validateFields(); // Validate the form fields
-      console.log(values.email);
-      return fetch('/manager-send-email-code/', {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            email: values.email,
-            is_register: false,
-        })
-      })
-      .then(
-        response => response.json()
-      )
-      .then(json => {
-        setIsVerified(true)
-        setEmail(values.email)
-        console.log(json)
-      })
-      // navigate("/users");
-    } catch (errorInfo) {
-      console.log(errorInfo)
-      return;
-    }
-    // setIsLoggedIn(true)
-    // navigate("/home")
-  }, [form, handleSubmission]);
-
   const createNewAccount = React.useCallback(async () => {
-    // TODO: create_stripe_manager() fetch call
-    setIsLoggedIn(true)
+    createStripeManager()
     navigate("/home");
     // console.log("register")
   }, [form, handleSubmission]);
