@@ -4,7 +4,7 @@ import "../../layout.css";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../../globalContext/globalContext";
 
-const VerifyRegisterForm = ({email, firstName, lastName, phoneNumber}) => {
+const VerifyRegisterForm = ({email, firstName, lastName, phoneNumber, setIsVerified2, setAccessToken, setRefreshToken}) => {
   const globalContext = useContext(Context);
   const { setIsLoggedIn } = globalContext;
   const [form] = Form.useForm();
@@ -55,11 +55,18 @@ const VerifyRegisterForm = ({email, firstName, lastName, phoneNumber}) => {
           .then(json => {
             console.log(json)
               if(json['email'] === email) {
-                  localStorage.setItem("access", json.token.access)
-                  localStorage.setItem("refresh", json.token.refresh)
+                  setAccessToken(json.token.access)
+                  setRefreshToken(json.token.refresh)
+                  // setUserObj(JSON.stringify(json))
+                  setAccessToken(json.token.access)
+                  setRefreshToken(json.token.refresh)
+                  // localStorage.setItem("access", json.token.access)
+                  // localStorage.setItem("refresh", json.token.refresh)
                   localStorage.setItem("userObj", JSON.stringify(json))
                   setIsLoggedIn(true)
-                  navigate('/home')
+                  // navigate('/home')
+
+                  setIsVerified2(true)
               } else {
                   console.log("you entered the wrong code " + values.code)
               }
