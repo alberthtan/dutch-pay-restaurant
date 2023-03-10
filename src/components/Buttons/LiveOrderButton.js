@@ -1,7 +1,8 @@
 import React from 'react'
 import '../../layout.css'
 
-const LiveOrderButton = ({onClick, setSelectedItemID, table, item}) => {
+const LiveOrderButton = ({onClick, setSelectedOrderID, table, items}) => {
+    console.log(items)
   return (
     <div style={{
         width: '100%',
@@ -12,7 +13,7 @@ const LiveOrderButton = ({onClick, setSelectedItemID, table, item}) => {
         className="liveOrderButton"
     onClick={() => {
         onClick()
-        setSelectedItemID(item.id)
+        setSelectedOrderID(items[0].order_id)
     }}
 >
     <div style={{
@@ -20,16 +21,16 @@ const LiveOrderButton = ({onClick, setSelectedItemID, table, item}) => {
         fontWeight: 'bold',
         paddingTop: 5,
     }}>
-        Table {table.name}: ASDFF13 ({JSON.parse(item.orderedBy).first_name})
+        Table {table.name}: ASDFF13 ({JSON.parse(items[0].orderedBy).first_name})
     </div>
-    <div style={{marginLeft: 20, paddingTop: 5,}}>
-        <div style={{fontWeight: 'bold'}}>
-            {item.item.name}
-        </div>
-        {/* <div style={{marginLeft: 10}}>
-            Notes: mild, no cheese
-        </div> */}
-    </div>
+    {items.map((item, index) => {
+        return(<div style={{marginLeft: 20, paddingTop: 5,}}>
+            <div style={{fontWeight: 'bold'}}>
+                {item.item.name}
+            </div>
+        </div>)
+    })}
+    
 </div>
   )
 }

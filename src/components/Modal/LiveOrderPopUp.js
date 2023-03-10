@@ -3,7 +3,7 @@ import { v4 } from 'uuid'
 import '../Modal.css'
 // import ReactImagePickerEditor, { ImagePickerConf } from 'react-image-picker-editor';
 
-const LiveOrderPopUp = ({toggleModal, item, table, handleDelete, handleSend}) => {
+const LiveOrderPopUp = ({toggleModal, items, table, handleDelete, handleSend}) => {
   
     return (
       <div>
@@ -14,18 +14,31 @@ const LiveOrderPopUp = ({toggleModal, item, table, handleDelete, handleSend}) =>
               Table {table.name}: INCOMING
             </h4>
 
-            <div style={{display: 'flex', flexDirection: 'row'}}>
-                <div style={{display: 'flex', flex: 1}}>
-                {item.item.name}
-                </div>
-                <div style={{cursor: 'pointer'}}
-                  onClick={() => {
-                    toggleModal()
-                    handleDelete(table.id, item.id)
-                  }}>
-                    Delete
-                </div>
-            </div>
+            {items.map((item, index) => {
+              return(
+                <div style={{display: 'flex', flexDirection: 'row'}}>
+                    <div style={{display: 'flex', flex: 1}}>
+                    {item.item.name}
+                    </div>
+                    <div style={{cursor: 'pointer'}}
+                      onClick={() => {
+                        // toggleModal()
+                        console.log(item.id)
+                        if(items.length == 1) {
+                          toggleModal()
+                          handleDelete(table.id, item.id)
+                        } else {
+                          handleDelete(table.id, item.id)
+                        }
+                        
+                      }}>
+                        Delete
+                    </div>
+                </div>)
+            })}
+
+
+            
             
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
               <div style={{marginRight: 20, cursor: 'pointer'}}
@@ -35,8 +48,17 @@ const LiveOrderPopUp = ({toggleModal, item, table, handleDelete, handleSend}) =>
               </div>
               <div style={{cursor: 'pointer', color: '#0A60C9'}} 
               onClick={() => {
-                  toggleModal()
-                  handleSend(table.id, item.id)
+                  // toggleModal()
+
+                  for(let i=0; i<items.length; i++) {
+                    if(i==items.length-1) {
+                      toggleModal()
+                      handleSend(table.id, items[i].id)
+                    } else {
+                      handleSend(table.id, items[i].id)
+                    }
+                    
+                  }
               }}>
                 Send
               </div>

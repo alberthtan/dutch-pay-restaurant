@@ -45,13 +45,14 @@ const LiveOrdersPage = () => {
   const [allTables, setAllTables] = useState([])
   const [rightClicked, setRightClicked] = useState(false);
   const [selectedTableID, setSelectedTableID] = useState("")
-  const [selectedItemID, setSelectedItemID] = useState("")
+  const [selectedOrderID, setSelectedOrderID] = useState("")
   const [points, setPoints] = useState({
     x: 0,
     y: 0,
   });
   const [items, setItems] = useState([])
   const [itemsList, setItemsList] = useState([])
+  const [groupedItemsList, setGroupedItemsList] = useState([])
 
   useEffect(()=>{
     let wsTemp  = new WebSocket('wss://dutch-pay-ws.herokuapp.com/');
@@ -90,11 +91,11 @@ const LiveOrdersPage = () => {
       };
 
       wsTemp.onmessage = ({data}) => {
-        // console.log("ACQUIRING MESSAGE IN MENU")
+        console.log("ACQUIRING MESSAGE IN MENU")
         // console.log(items)
         
         data = JSON.parse(data)
-        // console.log(data)
+        console.log(data)
 
         if(data['refresh']) {
             let msg = JSON.parse(data['json_message'])
@@ -120,9 +121,10 @@ const LiveOrdersPage = () => {
                 }
                 items[new_items[i].table_id].push(new_items[i])
               }
-  
+              console.log("GOT HERE")
               setItems(JSON.parse(JSON.stringify(items)))
               setItemsList(new_items)
+              // groupOrders(new_items)
             }   
         } 
         // Modification to table
@@ -131,6 +133,9 @@ const LiveOrdersPage = () => {
           let temp = Object.values(items).flat(1)
           setItemsList(temp)
           setItems(JSON.parse(JSON.stringify(items)))
+          console.log("ITEMS FOR DELETE")
+          console.log(items)
+          // groupOrders(items)
         }
       }
 
@@ -185,7 +190,7 @@ const LiveOrdersPage = () => {
   }, []);
 
   const handleSend = (table_id, item_id) => {
-    // console.log("HANDLE SEND")
+    console.log("HANDLE SEND")
     if(ws) {
       ws.send(JSON.stringify({
         'restaurant': false,
@@ -197,8 +202,11 @@ const LiveOrdersPage = () => {
   }
 
   const handleDelete = (table_id, item_id) => {
-    // console.log("HANDLE DELETE")
+    console.log("HANDLE DELETE")
+    console.log(table_id)
+    console.log(item_id)
     if(ws) {
+      console.log("sending message")
       ws.send(JSON.stringify({
         'restaurant': false,
         'table_id': table_id,
@@ -219,6 +227,65 @@ const LiveOrdersPage = () => {
       }
   }
 
+  const groupOrders = () => {
+    let prev_id = -1
+    let result = []
+    let groupedItems = []
+    console.log(itemsList)
+    // console.log(itemsList[0])
+    // console.log(typeof itemsList)
+    // console.log(typeof itemsList[0])
+    for (let i=0; i < itemsList.length; i++) {
+      console.log("GOT HERE F")
+      console.log(itemsList[i])
+
+      if (prev_id != itemsList[i].order_id) {
+        if (groupedItems.length != 0) {
+          result.push(groupedItems) 
+        }
+        console.log(itemsList[i])
+        prev_id = itemsList[i].order_id
+        console.log("ORDER IDs")
+        console.log(itemsList[i].order_id)
+        console.log(prev_id)
+        groupedItems = []
+        groupedItems.push(itemsList[i])
+      } else {
+        console.log("ELSE ORDER IDs")
+        console.log(itemsList[i])
+        groupedItems.push(itemsList[i])
+      }
+    }
+
+    if (groupedItems.length != 0) {
+      result.push(groupedItems) 
+    }
+
+    // const result = itemsList.reduce((accumulator, currentValue) => {
+    //   const group = accumulator.find(group => group[0].order_id === currentValue.name);
+    //   if (group) {
+    //     group.push(currentValue);
+    //   } else {
+    //     accumulator.push([currentValue]);
+    //   }
+    //   return accumulator;
+    // }, []);
+
+
+
+    console.log('grouped items list')
+
+
+    console.log(result)
+    setGroupedItemsList(result)
+  }
+
+  useEffect(()=> {
+    if(itemsList && itemsList.length != 0) {
+      groupOrders()
+    }
+  }, [itemsList])
+
   return (
     <div>
       <Navbar />
@@ -236,8 +303,8 @@ const LiveOrdersPage = () => {
       {orderModalRef.current && 
         <LiveOrderPopUp 
           toggleModal={toggleOrderModal} 
-          item={itemsList.find(item => item.id === selectedItemID)} 
-          table={allTables.find(table => table['id'] === (itemsList.find(item => item.id === selectedItemID)['table_id']))}
+          items={groupedItemsList.find(items => items[0].order_id === selectedOrderID)} 
+          table={allTables.find(table => table['id'] === (itemsList.find(item => item.order_id === selectedOrderID)['table_id']))}
           handleDelete={handleDelete}
           handleSend={handleSend}
         />
@@ -317,20 +384,21 @@ const LiveOrdersPage = () => {
                         Live Orders
                     </div>
 
-                    {allTables.length != 0 && itemsList.map((item, index) => {
-                      // console.log("LIVE ORDER BUTTON")
+                    {allTables.length != 0 && groupedItemsList.map((items, index) => {
+                      console.log("LIVE ORDER BUTTON")
+                      console.log(items)
                       // console.log(item.status)
                       return(
-                        (item.status === "ordered" ? 
+                        (items[0].status === "ordered" ? 
                         <LiveOrderButton key={index} 
                           onClick={toggleOrderModal} 
-                          setSelectedItemID={setSelectedItemID}
-                          item={item} 
-                          table={allTables.find(table => table['id'] === item['table_id'])}/> : 
+                          setSelectedOrderID={setSelectedOrderID}
+                          items={items} 
+                          table={allTables.find(table => table['id'] === items[0]['table_id'])}/> : 
                         <></>
                         )
-                      )
-                    })}
+
+                    )})}
             </div>
         </div>
 
