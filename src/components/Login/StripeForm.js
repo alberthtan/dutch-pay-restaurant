@@ -25,6 +25,11 @@ const StripeForm = () => {
             user_id: JSON.parse(userObj).id,
         })
     })
+    .then(response => {
+      if(response.status === 200) {
+        navigate('/home')
+      }
+    })
   }
   
 
@@ -55,8 +60,9 @@ const StripeForm = () => {
   );
 
   const createNewAccount = React.useCallback(async () => {
-    createStripeManager()
-    navigate("/home");
+    setIsLoggedIn(true)
+    createStripeManager();
+    // navigate("/home");
     // console.log("register")
   }, [form, handleSubmission]);
 
