@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState} from 'react'
 import { useNavigate } from "react-router-dom";
 import { Form, Layout, Typography, Button } from "antd";
 import Navbar from '../components/Navbar/Navbar';
@@ -8,11 +8,26 @@ import ViewPastOrders from '../components/ViewPastOrders'
 const { Title } = Typography;
 
 const OrderHistoryPage = () => {
+  const [pastOrders, setPastOrders] = useState([])
+
   let navigate = useNavigate();
 
-  const getPastOrders = () => {
-    return fetch("/receipts").then()
+  const getPastOrders = async () => {
+    let userObj = JSON.parse(localStorage.getItem('userObj'))
+    return fetch("/receipts").then(
+      response => response.json()
+    ).then(
+      json => {
+        console.log(json)
+        let result = json.filter(receipt => receipt['restaurant'] == userObj['restaurant'])
+        setPastOrders(result)
+      }
+    )
   }
+
+  useEffect(() =>{
+    getPastOrders()
+  },[])
 
   return (
     <div>
@@ -22,16 +37,17 @@ const OrderHistoryPage = () => {
 
         <div style={{flexDirection:'column', width: '100%'}}>
 
-        <div style={{marginLeft: '30px', display: 'flex', width: '100%', height: 100, alignItems: 'center'}}>
-              <div style={styles.headerBarContainer}>
+        <div style={styles.headerBarContainer}>
      
-                    <div 
-                      style={styles.headerBarGreenItem}>
-                      Order History
-                    </div>
-                </div>
-            </div>
+     <div 
+       style={styles.headerBarGreenItem}>
+       Order History
+     </div>
+ </div>
 
+        <div style={{marginLeft: '30px', display: 'flex', width: '100%', height: 100, alignItems: 'center'}}>
+            </div>
+            {(pastOrders.length != 0) &&
             <div style={{
                     display: 'flex',
                     width: '100%',
@@ -52,10 +68,16 @@ const OrderHistoryPage = () => {
                           <ViewMenus menuId={menu.id} menuName={menu.name} activeMenu={activeMenu} setActiveMenu={setActiveMenu} restaurant={restaurant}/>
                         )
                       })} */}
-                      <ViewPastOrders/>
+                      {pastOrders.map((receipt, index) => {
+                        console.log(receipt)
+                        return(
+                      <ViewPastOrders receipt={receipt} navigate={navigate}/>
+                      )
+                      })}
 
 
                 </div>
+          }
 
         </div>
 

@@ -1,29 +1,37 @@
 import React, {useState, useEffect} from 'react'
 
-const ViewPastOrders = ({menuId, menuName, activeMenu, setActiveMenu, restaurant}) => {
+const ViewPastOrders = ({receipt, navigate}) => {
 
-    // console.log(menuId == activeMenu)
+    const getFormattedDate = (timestamp) => {
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
+        const daySuffix = ["st", "nd", "rd", "th", "th", "th", "th", "th", "th", "th",
+            "th", "th", "th", "th", "th", "th", "th", "th", "th", "th",
+            "st", "nd", "rd", "th", "th", "th", "th", "th", "th", "th",
+            "st"];
+        const date = new Date(timestamp);
+        const month = monthNames[date.getMonth()];
+        const day = date.getDate();
+        const year = date.getFullYear();
+        const dayWithSuffix = day + daySuffix[day - 1];
+        const formattedDate = `${month} ${dayWithSuffix}, ${year}`;
+        return formattedDate
+    }
 
-    // const updateActiveMenu = async (id) => {
-    //     let formdata = new FormData();
-    //     formdata.append("active_menu", id)
-    //     return fetch('/restaurants/' + restaurant.id + '/', {
-    //         method: 'PATCH',
-    //         headers: {
-    //           Accept: '*/*',
-    //           'Accept-Encoding': 'gzip,deflate,br',
-    //           Connection: 'keep-alive',
-    //           // Authorization: authorization
-    //         },
-    //         body: formdata
-    //       })
-    //       .then(
-    //         response => response.json()
-    //       )
-    //       .then(json => {
-    //         console.log(json)
-    //       })
-    // }
+    const getFormattedTime = (timestamp) => {
+        const date = new Date(timestamp);
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        
+        // Convert the hours from a 24-hour format to a 12-hour format
+        const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+        
+        // Determine whether it's AM or PM
+        const amOrPm = hours < 12 ? "am" : "pm";
+        
+        const formattedTime = `${formattedHours}:${minutes.toString().padStart(2, "0")} ${amOrPm}`;
+        return formattedTime
+    }
 
     return (
         <div style={{
@@ -36,7 +44,9 @@ const ViewPastOrders = ({menuId, menuName, activeMenu, setActiveMenu, restaurant
             // borderRadius: 15, 
             flexDirection: 'row', 
             alignItems: 'center', 
-            justiyContent: 'center'}}>
+            justiyContent: 'center'}}
+            onDoubleClick={() => {navigate('/past-order/' + receipt.id, {state: {receipt: receipt}})}}
+            >
 
             <div style={{
                 display: 'flex', 
@@ -45,11 +55,11 @@ const ViewPastOrders = ({menuId, menuName, activeMenu, setActiveMenu, restaurant
                 <div style={{marginLeft: 50,}}>
                     <div style={{ fontSize: 20, marginBottom: 10,}}>
                     {/* {menuName} */}
-                    Order: #12345
+                    Order: #{receipt.id}
                     </div>
 
                     <div style={{fontSize: 11, paddingLeft: 15,}}>
-                        June 6, 2022 at 12:30pm
+                        {getFormattedDate(receipt.timestamp)} at {getFormattedTime(receipt.timestamp)}
                     </div>
                 </div>
             </div>
