@@ -9,10 +9,8 @@ const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) =
     const [tableCleared, setTableCleared] = useState(false)
     // const [isError, setIsError] = useState(false)
 
-    const createReceipt = async (user, timestamp, cart, restaurant_id) => {
+    const createReceipt = async (user, timestamp, cart, restaurant_id, subtotal_amount, tip_amount, tax_amount, payment_method_id) => {
       // console.log(typeof cart)
-      console.log(typeof restaurant_id)
-      console.log(cart)
       return fetch('/receipts/', {
         method: 'POST',
         headers: {
@@ -23,7 +21,11 @@ const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) =
           user: user,
           timestamp: timestamp,
           cart_string: cart,
-          restaurant: restaurant_id
+          restaurant: restaurant_id,
+          subtotal: subtotal_amount,
+          tip: tip_amount,
+          tax: tax_amount,
+          payment_method_id: payment_method_id,
       }),
       })
       .then(
@@ -67,14 +69,41 @@ const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) =
         // Process Stripe Payments
         for (const user in user_receipts) {
           let subtotal = 0
+
+          // Calculate subtotal
           for (let i=0; i < user_receipts[user].length; i++) {
             let item_price = user_receipts[user][i]["item"]["price"] / (user_receipts[user][i].sharedBy.length + 1)
             subtotal += parseFloat(item_price)
           }
+
+          console.log("CALCULATING TIP")
+          let orderIds = new Set(); // Use a Set to keep track of unique order IDs
+          let totalTip = 0;
+          
+          // Loop through each item
+          user_receipts[user].forEach(item => {
+            if (!orderIds.has(item.order_id)) { // Check if this is a new order
+              totalTip += parseInt(item.tip_amount); // Add the tip amount to the total
+              orderIds.add(item.order_id); // Add the order ID to the Set
+            }
+          });
+          
+          console.log(totalTip)
+
+          // Calculate tax
+          let tax_rate = 0.11 // FOR NOW
+          let tax = subtotal * tax_rate
+
+          
           
           const accessToken = localStorage.getItem("access")
+          console.log("subtotal amount: " + subtotal)
+          console.log("tip amount: " + totalTip)
+          console.log("tax amount: " + tax)
+          let total = subtotal + totalTip + tax
+          console.log("total: " + total)
+
           // Process payment
-  
           try {
             fetch('/create-payment/', {
               method: 'POST',
@@ -84,23 +113,33 @@ const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) =
               },
               body: JSON.stringify({
                 user_id: user,
-                amount: subtotal * 100,
+                amount: total * 100,
                 currency: 'usd',
                 restaurant_id: JSON.parse(localStorage.getItem("userObj"))["restaurant"]
               }),
             })
-            .then(response => {
-              console.log(response.status)
-              if(response.status !== 201) {
+            .then(response => response.json())
+            .then(json => {
+              console.log("creating payment")
+              console.log(json)
+              if(!json.hasOwnProperty("payment_method_id")) {
                 // setIsError(true)
                 alert("Error in payments for user " + user)
               } else {
                 const date = new Date();
                 const isoDateTime = date.toISOString();
-                createReceipt(user, isoDateTime, JSON.stringify(user_receipts[user]), 
-                JSON.parse(localStorage.getItem("userObj"))["restaurant"])
+                let payment_method_id = json["payment_method_id"]
+                createReceipt(
+                  user, 
+                  isoDateTime, 
+                  JSON.stringify(user_receipts[user]), 
+                  JSON.parse(localStorage.getItem("userObj"))["restaurant"],
+                  subtotal,
+                  totalTip,
+                  tax,
+                  payment_method_id,
+                )
               }
-              return response.json();
             })
             .catch(error => {
               console.error('Error fetching data:', error);
