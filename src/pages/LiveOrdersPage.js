@@ -219,6 +219,7 @@ const LiveOrdersPage = () => {
   const clearTable = (table_id) => {
       // Clear Users
       if(ws) {
+        console.log("CLEARed")
         ws.send(JSON.stringify({
           'restaurant': false,
           'table_id': table_id,

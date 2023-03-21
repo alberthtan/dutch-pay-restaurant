@@ -19,6 +19,7 @@ const PastOrderPage = () => {
   const [restaurantDescription, setRestaurantDescription] = useState('')
   const [restaurantAddress, setRestaurantAddress] = useState('')
   const [activeMenu, setActiveMenu] = useState(null)
+  const [paymentMethod, setPaymentMethod] = useState(null)
   const { state } = useLocation();
   let navigate = useNavigate();
 
@@ -66,10 +67,21 @@ const PastOrderPage = () => {
     setModal(!modalRef.current)
   }
 
-  const getPaymentMethod = () => {
-    return fetch('/payment-methods/?stripe_customer=' + stripeCustomer).then(response => response.json()).then(data => {
+  const getPaymentMethod = async () => {
+    const accessToken = localStorage.getItem("access")
+    return fetch('/get_payment_method_from_id/' + state.receipt.payment_method_id, {
+    headers: {
+      Accept: '*/*',
+      'Accept-Encoding': 'gzip,deflate,br',
+      Connection: 'keep-alive',
+      Authorization: `Bearer ${accessToken}`,
+    }})
+    .then(response => response.json())
+    .then(json => {
         console.log("HERE")
-        console.log(data)
+        console.log(json)
+        console.log(typeof json.payment_method)
+        setPaymentMethod(json.payment_method)
     })
   }
 
@@ -249,8 +261,31 @@ const PastOrderPage = () => {
             <div style={{fontSize: 18,
         fontWeight: 'bold',
         padding: '5px', paddingTop: 50}}>
-                Total
+                Subtotal: ${state.receipt.subtotal}
             </div>
+            <div style={{fontSize: 18,
+        fontWeight: 'bold',
+        padding: '5px', paddingTop: 50}}>
+                Tax: ${state.receipt.tax}
+            </div>
+            <div style={{fontSize: 18,
+        fontWeight: 'bold',
+        padding: '5px', paddingTop: 50}}>
+                Total: ${parseFloat(state.receipt.subtotal) + parseFloat(state.receipt.tax)}
+            </div>
+            <div style={{fontSize: 18,
+        fontWeight: 'bold',
+        padding: '5px', paddingTop: 50}}>
+                Tip: ${state.receipt.tip}
+            </div>
+
+            {paymentMethod && 
+            <div style={{fontSize: 18,
+              fontWeight: 'bold',
+              padding: '5px', paddingTop: 50}}>
+                Payment Method: **** **** **** {paymentMethod.last4}
+            </div>
+                  }
         </div>
       </div>
         
