@@ -113,7 +113,7 @@ const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) =
               },
               body: JSON.stringify({
                 user_id: user,
-                amount: total * 100,
+                amount: Math.round(total * 100),
                 currency: 'usd',
                 restaurant_id: JSON.parse(localStorage.getItem("userObj"))["restaurant"]
               }),
