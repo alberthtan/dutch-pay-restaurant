@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react'
 import '../../layout.css'
-// import {QRCodeCanvas} from 'qrcode.react'
 import QRCode from 'react-qr-code'
 import html2canvas from 'html2canvas';
 
