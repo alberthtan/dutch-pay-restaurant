@@ -1,7 +1,6 @@
-import React, { useState, useContext } from "react";
-import { Form, Typography, Input, Button, InputNumber } from "antd";
+import React from "react";
+import { Form, Typography, Input, Button } from "antd";
 import "../../layout.css";
-// import ProjectUtil from "../utils/ProjectUtil";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = ({setEmail, setIsVerified}) => {

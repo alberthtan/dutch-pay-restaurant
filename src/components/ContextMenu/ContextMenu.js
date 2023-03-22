@@ -1,10 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Layout } from "antd";
 import '../../layout.css'
-
-// import { UserOutlined, DownOutlined } from "@ant-design/icons";
-// import jwt_decode from "jwt-decode";
-// import "antd/dist/antd.css";
 
 import removeIcon from '../../assets/icons/trash.png'
 import editIcon from '../../assets/icons/edit.png'

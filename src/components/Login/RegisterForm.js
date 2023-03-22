@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Form, Typography, Input, Button, Select, InputNumber } from "antd";
+import React from "react";
+import { Form, Typography, Input, Button, Select } from "antd";
 import "../../layout.css";
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
-// import ProjectUtil from "../utils/ProjectUtil";
 import { useNavigate } from "react-router-dom";
 
 const RegisterForm = ({setEmail, setFirstName, setLastName, setPhoneNumber, setIsVerified}) => {

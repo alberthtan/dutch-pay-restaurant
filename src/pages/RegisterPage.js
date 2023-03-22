@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Breadcrumb, Layout, Menu, Typography } from "antd";
+import { Layout } from "antd";
 import { Navigate } from "react-router-dom";
 import VerifyRegisterForm from "../components/Login/VerifyRegisterForm"
 
@@ -8,9 +8,6 @@ import StripeForm from "../components/Login/StripeForm";
 
 import { useNavigate } from "react-router-dom";
 import { Context } from "../globalContext/globalContext";
-
-const { Header, Content, Sider } = Layout;
-const { Title } = Typography;
 
 
 const RegisterPage = () => {

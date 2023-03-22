@@ -1,14 +1,9 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState} from 'react'
 import '../Modal.css'
-// import ImageUploading
 
 const TablePopUp = ({toggleModal, getTables}) => {
 
   const [newTable, setNewTable] = useState('')
-  console.log("here")
-
-  // let headers = new Headers();
-  // headers.append('Access-Control-Allow-Origin', 'http://localhost:3000');
 
 const createNewTable = async () => {
   return fetch('/tables/', {

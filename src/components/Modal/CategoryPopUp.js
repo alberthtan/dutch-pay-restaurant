@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import '../Modal.css'
 
-const CategoryPopUp = ({toggled, toggleModal, menuId, getCategories}) => {
+const CategoryPopUp = ({toggleModal, menuId, getCategories}) => {
     const [newCategory, setNewCategory] = useState('')
   
     const createNewCategory = async () => {

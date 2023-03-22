@@ -1,10 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Layout } from "antd";
 import '../../layout.css'
 
 
 import removeIcon from '../../assets/icons/trash.png'
-import duplicateIcon from '../../assets/icons/duplicate.png'
 import viewIcon from '../../assets/icons/view.png'
 
 function ItemContextMenu({x, y, yOffset, handleEdit, handleDelete,}) {

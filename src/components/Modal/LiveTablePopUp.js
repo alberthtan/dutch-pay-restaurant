@@ -1,7 +1,5 @@
-import React, {useState, useEffect} from 'react'
-import { v4 } from 'uuid'
+import React, {useState} from 'react'
 import '../Modal.css'
-// import ReactImagePickerEditor, { ImagePickerConf } from 'react-image-picker-editor';
 
 const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) => {
     console.log(items)

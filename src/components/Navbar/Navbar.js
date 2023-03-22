@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { Layout, Menu, Dropdown } from "antd";
-import { DownOutlined } from "@ant-design/icons";
 
 import { useNavigate } from "react-router-dom";
 import { Context } from "../../globalContext/globalContext";

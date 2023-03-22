@@ -1,14 +1,11 @@
-import React, { useState, useContext } from "react";
-import { Form, Typography, Input, Button, Select, InputNumber } from "antd";
+import React from "react";
+import { Form, Typography, Input, Button } from "antd";
 import "../../layout.css";
 import { useNavigate } from "react-router-dom";
-import { Context } from "../../globalContext/globalContext";
 
 const VerifyRegisterForm = ({email, firstName, lastName, phoneNumber, setIsVerified2}) => {
-  const globalContext = useContext(Context);
-  const { setIsLoggedIn } = globalContext;
   const [form] = Form.useForm();
-  const { Title, Text } = Typography;
+  const { Title } = Typography;
 
   const navigate = useNavigate();
 

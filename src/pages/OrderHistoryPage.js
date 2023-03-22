@@ -1,11 +1,9 @@
 import React, { useEffect, useState} from 'react'
 import { useNavigate } from "react-router-dom";
-import { Form, Layout, Typography, Button } from "antd";
+import { Layout } from "antd";
 import Navbar from '../components/Navbar/Navbar';
 import SideNavbar from '../components/Navbar/SideNavbar';
 import ViewPastOrders from '../components/ViewPastOrders'
-
-const { Title } = Typography;
 
 const OrderHistoryPage = () => {
   const [pastOrders, setPastOrders] = useState([])
