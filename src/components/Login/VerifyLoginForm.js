@@ -4,8 +4,6 @@ import "../../layout.css";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../../globalContext/globalContext";
 
-// const axios = require("axios").default;
-
 const VerifyLoginForm = ({email}) => {
   const globalContext = useContext(Context);
   const { setIsLoggedIn } = globalContext;

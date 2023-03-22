@@ -6,8 +6,6 @@ import PhoneInput from 'react-phone-number-input'
 // import ProjectUtil from "../utils/ProjectUtil";
 import { useNavigate } from "react-router-dom";
 
-// const axios = require("axios").default;
-
 const RegisterForm = ({setEmail, setFirstName, setLastName, setPhoneNumber, setIsVerified}) => {
   const [form] = Form.useForm();
   const { Title, Text } = Typography;
