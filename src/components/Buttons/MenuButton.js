@@ -60,7 +60,7 @@ const MenuButton = ({selectedMenuID, setSelectedMenuID, menu, navigate}) => {
 
     return (
         <div 
-            style={(selectedMenuID == menu.id) ? (selectedStyle): (unselectedStyle)}
+            style={(selectedMenuID === menu.id) ? (selectedStyle): (unselectedStyle)}
             className="menuCard outline"
             onClick={() => {
                 setSelectedMenuID(menu.id)

@@ -24,7 +24,7 @@ const LiveOrderPopUp = ({toggleModal, items, table, handleDelete, handleSend}) =
                       onClick={() => {
                         // toggleModal()
                         console.log(item.id)
-                        if(items.length == 1) {
+                        if(items.length === 1) {
                           toggleModal()
                           handleDelete(table.id, item.id)
                         } else {
@@ -51,7 +51,7 @@ const LiveOrderPopUp = ({toggleModal, items, table, handleDelete, handleSend}) =
                   // toggleModal()
 
                   for(let i=0; i<items.length; i++) {
-                    if(i==items.length-1) {
+                    if(i===items.length-1) {
                       toggleModal()
                       handleSend(table.id, items[i].id)
                     } else {

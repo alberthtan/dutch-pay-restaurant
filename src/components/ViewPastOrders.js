@@ -64,26 +64,6 @@ const ViewPastOrders = ({receipt, navigate}) => {
                 </div>
             </div>
 
-            {/* {(menuId == activeMenu) ? 
-                (<div style={styles.activeButton}
-                    onClick={() => {
-                        // setActiveMenu("")
-                        // updateActiveMenu("")
-                    }}
-                    >
-                        View Receipt
-                </div>):
-                <div style={styles.inactiveButton}
-                    onClick={() => {
-                        // setActiveMenu(menuId)
-                        // updateActiveMenu(menuId)
-                    }}
-                    >
-                        View Receipt
-                </div>
-            } */}
-            
-
     </div>
     )
 }

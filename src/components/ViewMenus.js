@@ -2,8 +2,6 @@ import React, {useState, useEffect} from 'react'
 
 const ViewMenus = ({menuId, menuName, activeMenu, setActiveMenu, restaurant}) => {
 
-    // console.log(menuId == activeMenu)
-
     const updateActiveMenu = async (id) => {
         let formdata = new FormData();
         formdata.append("active_menu", id)
@@ -53,7 +51,7 @@ const ViewMenus = ({menuId, menuName, activeMenu, setActiveMenu, restaurant}) =>
                 </div>
             </div>
 
-            {(menuId == activeMenu) ? 
+            {(menuId === activeMenu) ? 
                 (<div style={styles.activeButton}
                     onClick={() => {
                         setActiveMenu("")

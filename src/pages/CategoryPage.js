@@ -76,7 +76,7 @@ const CategoryPage = () => {
       })
       .then((response) => response.json())
       .then(json => {
-        let result = json.filter(category => category['menu'] == menuId)
+        let result = json.filter(category => category['menu'] === menuId)
         setAllCategories(result)})
     }
 

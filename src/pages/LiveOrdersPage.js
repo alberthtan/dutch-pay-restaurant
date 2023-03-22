@@ -240,8 +240,8 @@ const LiveOrdersPage = () => {
       console.log("GOT HERE F")
       console.log(itemsList[i])
 
-      if (prev_id != itemsList[i].order_id) {
-        if (groupedItems.length != 0) {
+      if (prev_id !== itemsList[i].order_id) {
+        if (groupedItems.length !== 0) {
           result.push(groupedItems) 
         }
         console.log(itemsList[i])
@@ -258,7 +258,7 @@ const LiveOrdersPage = () => {
       }
     }
 
-    if (groupedItems.length != 0) {
+    if (groupedItems.length !== 0) {
       result.push(groupedItems) 
     }
 
@@ -282,7 +282,7 @@ const LiveOrdersPage = () => {
   }
 
   useEffect(()=> {
-    if(itemsList && itemsList.length != 0) {
+    if(itemsList && itemsList.length !== 0) {
       groupOrders()
     }
   }, [itemsList])
@@ -385,7 +385,7 @@ const LiveOrdersPage = () => {
                         Live Orders
                     </div>
 
-                    {allTables.length != 0 && groupedItemsList.map((items, index) => {
+                    {allTables.length !== 0 && groupedItemsList.map((items, index) => {
                       console.log("LIVE ORDER BUTTON")
                       console.log(items)
                       // console.log(item.status)

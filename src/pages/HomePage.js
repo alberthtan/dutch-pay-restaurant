@@ -283,7 +283,7 @@ const HomePage = () => {
                 </Button>
               </Form.Item>
 
-              {(allMenus.length != 0) &&
+              {(allMenus.length !== 0) &&
                 <div style={{
                     display: 'flex',
                     width: '100%',

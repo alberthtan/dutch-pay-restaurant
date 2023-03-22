@@ -12,7 +12,7 @@ function getWindowDimensions() {
 const CategoryButton = ({menu, category, selectedCategoryID, setSelectedCategoryID, navigate, width}) => {
   return (
     <div 
-    style={(selectedCategoryID == category.id) ? styles.selected : styles.unselected}
+    style={(selectedCategoryID === category.id) ? styles.selected : styles.unselected}
         className="categoryButton outline"
         onClick={() => {
             setSelectedCategoryID(category.id)

@@ -81,7 +81,7 @@ const TableButton = ({selectedTableId, setSelectedTableId, table, navigate}) => 
 
     return (
         <div 
-            style={(selectedTableId == table.id) ? (selectedStyle): (unselectedStyle)}
+            style={(selectedTableId === table.id) ? (selectedStyle): (unselectedStyle)}
             className="tableCard outline"
             onClick={() => {
                 setSelectedTableId(table.id)

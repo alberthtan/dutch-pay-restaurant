@@ -171,7 +171,7 @@ const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) =
 
 
             {items && items.map((item, index) => {
-                if(item.status == "received") {
+                if(item.status === "received") {
                   return(
                     <div key={index} 
                       style={{display: 'flex', flexDirection: 'row'}}>

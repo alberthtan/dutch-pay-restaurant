@@ -47,7 +47,7 @@ const OrderHistoryPage = () => {
 
         <div style={{marginLeft: '30px', display: 'flex', width: '100%', height: 100, alignItems: 'center'}}>
             </div>
-            {(pastOrders.length != 0) &&
+            {(pastOrders.length !== 0) &&
             <div style={{
                     display: 'flex',
                     width: '100%',
