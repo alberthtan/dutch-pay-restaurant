@@ -37,7 +37,7 @@ function useWindowDimensions() {
 
 const TablePage = () => {
   let navigate = useNavigate();
-  const { height, width } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   const [allTables, setAllTables] = useState([])
   const [rightClicked, setRightClicked] = useState(false);

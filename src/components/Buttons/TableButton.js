@@ -27,13 +27,8 @@ function useWindowDimensions() {
   }
 
 const TableButton = ({selectedTableId, setSelectedTableId, table, navigate}) => {
-    const { height, width } = useWindowDimensions();
-    const [clicked, setClicked] = useState(false);
-    const [points, setPoints] = useState({
-        x: 0,
-        y: 0,
-    });
-
+    const { width } = useWindowDimensions();
+    
     let selectedStyle = {
         width: width * 0.15,
         height: width * 0.15,

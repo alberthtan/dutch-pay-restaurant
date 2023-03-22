@@ -25,7 +25,7 @@ function useWindowDimensions() {
   }
 
 const LiveTableButton = ({table, onClick, setSelectedTableID}) => {
-    const { height, width } = useWindowDimensions();
+    const { width } = useWindowDimensions();
 
     let liveTableStyle = {
         width: width * 0.15,
