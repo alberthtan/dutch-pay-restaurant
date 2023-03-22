@@ -67,7 +67,7 @@ const PastOrderPage = () => {
 
   const getPaymentMethod = async () => {
     const accessToken = localStorage.getItem("access")
-    return fetch('/get_payment_method_from_id/' + state.receipt.payment_method_id, {
+    return fetch('https://dutch-pay-test.herokuapp.com/get_payment_method_from_id/' + state.receipt.payment_method_id, {
     headers: {
       Accept: '*/*',
       'Accept-Encoding': 'gzip,deflate,br',
@@ -84,7 +84,7 @@ const PastOrderPage = () => {
   }
 
   const getStripeCustomer = async () => {
-    return fetch('/stripe-customers/' + state.receipt.user + '/',
+    return fetch('https://dutch-pay-test.herokuapp.com/stripe-customers/' + state.receipt.user + '/',
     {
         method: 'GET',
     }).then(response => response.json())
@@ -103,7 +103,7 @@ const PastOrderPage = () => {
 
   const getMenus = async () => {
     let userObj = JSON.parse(localStorage.getItem('userObj'))
-    return fetch('/menus/', 
+    return fetch('https://dutch-pay-test.herokuapp.com/menus/', 
     {
       method: 'GET',
     }).then((response) => response.json())
@@ -117,7 +117,7 @@ const PastOrderPage = () => {
 
   const getRestaurant = async () => {
     let userObj = JSON.parse(localStorage.getItem('userObj'))
-    return fetch('/restaurants/' + userObj["restaurant"] + '/', 
+    return fetch('https://dutch-pay-test.herokuapp.com/restaurants/' + userObj["restaurant"] + '/', 
     {
       method: 'GET',
     }).then((response) => response.json())
@@ -135,7 +135,7 @@ const PastOrderPage = () => {
     let formdata = new FormData();
     formdata.append("active_menu", "")
     setActiveMenu("")
-    return fetch('/restaurants/' + restaurant.id + '/', {
+    return fetch('https://dutch-pay-test.herokuapp.com/restaurants/' + restaurant.id + '/', {
         method: 'PATCH',
         headers: {
           Accept: '*/*',

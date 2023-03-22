@@ -6,7 +6,7 @@ const RenameMenuPopUp = ({toggleModal, getMenus, menu}) => {
     const [newMenu, setNewMenu] = useState(menu.name)
 
     const renameMenu = async () => {
-    return fetch('/menus/' + menu.id + '/', {
+    return fetch('https://dutch-pay-test.herokuapp.com/menus/' + menu.id + '/', {
         method: 'PATCH',
         headers: {
         'Accept': 'application/json',

@@ -13,7 +13,7 @@ const StripeForm = () => {
 
   const createStripeManager = () => {
     let userObj = localStorage.getItem("userObj")
-    fetch('/create-stripe-manager/', {
+    fetch('https://dutch-pay-test.herokuapp.com/create-stripe-manager/', {
       method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -35,7 +35,7 @@ const StripeForm = () => {
   const redirect = () => {
     let userObj = localStorage.getItem("userObj")
     localStorage.setItem('stripe_connect_in_progress', true);
-    fetch('/connect_seller/' + JSON.parse(userObj).id + '/', {
+    fetch('https://dutch-pay-test.herokuapp.com/connect_seller/' + JSON.parse(userObj).id + '/', {
       method: 'GET',
     })
     .then(response => response.text())

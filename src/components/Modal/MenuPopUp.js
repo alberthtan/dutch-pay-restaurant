@@ -6,7 +6,7 @@ const MenuPopUp = ({toggleModal, getMenus}) => {
   const [newMenu, setNewMenu] = useState('')
 
 const createNewMenu = async () => {
-  return fetch('/menus/', {
+  return fetch('https://dutch-pay-test.herokuapp.com/menus/', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',

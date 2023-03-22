@@ -72,7 +72,7 @@ const ItemsPage = () => {
     }
 
     const getMenuItems = async () => {
-      return fetch('/menu-items/', 
+      return fetch('https://dutch-pay-test.herokuapp.com/menu-items/', 
       {
         method: 'GET',
       })
@@ -99,7 +99,7 @@ const ItemsPage = () => {
       allItems.splice(index, 1)
       setAllItems(allItems)
   
-      return fetch('/menu-items/' + selectedItemID + '/', 
+      return fetch('https://dutch-pay-test.herokuapp.com/menu-items/' + selectedItemID + '/', 
       {
         method: 'DELETE',
       })

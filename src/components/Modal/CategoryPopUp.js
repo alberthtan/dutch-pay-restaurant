@@ -5,7 +5,7 @@ const CategoryPopUp = ({toggleModal, menuId, getCategories}) => {
     const [newCategory, setNewCategory] = useState('')
   
     const createNewCategory = async () => {
-        return fetch('/categories/', {
+        return fetch('https://dutch-pay-test.herokuapp.com/categories/', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',

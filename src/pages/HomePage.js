@@ -28,7 +28,7 @@ const HomePage = () => {
 
   const getMenus = async () => {
     let userObj = JSON.parse(localStorage.getItem('userObj'))
-    return fetch('/menus/', 
+    return fetch('https://dutch-pay-test.herokuapp.com/menus/', 
     {
       method: 'GET',
     }).then((response) => response.json())
@@ -42,7 +42,7 @@ const HomePage = () => {
 
   const getRestaurant = async () => {
     let userObj = JSON.parse(localStorage.getItem('userObj'))
-    return fetch('/restaurants/' + userObj["restaurant"] + '/', 
+    return fetch('https://dutch-pay-test.herokuapp.com/restaurants/' + userObj["restaurant"] + '/', 
     {
       method: 'GET',
     }).then((response) => response.json())
@@ -60,7 +60,7 @@ const HomePage = () => {
     let formdata = new FormData();
     formdata.append("active_menu", "")
     setActiveMenu("")
-    return fetch('/restaurants/' + restaurant.id + '/', {
+    return fetch('https://dutch-pay-test.herokuapp.com/restaurants/' + restaurant.id + '/', {
         method: 'PATCH',
         headers: {
           Accept: '*/*',

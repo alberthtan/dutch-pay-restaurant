@@ -7,7 +7,7 @@ const RenameCategoryPopUp= ({toggleModal, getCategories, category}) => {
 
 
 const renameCategory = async () => {
-  return fetch('/categories/' + category.id + '/', {
+  return fetch('https://dutch-pay-test.herokuapp.com/categories/' + category.id + '/', {
     method: 'PATCH',
     headers: {
       'Accept': 'application/json',

@@ -6,7 +6,7 @@ const TablePopUp = ({toggleModal, getTables}) => {
   const [newTable, setNewTable] = useState('')
 
 const createNewTable = async () => {
-  return fetch('/tables/', {
+  return fetch('https://dutch-pay-test.herokuapp.com/tables/', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',

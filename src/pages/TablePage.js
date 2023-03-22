@@ -77,7 +77,7 @@ const TablePage = () => {
     allTables.splice(index, 1)
     setAllTables(allTables)
 
-    return fetch('/tables/' + selectedTableId + '/', 
+    return fetch('https://dutch-pay-test.herokuapp.com/tables/' + selectedTableId + '/', 
     {
       method: 'DELETE',
     })
@@ -113,7 +113,7 @@ const TablePage = () => {
 
   const getTables = async () => {
     let userObj = JSON.parse(localStorage.getItem('userObj'))
-    return fetch('/tables/',
+    return fetch('https://dutch-pay-test.herokuapp.com/tables/',
     {
       method: 'GET',
     }).then((response) => response.json())

@@ -22,7 +22,7 @@ const VerifyLoginForm = ({email}) => {
     console.log(email)
     try {
       values = await form.validateFields(); // Validate the form fields
-      return fetch('/manager-login-verify-email-code/', {
+      return fetch('https://dutch-pay-test.herokuapp.com/manager-login-verify-email-code/', {
         method: 'PATCH',
         headers: {
           Accept: 'application/json',

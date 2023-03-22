@@ -13,7 +13,7 @@ const VerifyRegisterForm = ({email, firstName, lastName, phoneNumber, setIsVerif
   const onSubmitRegister = React.useCallback(async () => {
     let restaurantId
     // console.log(values.code)
-    return fetch('/restaurants/', {
+    return fetch('https://dutch-pay-test.herokuapp.com/restaurants/', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -32,7 +32,7 @@ const VerifyRegisterForm = ({email, firstName, lastName, phoneNumber, setIsVerif
     if(restaurantId){
       try {
         values = await form.validateFields(); // Validate the form fields
-        return fetch('/manager-verify-email-code/', {
+        return fetch('https://dutch-pay-test.herokuapp.com/manager-verify-email-code/', {
           method: 'PATCH',
           headers: {
             Accept: 'application/json',

@@ -51,7 +51,7 @@ const ProfilePopUp = ({toggled, toggleModal, restaurant, getRestaurant}) => {
         console.log("edit restaurant")
         console.log(email)
         
-        return fetch('/restaurants/' + restaurant.id + '/', {
+        return fetch('https://dutch-pay-test.herokuapp.com/restaurants/' + restaurant.id + '/', {
           method: 'PATCH',
           headers: {
             Accept: '*/*',

@@ -61,7 +61,7 @@ const LiveOrdersPage = () => {
       console.log('opening ws in camera')
       let userObj = JSON.parse(localStorage.getItem('userObj'))
 
-      fetch('/tables/',
+      fetch('https://dutch-pay-test.herokuapp.com/tables/',
           {
             method: 'GET',
           }).then((response) => response.json())

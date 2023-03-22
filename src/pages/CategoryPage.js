@@ -70,7 +70,7 @@ const CategoryPage = () => {
     }
 
     const getCategories = async () => {
-      return fetch('/categories/', 
+      return fetch('https://dutch-pay-test.herokuapp.com/categories/', 
       {
         method: 'GET',
       })
@@ -90,7 +90,7 @@ const CategoryPage = () => {
       allCategories.splice(index, 1)
       setAllCategories(allCategories)
   
-      return fetch('/categories/' + selectedCategoryID + '/', 
+      return fetch('https://dutch-pay-test.herokuapp.com/categories/' + selectedCategoryID + '/', 
       {
         method: 'DELETE',
       })

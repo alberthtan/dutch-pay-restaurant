@@ -40,7 +40,7 @@ const EditItemPopUp = ({toggleModal, item, getMenuItems}) => {
         formdata.append("itemImage", imageFile, "item-" + v4())
       }
       console.log(imageFile)
-        return fetch('/menu-items/' + item.id + '/', {
+        return fetch('https://dutch-pay-test.herokuapp.com/menu-items/' + item.id + '/', {
           method: 'PATCH',
           headers: {
             Accept: '*/*',

@@ -22,7 +22,7 @@ const Navigator = () => {
     const getUser = async () => {
         let token = localStorage.getItem('access')
         let authorization = "Bearer".concat(" ", token)
-        return fetch('/get-manager', {
+        return fetch('https://dutch-pay-test.herokuapp.com/get-manager', {
           method: 'GET',
           headers: {
             Accept: '*/*',

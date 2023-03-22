@@ -75,7 +75,7 @@ const MenuPage = () => {
     allMenus.splice(index, 1)
     setAllMenus(allMenus)
 
-    return fetch('/menus/' + selectedMenuID + '/', 
+    return fetch('https://dutch-pay-test.herokuapp.com/menus/' + selectedMenuID + '/', 
     {
       method: 'DELETE',
     })
@@ -111,7 +111,7 @@ const MenuPage = () => {
 
   const getMenus = async () => {
     let userObj = JSON.parse(localStorage.getItem('userObj'))
-    return fetch('/menus/', 
+    return fetch('https://dutch-pay-test.herokuapp.com/menus/', 
     {
       method: 'GET',
     }).then((response) => response.json())

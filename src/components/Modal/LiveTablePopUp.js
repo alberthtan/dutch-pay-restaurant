@@ -9,7 +9,7 @@ const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) =
 
     const createReceipt = async (user, timestamp, cart, restaurant_id, subtotal_amount, tip_amount, tax_amount, payment_method_id) => {
       // console.log(typeof cart)
-      return fetch('/receipts/', {
+      return fetch('https://dutch-pay-test.herokuapp.com/receipts/', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -103,7 +103,7 @@ const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) =
 
           // Process payment
           try {
-            fetch('/create-payment/', {
+            fetch('https://dutch-pay-test.herokuapp.com/create-payment/', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

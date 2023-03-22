@@ -20,7 +20,7 @@ const RegisterForm = ({setEmail, setFirstName, setLastName, setPhoneNumber, setI
     try {
       values = await form.validateFields(); // Validate the form fields
       console.log(values);
-      return fetch('/manager-send-email-code/', {
+      return fetch('https://dutch-pay-test.herokuapp.com/manager-send-email-code/', {
         method: 'POST',
         headers: {
             Accept: 'application/json',

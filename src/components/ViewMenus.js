@@ -5,7 +5,7 @@ const ViewMenus = ({menuId, menuName, activeMenu, setActiveMenu, restaurant}) =>
     const updateActiveMenu = async (id) => {
         let formdata = new FormData();
         formdata.append("active_menu", id)
-        return fetch('/restaurants/' + restaurant.id + '/', {
+        return fetch('https://dutch-pay-test.herokuapp.com/restaurants/' + restaurant.id + '/', {
             method: 'PATCH',
             headers: {
               Accept: '*/*',

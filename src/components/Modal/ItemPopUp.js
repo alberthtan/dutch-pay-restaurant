@@ -40,7 +40,7 @@ const ItemPopUp = ({toggled, toggleModal, categoryId, getMenuItems}) => {
       }
       formdata.append("category", categoryId)
       console.log(imageFile)
-        return fetch('/menu-items/', {
+        return fetch('https://dutch-pay-test.herokuapp.com/menu-items/', {
           method: 'POST',
           headers: {
             Accept: '*/*',

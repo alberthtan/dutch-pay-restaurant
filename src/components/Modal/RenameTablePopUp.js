@@ -6,7 +6,7 @@ const RenameTablePopUp = ({toggleModal, getTables, table}) => {
     const [newTable, setNewTable] = useState(table.name)
 
     const renameTable = async () => {
-    return fetch('/tables/' + table.id + '/', {
+    return fetch('https://dutch-pay-test.herokuapp.com/tables/' + table.id + '/', {
         method: 'PATCH',
         headers: {
         'Accept': 'application/json',
