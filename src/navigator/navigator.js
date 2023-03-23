@@ -68,6 +68,7 @@ const Navigator = () => {
                 <>
                     <Route path="/" element={<LoginPage/>} />
                     <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/terms-of-use" element={<TermsPage/>} />
                 </>
                     :
                 <>
@@ -82,7 +83,6 @@ const Navigator = () => {
                     <Route path="/order-history" element={<OrderHistoryPage />} />
                     <Route path="/payment" element={<PaymentPage />} />
                     <Route path="/past-order/:receiptId" element={<PastOrderPage />} />
-                    <Route path="/terms-of-use" element={<TermsPage/>} />
                 </>
                 }
               
