@@ -11,6 +11,7 @@ import ItemsPage from "../pages/ItemsPage";
 import RegisterPage from "../pages/RegisterPage";
 import LiveOrdersPage from "../pages/LiveOrdersPage";
 import PastOrderPage from "../pages/PastOrderPage";
+import TermsPage from "../pages/TermsPage";
 
 import { Context } from "../globalContext/globalContext";
 
@@ -81,6 +82,7 @@ const Navigator = () => {
                     <Route path="/order-history" element={<OrderHistoryPage />} />
                     <Route path="/payment" element={<PaymentPage />} />
                     <Route path="/past-order/:receiptId" element={<PastOrderPage />} />
+                    <Route path="/terms-of-use" element={<TermsPage/>} />
                 </>
                 }
               
