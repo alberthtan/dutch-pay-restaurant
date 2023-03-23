@@ -12,6 +12,7 @@ import RegisterPage from "../pages/RegisterPage";
 import LiveOrdersPage from "../pages/LiveOrdersPage";
 import PastOrderPage from "../pages/PastOrderPage";
 import TermsPage from "../pages/TermsPage";
+import PrivacyPolicyPage from "../pages/PrivacyPolicyPage";
 
 import { Context } from "../globalContext/globalContext";
 
@@ -68,7 +69,6 @@ const Navigator = () => {
                 <>
                     <Route path="/" element={<LoginPage/>} />
                     <Route path="/register" element={<RegisterPage />} />
-                    <Route path="/terms-of-use" element={<TermsPage/>} />
                 </>
                     :
                 <>
@@ -85,6 +85,9 @@ const Navigator = () => {
                     <Route path="/past-order/:receiptId" element={<PastOrderPage />} />
                 </>
                 }
+
+                <Route path="/terms-of-use" element={<TermsPage/>} />
+                <Route path="/privacy-policy" element={<PrivacyPolicyPage/>} />
               
             </Routes>
           </BrowserRouter>
