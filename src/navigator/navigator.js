@@ -13,6 +13,7 @@ import LiveOrdersPage from "../pages/LiveOrdersPage";
 import PastOrderPage from "../pages/PastOrderPage";
 import TermsPage from "../pages/TermsPage";
 import PrivacyPolicyPage from "../pages/PrivacyPolicyPage";
+import LandingPage from "../pages/LandingPage";
 
 import { Context } from "../globalContext/globalContext";
 
@@ -67,12 +68,12 @@ const Navigator = () => {
             <Routes>
                 {(!isLoggedIn) ? 
                 <>
-                    <Route path="/" element={<LoginPage/>} />
+                    <Route path="/login" element={<LoginPage/>} />
                     <Route path="/register" element={<RegisterPage />} />
                 </>
                     :
                 <>
-                    <Route path="/" element={<LoginPage/>} />
+                    <Route path="/login" element={<LoginPage/>} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/home" element={<HomePage/>} />
                     <Route path="/menus" element={<MenuPage/>} />
@@ -85,7 +86,7 @@ const Navigator = () => {
                     <Route path="/past-order/:receiptId" element={<PastOrderPage />} />
                 </>
                 }
-
+                <Route path="/" element={<LandingPage/>}/>
                 <Route path="/terms-of-use" element={<TermsPage/>} />
                 <Route path="/privacy-policy" element={<PrivacyPolicyPage/>} />
               

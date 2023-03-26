@@ -103,7 +103,7 @@ const HomePage = () => {
         <ProfilePopUp toggleModal={toggleModal} getRestaurant={getRestaurant} restaurant={restaurant}/>
       }
 
-      <Layout style={{ minHeight: "100vh" }}>
+      <Layout style={{ minHeight: "100vh", }}>
         <SideNavbar selectedKey={'1'}/>
 
         <div style={styles.container}>
