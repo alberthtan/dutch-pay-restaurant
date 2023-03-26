@@ -98,10 +98,16 @@ const ItemsPage = () => {
       let index = allItems.map(function(item) { return item.id }).indexOf(selectedItemID)
       allItems.splice(index, 1)
       setAllItems(allItems)
-  
+      const accessToken = localStorage.getItem("access")
       return fetch('https://dutch-pay-test.herokuapp.com/menu-items/' + selectedItemID + '/', 
       {
         method: 'DELETE',
+        headers: {
+          Accept: '*/*',
+          'Accept-Encoding': 'gzip,deflate,br',
+          Connection: 'keep-alive',
+          Authorization: `Bearer ${accessToken}`,
+        },
       })
     }
 

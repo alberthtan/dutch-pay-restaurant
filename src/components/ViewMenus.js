@@ -3,6 +3,7 @@ import React from 'react'
 const ViewMenus = ({menuId, menuName, activeMenu, setActiveMenu, restaurant}) => {
 
     const updateActiveMenu = async (id) => {
+        const accessToken = localStorage.getItem("access")
         let formdata = new FormData();
         formdata.append("active_menu", id)
         return fetch('https://dutch-pay-test.herokuapp.com/restaurants/' + restaurant.id + '/', {
@@ -11,7 +12,7 @@ const ViewMenus = ({menuId, menuName, activeMenu, setActiveMenu, restaurant}) =>
               Accept: '*/*',
               'Accept-Encoding': 'gzip,deflate,br',
               Connection: 'keep-alive',
-              // Authorization: authorization
+              Authorization: `Bearer ${accessToken}`,
             },
             body: formdata
           })

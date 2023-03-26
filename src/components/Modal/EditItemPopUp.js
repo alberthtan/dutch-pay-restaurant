@@ -40,13 +40,14 @@ const EditItemPopUp = ({toggleModal, item, getMenuItems}) => {
         formdata.append("itemImage", imageFile, "item-" + v4())
       }
       console.log(imageFile)
+      const accessToken = localStorage.getItem("access")
         return fetch('https://dutch-pay-test.herokuapp.com/menu-items/' + item.id + '/', {
           method: 'PATCH',
           headers: {
             Accept: '*/*',
             'Accept-Encoding': 'gzip,deflate,br',
             Connection: 'keep-alive',
-            // Authorization: authorization
+            Authorization: `Bearer ${accessToken}`,
           },
           body: formdata
         })

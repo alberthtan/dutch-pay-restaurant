@@ -89,10 +89,15 @@ const CategoryPage = () => {
       let index = allCategories.map(function(category) { return category.id }).indexOf(selectedCategoryID)
       allCategories.splice(index, 1)
       setAllCategories(allCategories)
-  
+      const accessToken = localStorage.getItem("access")
       return fetch('https://dutch-pay-test.herokuapp.com/categories/' + selectedCategoryID + '/', 
       {
         method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
       })
     }
 
