@@ -5,11 +5,13 @@ const CategoryPopUp = ({toggleModal, menuId, getCategories}) => {
     const [newCategory, setNewCategory] = useState('')
   
     const createNewCategory = async () => {
+        const accessToken = localStorage.getItem("access")
         return fetch('https://dutch-pay-test.herokuapp.com/categories/', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify({
             name: newCategory,

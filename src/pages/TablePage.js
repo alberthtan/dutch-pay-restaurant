@@ -76,10 +76,16 @@ const TablePage = () => {
     let index = allTables.map(function(table) { return table.id }).indexOf(selectedTableId)
     allTables.splice(index, 1)
     setAllTables(allTables)
+    const accessToken = localStorage.getItem("access")
 
     return fetch('https://dutch-pay-test.herokuapp.com/tables/' + selectedTableId + '/', 
     {
       method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
     })
   }
 

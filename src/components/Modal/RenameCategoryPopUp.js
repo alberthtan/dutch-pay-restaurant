@@ -7,11 +7,13 @@ const RenameCategoryPopUp= ({toggleModal, getCategories, category}) => {
 
 
 const renameCategory = async () => {
+  const accessToken = localStorage.getItem("access")
   return fetch('https://dutch-pay-test.herokuapp.com/categories/' + category.id + '/', {
     method: 'PATCH',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify({
       name: newCategory,

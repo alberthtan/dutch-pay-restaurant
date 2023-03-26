@@ -42,9 +42,16 @@ const HomePage = () => {
 
   const getRestaurant = async () => {
     let userObj = JSON.parse(localStorage.getItem('userObj'))
+    const accessToken = localStorage.getItem("access")
     return fetch('https://dutch-pay-test.herokuapp.com/restaurants/' + userObj["restaurant"] + '/', 
     {
       method: 'GET',
+      headers: {
+        Accept: '*/*',
+        'Accept-Encoding': 'gzip,deflate,br',
+        Connection: 'keep-alive',
+        Authorization: `Bearer ${accessToken}`,
+      }
     }).then((response) => response.json())
     .then(json => {
       console.log(json)
@@ -60,13 +67,14 @@ const HomePage = () => {
     let formdata = new FormData();
     formdata.append("active_menu", "")
     setActiveMenu("")
+    const accessToken = localStorage.getItem("access")
     return fetch('https://dutch-pay-test.herokuapp.com/restaurants/' + restaurant.id + '/', {
         method: 'PATCH',
         headers: {
           Accept: '*/*',
           'Accept-Encoding': 'gzip,deflate,br',
           Connection: 'keep-alive',
-          // Authorization: authorization
+          Authorization: `Bearer ${accessToken}`,
         },
         body: formdata
       })

@@ -40,13 +40,14 @@ const ItemPopUp = ({toggled, toggleModal, categoryId, getMenuItems}) => {
       }
       formdata.append("category", categoryId)
       console.log(imageFile)
+      const accessToken = localStorage.getItem("access")
         return fetch('https://dutch-pay-test.herokuapp.com/menu-items/', {
           method: 'POST',
           headers: {
             Accept: '*/*',
             'Accept-Encoding': 'gzip,deflate,br',
             Connection: 'keep-alive',
-            // Authorization: authorization
+            Authorization: `Bearer ${accessToken}`,
           },
           body: formdata
         })

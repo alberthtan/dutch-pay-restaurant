@@ -50,14 +50,14 @@ const ProfilePopUp = ({toggled, toggleModal, restaurant, getRestaurant}) => {
 
         console.log("edit restaurant")
         console.log(email)
-        
+        const accessToken = localStorage.getItem("access")
         return fetch('https://dutch-pay-test.herokuapp.com/restaurants/' + restaurant.id + '/', {
           method: 'PATCH',
           headers: {
             Accept: '*/*',
             'Accept-Encoding': 'gzip,deflate,br',
             Connection: 'keep-alive',
-            // Authorization: authorization
+            Authorization: `Bearer ${accessToken}`,
           },
           body: formdata
         })

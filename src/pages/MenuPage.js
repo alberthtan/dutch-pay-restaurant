@@ -74,10 +74,17 @@ const MenuPage = () => {
     let index = allMenus.map(function(menu) { return menu.id }).indexOf(selectedMenuID)
     allMenus.splice(index, 1)
     setAllMenus(allMenus)
+    const accessToken = localStorage.getItem("access")
 
     return fetch('https://dutch-pay-test.herokuapp.com/menus/' + selectedMenuID + '/', 
     {
       method: 'DELETE',
+      headers: {
+        Accept: '*/*',
+        'Accept-Encoding': 'gzip,deflate,br',
+        Connection: 'keep-alive',
+        Authorization: `Bearer ${accessToken}`,
+      },
     })
   }
 

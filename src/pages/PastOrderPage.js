@@ -131,28 +131,6 @@ const PastOrderPage = () => {
     })
   }
 
-  const deactivateAllMenus = async () => {
-    let formdata = new FormData();
-    formdata.append("active_menu", "")
-    setActiveMenu("")
-    return fetch('https://dutch-pay-test.herokuapp.com/restaurants/' + restaurant.id + '/', {
-        method: 'PATCH',
-        headers: {
-          Accept: '*/*',
-          'Accept-Encoding': 'gzip,deflate,br',
-          Connection: 'keep-alive',
-          // Authorization: authorization
-        },
-        body: formdata
-      })
-      .then(
-        response => response.json()
-      )
-      .then(json => {
-        console.log(json)
-      })
-  }
-
   useEffect(() => {
     getStripeCustomer()
     getMenus()

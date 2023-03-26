@@ -6,11 +6,13 @@ const RenameMenuPopUp = ({toggleModal, getMenus, menu}) => {
     const [newMenu, setNewMenu] = useState(menu.name)
 
     const renameMenu = async () => {
+    const accessToken = localStorage.getItem("access")
     return fetch('https://dutch-pay-test.herokuapp.com/menus/' + menu.id + '/', {
         method: 'PATCH',
         headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
         name: newMenu,

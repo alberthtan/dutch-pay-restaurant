@@ -6,11 +6,13 @@ const MenuPopUp = ({toggleModal, getMenus}) => {
   const [newMenu, setNewMenu] = useState('')
 
 const createNewMenu = async () => {
+  const accessToken = localStorage.getItem("access")
   return fetch('https://dutch-pay-test.herokuapp.com/menus/', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify({
       name: newMenu,

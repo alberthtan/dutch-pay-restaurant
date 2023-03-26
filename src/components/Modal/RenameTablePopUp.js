@@ -6,23 +6,25 @@ const RenameTablePopUp = ({toggleModal, getTables, table}) => {
     const [newTable, setNewTable] = useState(table.name)
 
     const renameTable = async () => {
-    return fetch('https://dutch-pay-test.herokuapp.com/tables/' + table.id + '/', {
-        method: 'PATCH',
-        headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-        name: newTable,
-    }),
-    })
-    .then(
-        response => response.json()
-    )
-    .then(json => {
-        console.log(json)
-        getTables()
-    })
+        const accessToken = localStorage.getItem("access")
+        return fetch('https://dutch-pay-test.herokuapp.com/tables/' + table.id + '/', {
+            method: 'PATCH',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify({
+            name: newTable,
+        }),
+        })
+        .then(
+            response => response.json()
+        )
+        .then(json => {
+            console.log(json)
+            getTables()
+        })
     }
 
     const handle = ({target:{value}}) => {

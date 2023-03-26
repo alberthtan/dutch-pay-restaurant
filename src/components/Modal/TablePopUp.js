@@ -6,11 +6,13 @@ const TablePopUp = ({toggleModal, getTables}) => {
   const [newTable, setNewTable] = useState('')
 
 const createNewTable = async () => {
+  const accessToken = localStorage.getItem("access")
   return fetch('https://dutch-pay-test.herokuapp.com/tables/', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify({
       name: newTable,
