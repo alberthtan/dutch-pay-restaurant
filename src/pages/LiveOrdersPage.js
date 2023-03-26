@@ -328,16 +328,17 @@ const LiveOrdersPage = () => {
                 // minWidth: 800,
                 width: '100%',
                 // height: '100%',
-                // marginRight: 300,
+                marginRight: 250,
                 overflowY: 'scroll',
+                marginTop: 50,
                 // gap: 20
-                // backgroundColor: 'blue'
+                // backgroundColor: 'red'
             }}>
                     {allTables.map((table, index) => {
                     return (
                         <div
                             key={index}
-                            style={{display: 'flex', marginLeft: 50, marginRight: 50, marginBlockEnd: 50}}
+                            style={{display: 'flex', marginLeft: 50, marginRight: 50}}
                             onContextMenu={(e) => {
                             e.preventDefault(); // prevent the default behaviour when right clicked
                             setRightClicked(true);

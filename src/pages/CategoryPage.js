@@ -76,7 +76,11 @@ const CategoryPage = () => {
       })
       .then((response) => response.json())
       .then(json => {
-        let result = json.filter(category => category['menu'] === menuId)
+        console.log("JSON")
+        console.log(json)
+        let result = json.filter(category => category['menu'] === parseInt(menuId))
+        // console.log(menuId)
+        console.log(result)
         setAllCategories(result)})
     }
 
@@ -121,6 +125,7 @@ const CategoryPage = () => {
     }, []);
 
     useEffect(() => {
+      console.log("Here")
       console.log(allCategories)
       getCategories()
     }, [])

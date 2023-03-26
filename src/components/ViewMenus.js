@@ -52,7 +52,7 @@ const ViewMenus = ({menuId, menuName, activeMenu, setActiveMenu, restaurant}) =>
                 </div>
             </div>
 
-            {(menuId === activeMenu) ? 
+            {(menuId === parseInt(activeMenu)) ? 
                 (<div style={styles.activeButton}
                     onClick={() => {
                         setActiveMenu("")
