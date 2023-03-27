@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ViewPastOrders = ({receipt, navigate}) => {
+const ViewPastOrders = ({receipt, id, navigate}) => {
 
     const getFormattedDate = (timestamp) => {
         const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -45,7 +45,7 @@ const ViewPastOrders = ({receipt, navigate}) => {
             flexDirection: 'row', 
             alignItems: 'center', 
             justiyContent: 'center'}}
-            onDoubleClick={() => {navigate('/past-order/' + receipt.id, {state: {receipt: receipt}})}}
+            onDoubleClick={() => {navigate('/past-order/' + receipt.id, {state: {receipt: receipt, id: id}})}}
             >
 
             <div style={{
@@ -55,7 +55,7 @@ const ViewPastOrders = ({receipt, navigate}) => {
                 <div style={{marginLeft: 50,}}>
                     <div style={{ fontSize: 20, marginBottom: 10,}}>
                     {/* {menuName} */}
-                    Order: #{receipt.id}
+                    Order: #{id}
                     </div>
 
                     <div style={{fontSize: 11, paddingLeft: 15,}}>

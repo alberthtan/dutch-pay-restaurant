@@ -65,6 +65,7 @@ const PastOrderPage = () => {
     setModal(!modalRef.current)
   }
 
+
   const getPaymentMethod = async () => {
     const accessToken = localStorage.getItem("access")
     return fetch('https://dutch-pay-test.herokuapp.com/get_payment_method_from_id/' + state.receipt.payment_method_id, {
@@ -182,7 +183,7 @@ const PastOrderPage = () => {
         
                 <div 
                 style={styles.headerBarGreenItem}>
-                Order #{state.receipt.id}
+                Order #{state.id}
                 </div>
             </div>
 
