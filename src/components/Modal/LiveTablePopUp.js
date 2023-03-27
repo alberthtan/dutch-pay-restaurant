@@ -9,11 +9,13 @@ const LiveTablePopUp = ({toggleModal, table, items, handleDelete, clearTable}) =
 
     const createReceipt = async (user, timestamp, cart, restaurant_id, subtotal_amount, tip_amount, tax_amount, payment_method_id) => {
       // console.log(typeof cart)
-      return fetch('https://dutch-pay-test.herokuapp.com/receipts/', {
+      const accessToken = localStorage.getItem('access')
+      return fetch('https://dutch-pay-test.herokuapp.com/create-receipt/', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
         },
         body: JSON.stringify({
           user: user,

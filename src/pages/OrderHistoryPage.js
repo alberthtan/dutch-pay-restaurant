@@ -12,13 +12,21 @@ const OrderHistoryPage = () => {
 
   const getPastOrders = async () => {
     let userObj = JSON.parse(localStorage.getItem('userObj'))
-    return fetch("/receipts").then(
+    let accessToken = localStorage.getItem("access")
+    console.log(accessToken)
+    return fetch("https://dutch-pay-test.herokuapp.com/get-receipts-manager/" + userObj['restaurant'] + '/', {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+    }
+    }).then(
       response => response.json()
     ).then(
       json => {
         console.log(json)
-        let result = json.filter(receipt => receipt['restaurant'] == userObj['restaurant'])
-        setPastOrders(result)
+        // let result = json.filter(receipt => receipt['restaurant'] == userObj['restaurant'])
+        setPastOrders(JSON.parse(json))
       }
     )
   }
@@ -67,9 +75,9 @@ const OrderHistoryPage = () => {
                         )
                       })} */}
                       {pastOrders.map((receipt, index) => {
-                        console.log(receipt)
+                        console.log(receipt.fields)
                         return(
-                      <ViewPastOrders receipt={receipt} navigate={navigate}/>
+                      <ViewPastOrders receipt={receipt.fields} id={receipt.pk} navigate={navigate}/>
                       )
                       })}
 
