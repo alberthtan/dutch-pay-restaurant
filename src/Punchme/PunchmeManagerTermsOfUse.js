@@ -1,8 +1,9 @@
 import React from 'react'
 
-const PunchmeTermsOfUse = () => {
+const PunchmeManagerTermsOfUse = () => {
     return (
         <div style={{margin: 20}}>
+
 <>
   <style
     dangerouslySetInnerHTML={{
@@ -172,7 +173,7 @@ const PunchmeTermsOfUse = () => {
         </span>{" "}
         at{" "}
         <bdt className="question">
-          3710 El Camino Real Apt 3221 Santa Clara, CA 95051
+          3710 El Camino Real apt 3221, Santa Clara, CA 95051, USA
         </bdt>
         <bdt className="block-component" />,{" "}
         <bdt className="question">Santa Clara</bdt>
@@ -243,8 +244,9 @@ const PunchmeTermsOfUse = () => {
           We operate <bdt className="block-component" />
           <bdt className="block-component" />
           the mobile application <bdt className="question">
-            PunchMe
-          </bdt> (the <bdt className="block-component" />"<strong>App</strong>"
+            PunchMe Manager
+          </bdt>{" "}
+          (the <bdt className="block-component" />"<strong>App</strong>"
           <bdt className="statement-end-if-in-editor" />)
           <bdt className="statement-end-if-in-editor" />, as well as any other
           related products and services that refer or link to these legal terms
@@ -265,12 +267,14 @@ const PunchmeTermsOfUse = () => {
         style={{ lineHeight: "1.5" }}
       >
         <bdt className="question">
-          Our app provides a loyalty program for users to earn points at
-          participating restaurants, which can then be redeemed for free items
-          and dishes. By using our app, you can easily track your loyalty points
-          and manage your rewards. We strive to provide a seamless and
-          convenient experience for our users and work closely with our
-          restaurant partners to ensure the best possible service.
+          Our app, PunchMe Manager, provides restaurant managers with a
+          comprehensive platform to manage their loyalty point programs. Through
+          our app, restaurant managers can easily track and manage their loyalty
+          program, view detailed reports and analytics, and communicate with
+          their customers about rewards and promotions. Our aim is to simplify
+          the process of running a loyalty program and provide restaurant
+          managers with the tools they need to create a seamless and rewarding
+          experience for their customers.{" "}
         </bdt>
       </div>
       <div
@@ -315,7 +319,7 @@ const PunchmeTermsOfUse = () => {
           <bdt className="block-component" />,
           <bdt className="statement-end-if-in-editor" /> or by mail to{" "}
           <bdt className="question">
-            Allen Chun 3710 El Camino Real Apt 3221 Santa Clara, CA 95051
+            3710 El Camino Real apt 3221, Santa Clara, CA 95051, USA
           </bdt>
           <bdt className="block-component" />,{" "}
           <bdt className="question">Santa Clara</bdt>
@@ -430,34 +434,15 @@ const PunchmeTermsOfUse = () => {
                 }}
               >
                 <bdt className="block-component" />
-                <bdt
-                  className="block-container if"
-                  data-type="if"
-                  id="a2595956-7028-dbe5-123e-d3d3a93ed076"
-                >
-                  <bdt data-type="conditional-block">
-                    <bdt data-type="body">
-                      <span
-                        style={{
-                          color: "rgb(89, 89, 89)",
-                          fontSize: "14.6667px"
-                        }}
-                      >
-                        All users who are minors in the jurisdiction in which
-                        they reside (generally under the age of 18) must have
-                        the permission of, and be directly supervised by, their
-                        parent or guardian to use the Services. If you are a
-                        minor, you must have your parent or guardian read and
-                        agree to these Legal Terms prior to you using the
-                        Services.
-                      </span>
-                    </bdt>
-                  </bdt>
-                </bdt>
+                The Services are intended for users who are at least 18 years
+                old. Persons under the age of 18 are not permitted to use or
+                register for the Services.
               </span>
             </bdt>
           </bdt>
-          <bdt className="statement-end-if-in-editor" data-type="close" />
+          <bdt data-type="conditional-block">
+            <bdt className="block-component" />
+          </bdt>
         </bdt>
       </div>
       <div className="MsoNormal" style={{ lineHeight: 1 }}>
@@ -1634,14 +1619,9 @@ const PunchmeTermsOfUse = () => {
                   data-record-question-key="user_o18_option"
                   data-type="statement"
                 />
-                <bdt data-type="body">
-                  , or if a minor, you have received parental permission to use
-                  the Services
-                </bdt>
               </bdt>
-              <bdt className="statement-end-if-in-editor" data-type="close" />
+              ; (
             </bdt>
-            ; (
           </span>
           <span style={{ color: "rgb(89, 89, 89)", fontSize: "14.6667px" }}>
             5
@@ -4603,11 +4583,11 @@ const PunchmeTermsOfUse = () => {
               data-type="question"
             >
               <a
-                href="https://dutch-pay-website.herokuapp.com/punchme/privacy-policy"
+                href="https://dutch-pay-website.herokuapp.com/punchme-manager/privacy-policy"
                 target="_blank"
                 data-custom-class="link"
               >
-                https://dutch-pay-website.herokuapp.com/punchme/privacy-policy
+                https://dutch-pay-website.herokuapp.com/punchme-manager/privacy-policy
               </a>
             </bdt>
           </strong>
@@ -6035,7 +6015,7 @@ const PunchmeTermsOfUse = () => {
             <bdt className="question">
               <strong>
                 <bdt className="question">
-                  Allen Chun 3710 El Camino Real Apt 3221 Santa Clara, CA 95051
+                  3710 El Camino Real apt 3221, Santa Clara, CA 95051, USA
                 </bdt>
               </strong>
             </bdt>
@@ -6216,9 +6196,8 @@ const PunchmeTermsOfUse = () => {
   </div>
 </>
 
-
         </div>
     )
-};
+}
 
-export default PunchmeTermsOfUse
+export default PunchmeManagerTermsOfUse

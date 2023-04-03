@@ -17,6 +17,8 @@ import LandingPage from "../pages/LandingPage";
 
 import PunchmePrivacyPolicy from "../Punchme/PunchmePrivacyPolicy";
 import PunchmeTermsOfUse from "../Punchme/PunchmeTermsOfUse";
+import PunchmeManagerPrivacyPolicy from "../Punchme/PunchmeManagerPrivacyPolicy";
+import PunchmeManagerTermsOfUse from "../Punchme/PunchmeManagerTermsOfUse";
 
 import { Context } from "../globalContext/globalContext";
 
@@ -94,6 +96,8 @@ const Navigator = () => {
                 <Route path="/privacy-policy" element={<PrivacyPolicyPage/>} />
                 <Route path="/punchme/privacy-policy" element={<PunchmePrivacyPolicy/>} />
                 <Route path="/punchme/terms-of-use" element={<PunchmeTermsOfUse/>} />
+                <Route path="/punchme-manager/privacy-policy" element={<PunchmeManagerPrivacyPolicy/>} />
+                <Route path="/punchme-manager/terms-of-use" element={<PunchmeManagerTermsOfUse/>} />
               
             </Routes>
           </BrowserRouter>
