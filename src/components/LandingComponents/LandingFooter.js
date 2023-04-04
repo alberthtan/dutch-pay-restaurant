@@ -47,6 +47,7 @@ function LandingFooter() {
               <Para>Delaware, 19808</Para>
             </Col>
             <Col lg={8} md={10} sm={10} xs={10}>
+            <Empty />
               <Title>Company</Title>
               <Large left="true" to="/">
                 About
@@ -101,6 +102,7 @@ export const Chat = styled("p")`
 
 export const Title = styled("h4")`
   font-size: 22px;
+  font-weight: bold;
   text-transform: capitalize;
   color: #18216d;
 
