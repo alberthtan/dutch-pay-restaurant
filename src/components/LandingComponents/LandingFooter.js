@@ -81,7 +81,6 @@ export const Large = styled("Link")`
 `;
 
 export const Para = styled("div")`
-  color: #18216d;
   font-size: 14px;
   width: 70%;
 `;
