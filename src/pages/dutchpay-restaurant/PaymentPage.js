@@ -1,9 +1,9 @@
 import React from 'react'
 import { useNavigate } from "react-router-dom";
 import { Layout, Typography } from "antd";
-import Navbar from '../components/Navbar/Navbar';
-import SideNavbar from '../components/Navbar/SideNavbar';
-import StripeCard from '../components/StripeCard';
+import Navbar from '../../components/Navbar/Navbar';
+import SideNavbar from '../../components/Navbar/SideNavbar';
+import StripeCard from '../../components/StripeCard';
 import { Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
 

@@ -1,15 +1,15 @@
 import React, {useState, useEffect, useRef} from 'react'
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { Form, Layout, Button } from "antd";
-import Navbar from '../components/Navbar/Navbar';
+import Navbar from '../../components/Navbar/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../layout.css'
-import CategoryButton from '../components/Buttons/CategoryButton';
-import frontArrowIcon from '../assets/icons/frontarrow.png';
-import CategoryPopUp from '../components/Modal/CategoryPopUp';
-import RenameCategoryPopUp from '../components/Modal/RenameCategoryPopUp';
-import ContextMenu from '../components/ContextMenu/ContextMenu';
-import SideNavbar from '../components/Navbar/SideNavbar';
+import '../../layout.css'
+import CategoryButton from '../../components/Buttons/CategoryButton';
+import frontArrowIcon from '../../assets/icons/frontarrow.png';
+import CategoryPopUp from '../../components/Modal/CategoryPopUp';
+import RenameCategoryPopUp from '../../components/Modal/RenameCategoryPopUp';
+import ContextMenu from '../../components/ContextMenu/ContextMenu';
+import SideNavbar from '../../components/Navbar/SideNavbar';
 
 function getWindowDimensions() {
     const { innerWidth: width, innerHeight: height } = window;

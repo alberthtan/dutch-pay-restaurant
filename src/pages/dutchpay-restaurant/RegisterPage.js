@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Layout } from "antd";
 import { Navigate } from "react-router-dom";
-import VerifyRegisterForm from "../components/Login/VerifyRegisterForm"
+import VerifyRegisterForm from "../../components/Login/VerifyRegisterForm"
 
-import RegisterForm from "../components/Login/RegisterForm";
-import StripeForm from "../components/Login/StripeForm";
+import RegisterForm from "../../components/Login/RegisterForm";
+import StripeForm from "../../components/Login/StripeForm";
 
 import { useNavigate } from "react-router-dom";
-import { Context } from "../globalContext/globalContext";
+import { Context } from "../../globalContext/globalContext";
 
 
 const RegisterPage = () => {

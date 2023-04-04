@@ -1,10 +1,10 @@
 import React, {useState, useEffect, useRef} from 'react'
 import { useNavigate } from "react-router-dom";
 import { Form, Layout, Button } from "antd";
-import Navbar from '../components/Navbar/Navbar';
-import SideNavbar from '../components/Navbar/SideNavbar';
-import ViewMenus from '../components/ViewMenus';
-import ProfilePopUp from '../components/Modal/ProfilePopUp';
+import Navbar from '../../components/Navbar/Navbar';
+import SideNavbar from '../../components/Navbar/SideNavbar';
+import ViewMenus from '../../components/ViewMenus';
+import ProfilePopUp from '../../components/Modal/ProfilePopUp';
 
 
 const HomePage = () => {

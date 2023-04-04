@@ -1,15 +1,15 @@
 import React, {useState, useEffect, useRef} from 'react'
 import { useNavigate } from "react-router-dom";
 import { Form, Layout, Button } from "antd";
-import Navbar from '../components/Navbar/Navbar';
-import SideNavbar from '../components/Navbar/SideNavbar';
+import Navbar from '../../components/Navbar/Navbar';
+import SideNavbar from '../../components/Navbar/SideNavbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../layout.css'
-import TableButton from '../components/Buttons/TableButton';
-import ContextMenu from '../components/ContextMenu/ContextMenu';
+import '../../layout.css'
+import TableButton from '../../components/Buttons/TableButton';
+import ContextMenu from '../../components/ContextMenu/ContextMenu';
 
-import TablePopUp from '../components/Modal/TablePopUp';
-import RenameTablePopUp from '../components/Modal/RenameTablePopUp';
+import TablePopUp from '../../components/Modal/TablePopUp';
+import RenameTablePopUp from '../../components/Modal/RenameTablePopUp';
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;

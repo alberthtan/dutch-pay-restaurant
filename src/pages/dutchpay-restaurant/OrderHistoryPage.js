@@ -1,9 +1,9 @@
 import React, { useEffect, useState} from 'react'
 import { useNavigate } from "react-router-dom";
 import { Layout } from "antd";
-import Navbar from '../components/Navbar/Navbar';
-import SideNavbar from '../components/Navbar/SideNavbar';
-import ViewPastOrders from '../components/ViewPastOrders'
+import Navbar from '../../components/Navbar/Navbar';
+import SideNavbar from '../../components/Navbar/SideNavbar';
+import ViewPastOrders from '../../components/ViewPastOrders'
 
 const OrderHistoryPage = () => {
   const [pastOrders, setPastOrders] = useState([])

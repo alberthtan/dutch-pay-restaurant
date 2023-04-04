@@ -1,15 +1,15 @@
 import React, {useState, useEffect, useRef, useContext} from 'react'
 import { useNavigate } from "react-router-dom";
 import { Layout } from "antd";
-import Navbar from '../components/Navbar/Navbar';
-import SideNavbar from '../components/Navbar/SideNavbar';
+import Navbar from '../../components/Navbar/Navbar';
+import SideNavbar from '../../components/Navbar/SideNavbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../layout.css'
-import LiveTableButton from '../components/Buttons/LiveTableButton';
-import LiveOrderButton from '../components/Buttons/LiveOrderButton';
-import LiveOrderPopUp from '../components/Modal/LiveOrderPopUp';
-import { Context } from '../globalContext/globalContext';
-import LiveTablePopUp from '../components/Modal/LiveTablePopUp';
+import '../../layout.css'
+import LiveTableButton from '../../components/Buttons/LiveTableButton';
+import LiveOrderButton from '../../components/Buttons/LiveOrderButton';
+import LiveOrderPopUp from '../../components/Modal/LiveOrderPopUp';
+import { Context } from '../../globalContext/globalContext';
+import LiveTablePopUp from '../../components/Modal/LiveTablePopUp';
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;

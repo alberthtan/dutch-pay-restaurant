@@ -1,19 +1,20 @@
 import React, { useContext, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoginPage from "../pages/LoginPage";
-import MenuPage from "../pages/MenuPage";
-import TablePage from "../pages/TablePage";
-import OrderHistoryPage from "../pages/OrderHistoryPage";
-import PaymentPage from "../pages/PaymentPage";
-import HomePage from "../pages/HomePage";
-import CategoryPage from "../pages/CategoryPage";
-import ItemsPage from "../pages/ItemsPage";
-import RegisterPage from "../pages/RegisterPage";
-import LiveOrdersPage from "../pages/LiveOrdersPage";
-import PastOrderPage from "../pages/PastOrderPage";
-import TermsPage from "../pages/TermsPage";
-import PrivacyPolicyPage from "../pages/PrivacyPolicyPage";
-import LandingPage from "../pages/LandingPage";
+import LoginPage from "../pages/dutchpay-restaurant/LoginPage";
+import MenuPage from "../pages/dutchpay-restaurant/MenuPage";
+import TablePage from "../pages/dutchpay-restaurant/TablePage";
+import OrderHistoryPage from "../pages/dutchpay-restaurant/OrderHistoryPage";
+import PaymentPage from "../pages/dutchpay-restaurant/PaymentPage";
+import HomePage from "../pages/dutchpay-restaurant/HomePage";
+import CategoryPage from "../pages/dutchpay-restaurant/CategoryPage";
+import ItemsPage from "../pages/dutchpay-restaurant/ItemsPage";
+import RegisterPage from "../pages/dutchpay-restaurant/RegisterPage";
+import LiveOrdersPage from "../pages/dutchpay-restaurant/LiveOrdersPage";
+import PastOrderPage from "../pages/dutchpay-restaurant/PastOrderPage";
+
+import TermsPage from "../pages/home/TermsPage";
+import PrivacyPolicyPage from "../pages/home/PrivacyPolicyPage";
+import LandingPage from "../pages/home/LandingPage";
 
 import PunchmePrivacyPolicy from "../Punchme/PunchmePrivacyPolicy";
 import PunchmeTermsOfUse from "../Punchme/PunchmeTermsOfUse";

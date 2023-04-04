@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { Layout } from "antd";
-import LoginForm from "../components/Login/LoginForm";
-import VerifyLoginForm from "../components/Login/VerifyLoginForm";
+import LoginForm from "../../components/Login/LoginForm";
+import VerifyLoginForm from "../../components/Login/VerifyLoginForm";
 
 
 

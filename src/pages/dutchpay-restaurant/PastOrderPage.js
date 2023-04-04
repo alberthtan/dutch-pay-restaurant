@@ -1,10 +1,10 @@
 import React, {useState, useEffect, useRef} from 'react'
 import { useNavigate, useLocation } from "react-router-dom";
 import { Layout } from "antd";
-import Navbar from '../components/Navbar/Navbar';
-import SideNavbar from '../components/Navbar/SideNavbar';
-import ProfilePopUp from '../components/Modal/ProfilePopUp';
-import PastOrderItemButton from '../components/Buttons/PastOrderItemButton';
+import Navbar from '../../components/Navbar/Navbar';
+import SideNavbar from '../../components/Navbar/SideNavbar';
+import ProfilePopUp from '../../components/Modal/ProfilePopUp';
+import PastOrderItemButton from '../../components/Buttons/PastOrderItemButton';
 
 
 const PastOrderPage = () => {
