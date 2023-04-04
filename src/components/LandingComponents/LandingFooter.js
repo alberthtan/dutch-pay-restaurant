@@ -22,13 +22,13 @@ function LandingFooter() {
               <Para>
                 Do you have any question? Feel free to reach out.
               </Para>
-              <StyledLink href="mailto:dutchpay@dutchpay.co">
-                <Chat>Let's Chat</Chat>
-              </StyledLink>
+              
+                <Chat><StyledLink href="mailto:dutchpay@dutchpay.co">Let's Chat</StyledLink></Chat>
+              
             </Col>
             <Col lg={8} md={10} sm={10} xs={10}>
               <Title>Policy</Title>
-                <Large onClick={() => navigate('/terms-of-use')}>
+                <Large onClick={() => navigate('/terms-of-use')}>≈≈≈≈
                   Terms of Use
                 </Large>
                 <Large onClick={() => navigate('/privacy-policy')}>
