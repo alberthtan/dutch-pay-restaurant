@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/apple-app-site-association', function(req, res) {
-    res.sendFile(path.join(__dirname, './.well-known/apple-app-site-association'));
+    res.sendFile(path.join(__dirname, '/apple-app-site-association'));
 });
 
 app.get('/terms-of-use', function(req, res) {
