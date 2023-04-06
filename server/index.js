@@ -8,7 +8,11 @@ app.use(express.static(path.join(__dirname, 'build')));
 
 // Route all requests to the React app
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'build', '../public/index.html'));
+});
+
+app.get('/apple-app-site-association', function(req, res) {
+    res.sendFile(path.join(__dirname, '../public/.well-known/apple-app-site-association'));
 });
 
 // Start the server
