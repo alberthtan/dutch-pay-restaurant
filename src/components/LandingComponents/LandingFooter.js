@@ -28,7 +28,7 @@ function LandingFooter() {
             </Col>
             <Col lg={8} md={10} sm={10} xs={10}>
               <Title>Policy</Title>
-                <Large onClick={() => navigate('/terms-of-use')}>≈≈≈≈
+                <Large onClick={() => navigate('/terms-of-use')}>
                   Terms of Use
                 </Large>
                 <Large onClick={() => navigate('/privacy-policy')}>
