@@ -99,7 +99,7 @@ const Navigator = () => {
                 <Route path="/punchme/terms-of-use" element={<PunchmeTermsOfUse/>} />
                 <Route path="/punchme-manager/privacy-policy" element={<PunchmeManagerPrivacyPolicy/>} />
                 <Route path="/punchme-manager/terms-of-use" element={<PunchmeManagerTermsOfUse/>} />
-              
+                              
             </Routes>
           </BrowserRouter>
       );

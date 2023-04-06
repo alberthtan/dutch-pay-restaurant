@@ -12,8 +12,16 @@ app.get('/', (req, res) => {
 });
 
 app.get('/apple-app-site-association', function(req, res) {
-    res.sendFile(path.join(__dirname, '../public/.well-known/apple-app-site-association'));
+    res.sendFile(path.join(__dirname, './.well-known/apple-app-site-association'));
 });
+
+app.get('/terms-of-use', function(req, res) {
+    res.sendFile(path.join(__dirname, '../build', '../public/index.html'));
+  });
+  
+  app.get('/privacy-policy', function(req, res) {
+    res.sendFile(path.join(__dirname, '../build', '../public/index.html'));
+  });
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
