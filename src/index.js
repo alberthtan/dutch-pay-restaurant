@@ -6,7 +6,6 @@ import { Provider } from "./globalContext/globalContext";
 import Navigator from "./navigator/navigator";
 
 
-
 ReactDOM.render(
     <Provider>
         <Navigator/>
