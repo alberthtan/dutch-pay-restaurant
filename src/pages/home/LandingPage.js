@@ -1,5 +1,5 @@
 import React from 'react'
-import LandingHeader from '../../components/Navbar/LandingHeader'
+import LandingHeader from '../../components/LandingComponents/LandingHeader'
 import LandingFooter from '../../components/LandingComponents/LandingFooter'
 import ImageCarousel from '../../components/ImageCarousel/ImageCarousel'
 

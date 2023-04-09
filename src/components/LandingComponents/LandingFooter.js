@@ -59,9 +59,7 @@ function LandingFooter() {
       </FooterSection>) 
 }
 
-export default LandingFooter;
-
-export const Large = styled("Link")`
+const Large = styled("Link")`
   font-size: 16px;
   color: #000;
   cursor: pointer;
@@ -80,12 +78,12 @@ export const Large = styled("Link")`
   }
 `;
 
-export const Para = styled("div")`
+const Para = styled("div")`
   font-size: 14px;
   width: 70%;
 `;
 
-export const Chat = styled("p")`
+const Chat = styled("p")`
   color: #18216d;
   max-width: fit-content;
   border-bottom: 1px solid #18216d;
@@ -99,7 +97,7 @@ export const Chat = styled("p")`
   }
 `;
 
-export const Title = styled("h4")`
+const Title = styled("h4")`
   font-size: 22px;
   font-weight: bold;
   text-transform: capitalize;
@@ -110,12 +108,12 @@ export const Title = styled("h4")`
   }
 `;
 
-export const Empty = styled("div")`
+const Empty = styled("div")`
   position: relative;
   height: 53px;
 `;
 
-export const Label = styled("label")`
+const Label = styled("label")`
   font-size: 22px;
   text-transform: capitalize;
   color: #18216d;
@@ -129,12 +127,14 @@ export const Label = styled("label")`
   }
 `;
 
-export const FooterSection = styled("footer")`
+const FooterSection = styled("footer")`
   background: rgb(241, 242, 243);
   padding: 2.5rem 0;
 `;
 
-export const StyledLink = styled("a")`
+const StyledLink = styled("a")`
   color: #333;
   text-decoration: none;
 `;
+
+export default LandingFooter;
